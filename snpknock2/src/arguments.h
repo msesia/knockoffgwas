@@ -51,7 +51,6 @@ public:
   int num_chrs() const;
   int get_resolution() const;
   double get_window_size() const;
-
 private:
 
   string keep_file, pc_file;
@@ -86,6 +85,7 @@ private:
   void parse_hmm_lambda_option(string input);
   void parse_window_size_option(string input);
   void check_file(string input_file) const;
+  void print_help() const;
   
 };
 

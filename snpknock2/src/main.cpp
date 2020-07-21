@@ -22,8 +22,9 @@ void print_header() {
   cout<<"\t" << "|                      |" << endl;
   cout<<"\t" << "+----------------------+" << endl;
   cout << endl;
-  cout << "Copyright (C) 2020 Stanford University" << endl;
-  cout << "Distributed under the GNU GPLv3 open source license" << endl;
+  cout << "Copyright (C) 2020 Stanford University." << endl;
+  cout << "Distributed under the GNU GPLv3 open source license." << endl << endl;
+  cout << "Use --help for more information." << endl;
   cout << endl;
 }
 

@@ -33,6 +33,58 @@ int Arguments::num_chrs() const {
   return(num_chrs_);
 }
 
+void Arguments::print_help() const {
+  typedef tuple<string,string,string> argdef;
+  cout << endl << "Usage manual:" << endl;
+  list< argdef > options = {
+    argdef("help", "", "Print this help page and exit."),
+    argdef("bgen", "fileprefix", "Prefix (no extension) of haplotype input file in BGEN format.*"),
+    argdef("haps", "fileprefix", "Prefix (no extension) of haplotype input file in HAPS format.*"),
+    argdef("map", "filename", "File containing map with genetic distances.*"),
+    argdef("part", "filename", "File containing genome partitions for knockoff generation.*"),
+    argdef("extract", "filename", "File containing list of selected variant IDs; other variants will be ignored."),
+    argdef("sample", "filename", "File containing list of selected sample IDs; other samples will be ignored."),
+    argdef("hmm", "filename", "File containing estimated HMM parameters.*"),
+    argdef("hmm-rho", "value", "Initial value of HMM recombination rate parameter."),
+    argdef("hmm-lambda", "value", "Initial value of HMM mutation rate parameter."),
+    argdef("ref", "filename", "File containing pre-computed list of haplotype references.*"),
+    argdef("lref", "filename", "File containing pre-computed list of local haplotype references.*"),
+    argdef("ibd", "filename", "File containing pre-computed list of IBD segments."),
+    argdef("pc", "filename", "File containing genetic PCs. These can be optionally used to define references."),
+    argdef("n_threads", "value", "Number of threads available for computations."),
+    argdef("resolution", "value", "Index of partition from 'part' file. Default: all partitions will be processed."),
+    argdef("windows", "value", "Width (# bases) for windows defining local reference. Default: no local windows."),
+    argdef("cluster_size_min", "value", "Smallest allowed size of haplotype clusters (2-means recursive). Default: 1000."),
+    argdef("cluster_size_max", "value", "Largest allowed size of haplotype clusters (2-means recursive). Default: 5000."),
+    argdef("K", "value", "Number of reference for each haplotype mosaic. Default: 100."),
+    argdef("seed", "value", "Seed for pseudo-random number generation. Default: 2020."),
+    argdef("compute-references", "", "Request computation of haplotype references."),
+    argdef("estimate-hmm", "", "Request estimation of HMM parameters with EM algorithm."),
+    argdef("generate-knockoffs", "", "Request knockoff generation."),
+    argdef("out", "fileprefix", "Prefix of output data files."),
+    argdef("log", "fileprefix", "Prefix of output log files."),
+    argdef("debug", "", "Print debugging messages. (For development only)"),    
+  };
+
+  for(auto cmd : options) {
+    string cmd_name = std::get<0>(cmd);
+    string cmd_value = std::get<1>(cmd);
+    string cmd_description = std::get<2>(cmd);
+    cout << "  " << std::internal << "--" << std::left << std::setw(18) << cmd_name << " ";    
+    if(cmd_value == "") {
+      cout << std::left << std::setw(15) << "[NONE]";
+    } else {
+      cmd_value = "[" + cmd_value + "]";
+      cout << std::left << std::setw(15) << cmd_value;
+    }
+    cout << cmd_description << endl;
+  }
+
+  cout << endl << "* This command accepts a shortcut to process multiple chromosome files simultaneously." << endl;
+  cout << "  E.g., 'filename{1:22}' will be interpreted as a list of filenames filename1,filename2,filename3,...,filename22.";
+  cout << endl << endl;
+}
+
 void Arguments::parse_args(int arg_num, const char* argslist[]) {
   vector<string> args;
   if(arg_num==1){
@@ -46,14 +98,19 @@ void Arguments::parse_args(int arg_num, const char* argslist[]) {
     for(vector<string>::iterator sit=args.begin();sit!=args.end();sit++) {
       //cout << *sit << endl;
       string name = *sit;
-      if(name=="--haps") {        
+      if(name=="--help") {
+        cout << "  " << name << endl;
+        print_help();
+        exit(0);
+      }
+      if(name=="--haps") {
         string value = *(++sit);
         parse_wildcard_str(value,"hap");
         data_format = "haps";
         cout << "  " << name << " " << value << endl;
         continue;
       }
-      if(name=="--bgen") {        
+      if(name=="--bgen") {
         string value = *(++sit);
         parse_wildcard_str(value,"hap");
         data_format = "bgen";
@@ -186,10 +243,10 @@ void Arguments::parse_args(int arg_num, const char* argslist[]) {
         cout << "  " << name << " " << value << endl;
         continue;
       }
-      if(name=="--compute-kinship") {
+      if(name=="--compute-references") {
         cout << "  " << name << endl;
         compute_kinship = true;
-        operations.insert("--compute-kinship");
+        operations.insert("--compute-references");
         continue;
       }
       if(name=="--estimate-hmm") {
@@ -259,10 +316,10 @@ void Arguments::check() const {
       options_errors.push_back("Argument --cluster_size_max should be positive.");
     }
     if(ref_files.size()>0) {
-      options_warnings.push_back("Argument --ref will be ignored because --compute-kinship is specified.");
+      options_warnings.push_back("Argument --ref will be ignored because --compute-references is specified.");
     }
     if(lref_files.size()>0) {
-      options_warnings.push_back("Argument --lref will be ignored because --compute-kinship is specified.");
+      options_warnings.push_back("Argument --lref will be ignored because --compute-references is specified.");
     }
   } else {
     if(K!=K_default) {
@@ -275,12 +332,12 @@ void Arguments::check() const {
       options_warnings.push_back("Argument --cluster_size_max will be ignored because --ref is specified.");
     }
     if(ref_files.size()!=data_files.size()) {
-      options_errors.push_back("Argument --ref should be provided (for each chromosome) if --compute-kinship is not requested.");
+      options_errors.push_back("Argument --ref should be provided (for each chromosome) if --compute-references is not requested.");
     }
   }
   if(lref_files.size()>0) {
     if(ref_files.size()!=lref_files.size()) {
-      options_errors.push_back("Argument --lref should have the same length as --ref, if specified.");      
+      options_errors.push_back("Argument --lref should have the same length as --ref, if specified.");
     }
   }
 
@@ -577,7 +634,7 @@ string Arguments::get_log_file(int chr) const {
   else return(log_files[chr]);
 }
 
-vector<string> Arguments::get_log_files() const {  
+vector<string> Arguments::get_log_files() const {
   if(log_files.size()!=out_files.size()) {
     vector<string> emptystrings(out_files.size(), "");
     return(emptystrings);
