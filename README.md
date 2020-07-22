@@ -32,13 +32,12 @@ The following software should be available from your user path:
 
    - [PLINK 1.9](https://www.cog-genomics.org/plink/1.9/)
 
-The following [R](https://www.r-project.org/) (version 3.5.1) packages are required:
+The following [R](https://www.r-project.org/) (version 4.0.2) packages are required:
 
-   - [SNPknock](https://msesia.github.io/snpknock/) 0.8.2
    - [fastcluster](https://CRAN.R-project.org/package=fastcluster ) 1.1.25
    - [bigsnpr](https://privefl.github.io/bigsnpr/) 1.4.4
    - [bigstatsr](https://privefl.github.io/bigstatsr/) 1.2.3
-   - [tidyverse](https://www.tidyverse.org/) 1.2.1
+   - [tidyverse](https://www.tidyverse.org/) 1.3.0
    
 The above version numbers correspond to the configuration on which this software was tested. Newer version are likely to be compatible, but have not been tested.
 
@@ -49,7 +48,7 @@ Compile the C++ program for knockoff generation by entering the directory `snpkn
 
 ## Toy dataset
 
-A toy dataset containing 1000 artificial samples typed at 2000 loci (divided between chromosome 21 and 22) is offered as a toy example to test *KnockoffZoom*. To run the example, simply execute the script `analyze.sh`.
+A toy dataset containing 1000 artificial samples typed at 2000 loci (divided between chromosome 21 and 22) is offered as a toy example to test *KnockoffZoom v2*. To run the example, simply execute the script `analyze.sh`.
 
 ```{bash}
 ./analyze.sh
@@ -73,7 +72,6 @@ The analysis of large datasets cannot be carried out on a personal computer. The
 The modular nature of our method allows the code contained in each of the 5 main scripts to be easily deployed on a computing cluster for large-scale applications. This task will require some additional user effort compared to the toy example, but the scripts for each module are documented and quite intuitive.
 
 
-
 ## Authors
 
    - [Matteo Sesia](https://msesia.github.io/) (Stanford University).
@@ -89,4 +87,6 @@ This software is distributed under the [GPLv3 license](https://www.gnu.org/licen
 
 ## Further references
 
-Read more about the broader framework of [knockoffs](https://web.stanford.edu/group/candes/knockoffs/).
+Read more about:
+ - [KnockoffZoom v1](https://github.com/msesia/knockoffzoom);
+ - the broader framework of [knockoffs](https://web.stanford.edu/group/candes/knockoffs/).
