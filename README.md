@@ -79,7 +79,6 @@ The modular nature of our method allows the code contained in each of the 5 main
 ## Contributors
 
    - [Stephen Bates](https://stephenbates19.github.io/) (Stanford University).
-   - [Eugene Katsevich](http://web.stanford.edu/~ekatsevi/) (University of Pennsylvania).
 
 ## License
 
