@@ -54,7 +54,7 @@ if [[ $FLAG_GENERATE_KNOCKOFFS == 1 ]]; then
     --hmm-rho 1 \
     --hmm-lambda 1e-3 \
     --windows 0 \
-    --n_threads 10 \
+    --n_threads 4 \
     --seed 2020 \
     --compute-references \
     --generate-knockoffs \
