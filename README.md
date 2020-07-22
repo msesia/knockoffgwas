@@ -56,7 +56,7 @@ A toy dataset containing 1000 artificial samples typed at 2000 loci (divided bet
 
 This script will also verify whether required R packages are available and install them otherwise.
 
-The analysis should take approximately 5 minutes on a personal computer. The results can be visualized interactively with the script `visualize.sh`, which will launch a [Shiny](https://shiny.rstudio.com/) app in your browser. Some additional R packages are required by the visualization tool, and will be automatically installed if not found.
+The analysis should take less than 5 minutes on a personal computer. The results can be visualized interactively with the script `visualize.sh`, which will launch a [Shiny](https://shiny.rstudio.com/) app in your browser. Some additional R packages are required by the visualization tool, and will be automatically installed if not found.
 
 ```{bash}
 ./visualize.sh
@@ -69,7 +69,7 @@ The expected results for the analysis of this toy dataset are provided in the di
 *KnockoffZoom* is computationally efficient and we have successfully applied it to the analysis of the genetic data in the UK Biobank. For more information, visit [https://msesia.github.io/knockoffzoom-v2/ukbiobank.html](https://msesia.github.io/knockoffzoom-v2/ukbiobank.html).
 The analysis of large datasets cannot be carried out on a personal computer. The computational resources required for the analysis of the UK Biobank data are summarized in the [accompanying paper]().
 
-The modular nature of our method allows the code contained in each of the 5 main scripts to be easily deployed on a computing cluster for large-scale applications. This task will require some additional user effort compared to the toy example, but the scripts for each module are documented and quite intuitive.
+The modular nature of our method allows the code contained in each of the 4 main scripts to be easily deployed on a computing cluster for large-scale applications. This task will require some additional user effort compared to the toy example, but the scripts for each module are documented and quite intuitive.
 
 
 ## Authors
