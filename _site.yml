@@ -1,0 +1,23 @@
+name: "KnockoffZoom v2"
+output_dir: "."
+navbar:
+  title: "KnockoffZoom v2"
+  type: inverse
+  left:
+    - text: "Home"
+      icon: fa-home
+      href: index.html
+    - text: "UK Biobank"
+      icon: fa-dna
+      href: ukbiobank.html
+    - text: "Code"
+      icon: fa-github
+      href: https://github.com/msesia/knockoffzoom-v2
+  right:
+    - text: "Contact"
+      icon: fa-envelope-o
+      href: mailto:sesia@marshall.usc.edu
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate

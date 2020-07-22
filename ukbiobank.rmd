@@ -1,0 +1,27 @@
+---
+title: "Analysis of the UK Biobank data"
+---
+
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110810441-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-110810441-3');
+</script>
+</head> 
+
+We apply KnockoffZoom to some traits in the <a target="_blank" href="https://www.ukbiobank.ac.uk/">UK Biobank</a> data and obtain many new findings. To learn more, read the accompanying <a target="_blank" href="?">paper</a>.
+
+To produce more plots like the one below and explore our results interactively, visit: <a target="_blank" href="https://msesia.shinyapps.io/knockoffzoom-v2/">https://msesia.shinyapps.io/knockoffzoom-v2/</a>
+
+<p style="text-align:center;">
+<img src="images/annotations.png" alt="Annotated KnockoffZoom discoveries"
+	title="Annotated KnockoffZoom discoveries" width="80%" height="80%" />
+</p>
+
+<a target="_blank" href="data/ukb_discoveries.zip">Download</a> the complete list of multi-resolution *KnockoffZoom* discoveries for each trait.<br>
+<a target="_blank" href="data/ukb_stats.zip">Download</a> the complete list of *KnockoffZoom* test statistics at each resolution.

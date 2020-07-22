@@ -1,0 +1,53 @@
+---
+title: "KnockoffZoom v2"
+---
+
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110810441-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-110810441-3');
+</script>
+</head> 
+
+<style>
+p.comment {
+background-color: #DBDBDB;
+padding: 10px;
+border: 1px solid black;
+margin-left: 25px;
+border-radius: 5px;
+}
+
+</style>
+
+KnockoffZoom is a powerful and versatile statistical method for the analysis of genome-wide association data.
+
+## Overview
+
+*KnockoffZoom* localizes causal variants precisely, controlling the false discovery rate even if the samples have diverse ancestries or close familial relatedness.
+This method is equally valid for quantitative and binary phenotypes, making no assumptions about their genetic architectures. Instead, we rely on hidden Markov models of linkage disequilibrium.
+
+For more information, read the accompanying <a target="_blank" href="?">paper</a>:
+
+<p class="comment">
+<i>Controlling the false discovery rate in GWAS with diverse and related samples</i><br>
+M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br>
+bioRxiv 631390; doi: <a target="_blank" href="?">?</a>
+</p>
+
+&nbsp;
+
+<p style="text-align:center;">
+<img src="images/chicago.png" alt="KnockoffZoom discoveries"
+	title="KnockoffZoom discoveries" width="80%" height="80%" />
+</p>
+
+We partition the genome into contiguous LD blocks and test whether the trait is independent of
+the SNPs in any block, conditioning on the others. The resolution of the hypotheses is determined
+by the size and homogeneity of the LD blocks, which we choose in advance.
+To balance power and resolution, we consider multiple partitions, starting with a coarse view and successively  refining it. Some of the results obtained at different resolutions for cardiovascular disease in the UK Biobank are visualized below.
