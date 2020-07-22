@@ -1,7 +1,7 @@
 # KnockoffZoom v2
 
 A powerful and versatile statistical method for the analysis of genome-wide association data.
-This method localizes causal variants while controlling the false discovery rate, and is valid even f the samples have diverse ancestries and familial relatedness.
+This method localizes causal variants while controlling the false discovery rate, and is valid even if the samples have diverse ancestries and familial relatedness.
 
 For an earlier version restricted to homogeneous populations, see also [KnockoffZoom v1](https://github.com/msesia/knockoffzoom).
 
