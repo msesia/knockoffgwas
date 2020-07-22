@@ -10,8 +10,9 @@ STATIC_LIBS = $(addprefix lib/, ${LIBS_NAMES})
 
 # Compiler flags
 # -DWITHGPERFTOOLS -g
-# -O3
-FLAGS = -Ofast -std=c++11 \
+# -O3 
+# -Ofast
+FLAGS = -g -std=c++11 \
 -Iinclude/bgen/genfile/include \
 -Iinclude/zstd-1.1.0/src \
 -Iinclude/alglib-3.15/src \

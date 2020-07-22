@@ -1,0 +1,2 @@
+/home/groups/candes/bin/fastphase -Pp -T1 -K10 -g -H-4 -C15 -B -S1 -o/scratch/groups/candes/ukbiobank_public/data/hmm/example_chr21 /tmp/RtmpeudA5W/file193bf1753adbe.inp 
+1	-12254.785574

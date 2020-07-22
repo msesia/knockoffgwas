@@ -99,6 +99,7 @@ int main(int argc, const char * argv[]) {
     const int K = args.get_K();
     assert(K>0);
     const int compression = 10;
+    cout << "Reached 1" << endl;
     if(use_covariates) {
       // Compute kinship using covariates (principal components)
       kinship = Kinship(metadata, covariates, args.get_output_files(), compression,
@@ -108,7 +109,7 @@ int main(int argc, const char * argv[]) {
       kinship = Kinship(metadata, args.get_output_files(), compression,
                         args.get_cluster_size_min(), args.get_cluster_size_max(), K, num_threads);
     }
-
+    cout << "Reached 2" << endl;
     // Save references
     kinship.writeReferences(metadata, args.get_output_files());
   } else {

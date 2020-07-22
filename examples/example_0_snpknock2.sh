@@ -7,4 +7,4 @@
 SNPKNOCK2="../snpknock2/bin/snpknock2"
 
 # Make sure snpknock2 can be executed by printing usage information.
-./$SNPKNOCK2 --help
+$SNPKNOCK2 --help

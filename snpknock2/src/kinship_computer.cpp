@@ -31,6 +31,7 @@ KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata, int compress
 
   // K-means hierarchical clustering
   cluster(true);
+
 }
 
 KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata, int compression,
@@ -461,7 +462,7 @@ void KinshipComputer::cluster(bool separate_chrs) {
           workers[w].join();
         }
       } else {
-        cluster_worker(0, num_chrs, 0, progress);
+        cluster_worker(0, num_chrs-1, 0, progress);
       }
     } else {
       // If only one chromosome
@@ -483,7 +484,7 @@ void KinshipComputer::cluster(bool separate_chrs) {
 void KinshipComputer::cluster_worker(int chr_min, int chr_max, int wid, vector<int> &progress) {
   int n_steps = num_chrs;
 
-  // cout << "[DEBUG] in cluster_worker(" << chr_min << "," << chr_max << "," << wid << ")" << endl;
+  //cout << "[DEBUG] in cluster_worker(" << chr_min << "," << chr_max << "," << wid << ")" << endl;
 
   // Initialize progress bar (worker 0)
   if(wid==0) {
@@ -494,6 +495,7 @@ void KinshipComputer::cluster_worker(int chr_min, int chr_max, int wid, vector<i
   }
 
   bool verbose = wid==0;
+
   for(int chr=chr_min; chr<=chr_max; chr++) {
     bifurcating_kmeans(chr, assignments[chr], clusters[chr], verbose);
     // Keep track of progress (all workers)
@@ -577,6 +579,13 @@ void KinshipComputer::bifurcating_kmeans(int chr_out, vector<int> & assign_chr,
     }
   }
 
+  // // DEBUG
+  // cout << "Printing assignments" << endl;
+  // for(auto x : assign_chr) {
+  //   cout << " " << x;
+  // }
+  // cout << endl;
+ 
   // // Return list of cluster assignments in terms of single haplotypes
   // assign_chr_.resize(num_haps);
   // for(int i=0; i<num_haps/2; i++) {
