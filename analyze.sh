@@ -55,8 +55,6 @@ start_spinner " - Checking R library dependencies..."
 Rscript --vanilla "utils/check_packages.R" &>> "../"$LOG_FILE
 stop_spinner $?
 
-exit
-
 ####################
 # Run KnockoffZoom #
 ####################
