@@ -43,7 +43,7 @@ bioRxiv 631390; doi: <a target="_blank" href="?">?</a>
 &nbsp;
 
 <p style="text-align:center;">
-<img src="images/cvd_genes.pdf" alt="KnockoffZoom discoveries"
+<img src="https://msesia.github.io/knockoffzoom-v2/images/cvd_genes.pdf" alt="KnockoffZoom discoveries"
 	title="KnockoffZoom discoveries" width="80%" height="80%" />
 </p>
 
