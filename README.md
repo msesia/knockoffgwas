@@ -6,7 +6,7 @@ This method localizes causal variants while controlling the false discovery rate
 For an earlier version restricted to homogeneous populations, see also [KnockoffZoom v1](https://github.com/msesia/knockoffzoom).
 
 Accompanying paper:
-> *Controlling the false discovery rate in GWAS with diverse and related samples* <br />
+> *Controlling the false discovery rate in GWAS with population structure* <br />
 > M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti <br />
 > bioRxiv preprint
 
