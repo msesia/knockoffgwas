@@ -19,9 +19,9 @@ We apply KnockoffZoom to some traits in the <a target="_blank" href="https://www
 To produce more plots like the one below and explore our results interactively, visit: <a target="_blank" href="https://msesia.shinyapps.io/knockoffzoom-v2/">https://msesia.shinyapps.io/knockoffzoom-v2/</a>
 
 <p style="text-align:center;">
-<img src="images/annotations.png" alt="Annotated KnockoffZoom discoveries"
+<img src="images/knockoffzoom.png" alt="Annotated KnockoffZoom discoveries"
 	title="Annotated KnockoffZoom discoveries" width="80%" height="80%" />
 </p>
 
 <a target="_blank" href="data/ukb_discoveries.zip">Download</a> the complete list of multi-resolution *KnockoffZoom* discoveries for each trait.<br>
-<a target="_blank" href="data/ukb_stats.zip">Download</a> the complete list of *KnockoffZoom* test statistics at each resolution.
+<a target="_blank" href="data/ukb_stats.tar.xz">Download</a> the complete list of *KnockoffZoom* test statistics at each resolution.

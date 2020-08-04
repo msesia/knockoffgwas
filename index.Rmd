@@ -30,7 +30,7 @@ KnockoffZoom is a powerful and versatile statistical method for the analysis of 
 ## Overview
 
 *KnockoffZoom* localizes causal variants precisely, controlling the false discovery rate even if the samples have diverse ancestries or close familial relatedness.
-This method is equally valid for quantitative and binary phenotypes, making no assumptions about their genetic architectures. Instead, we rely on hidden Markov models of linkage disequilibrium.
+This method is equally valid for quantitative and binary phenotypes, making no assumptions about their genetic architectures. Instead, we rely on hidden Markov models for the distribution of haplotypes.
 
 For more information, read the accompanying <a target="_blank" href="?">paper</a>:
 
@@ -43,7 +43,7 @@ bioRxiv 631390; doi: <a target="_blank" href="?">?</a>
 &nbsp;
 
 <p style="text-align:center;">
-<img src="images/chicago.png" alt="KnockoffZoom discoveries"
+<img src="images/cvd_genes.pdf" alt="KnockoffZoom discoveries"
 	title="KnockoffZoom discoveries" width="80%" height="80%" />
 </p>
 
