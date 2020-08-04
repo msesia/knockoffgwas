@@ -34,6 +34,8 @@ This method is equally valid for quantitative and binary phenotypes, making no a
 
 For more information, read the accompanying <a target="_blank" href="?">paper</a>:
 
+For an earlier version of KnockoffZoom restricted to homogeneous populations, see also [KnockoffZoom v1](https://github.com/msesia/knockoffzoom).
+
 <p class="comment">
 <i>Controlling the false discovery rate in GWAS with population structure</i><br>
 M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br>
