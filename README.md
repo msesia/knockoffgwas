@@ -8,7 +8,8 @@ For an earlier version restricted to homogeneous populations, see also [Knockoff
 Accompanying paper:
 > *Controlling the false discovery rate in GWAS with population structure* <br />
 > M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti <br />
-> bioRxiv preprint
+> preprint at bioRxiv; doi:https://doi.org/10.1101/2020.08.04.236703
+
 
 For more information, visit: [https://msesia.github.io/knockoffzoom-v2](https://msesia.github.io/knockoffzoom-v2).
 
