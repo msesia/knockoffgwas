@@ -291,7 +291,7 @@ $(document).ready(function () {
   <a href="https://github.com/msesia/knockoffzoom-v2">
     <span class="fa fa-github"></span>
      
-    Code
+    Software
   </a>
 </li>
       </ul>
@@ -338,17 +338,18 @@ border-radius: 5px;
 }
 
 </style>
-<p>KnockoffZoom is a powerful and versatile statistical method for the analysis of genome-wide association data.</p>
+<p>KnockoffZoom v2 is a powerful and versatile statistical method for the analysis of genome-wide association data with population structure.</p>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p><em>KnockoffZoom</em> localizes causal variants precisely, controlling the false discovery rate even if the samples have diverse ancestries or close familial relatedness. This method is equally valid for quantitative and binary phenotypes, making no assumptions about their genetic architectures. Instead, we rely on hidden Markov models of linkage disequilibrium.</p>
-<p>For more information, read the accompanying <a target="_blank" href="?">paper</a>:</p>
+<p><em>KnockoffZoom</em> localizes causal variants precisely, controlling the false discovery rate even if the samples have diverse ancestries or close familial relatedness. This method is equally valid for quantitative and binary phenotypes, making no assumptions about their genetic architectures. Instead, we rely on hidden Markov models for the distribution of haplotypes.</p>
+<p>For more information, read the accompanying <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">paper</a>:</p>
 <p class="comment">
-<i>Controlling the false discovery rate in GWAS with diverse and related samples</i><br> M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br> bioRxiv 631390; doi: <a target="_blank" href="?">?</a>
+<i>Controlling the false discovery rate in GWAS with population structure</i><br> M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br> preprint at bioRxiv; <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">doi:10.1101/2020.08.04.236703</a>
 </p>
+<p>For an earlier version of KnockoffZoom restricted to homogeneous populations, see also <a href="https://github.com/msesia/knockoffzoom">KnockoffZoom v1</a>.</p>
 <p> </p>
 <p style="text-align:center;">
-<img src="images/chicago.png" alt="KnockoffZoom discoveries"
+<img src="images/cvd_genes.png" alt="KnockoffZoom discoveries"
     title="KnockoffZoom discoveries" width="80%" height="80%" />
 </p>
 <p>We partition the genome into contiguous LD blocks and test whether the trait is independent of the SNPs in any block, conditioning on the others. The resolution of the hypotheses is determined by the size and homogeneity of the LD blocks, which we choose in advance. To balance power and resolution, we consider multiple partitions, starting with a coarse view and successively refining it. Some of the results obtained at different resolutions for cardiovascular disease in the UK Biobank are visualized below.</p>

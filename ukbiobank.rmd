@@ -14,12 +14,13 @@ title: "Analysis of the UK Biobank data"
 </script>
 </head> 
 
-We apply KnockoffZoom to some traits in the <a target="_blank" href="https://www.ukbiobank.ac.uk/">UK Biobank</a> data and obtain many new findings. To learn more, read the accompanying <a target="_blank" href="?">paper</a>.
+We apply KnockoffZoom v2 to several phenotypes in the <a target="_blank" href="https://www.ukbiobank.ac.uk/">UK Biobank</a> data and obtain many new findings.<br>
+To learn more about this analysis and the method behind it, read the accompanying <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">paper</a>.
 
-To produce more plots like the one below and explore our results interactively, visit: <a target="_blank" href="https://msesia.shinyapps.io/knockoffzoom-v2/">https://msesia.shinyapps.io/knockoffzoom-v2/</a>
+To produce more plots like the one below and explore our results interactively, visit: <a target="_blank" href="https://msesia.shinyapps.io/knockoffzoom-v2/">https://msesia.shinyapps.io/knockoffzoom-v2/</a>.
 
 <p style="text-align:center;">
-<img src="https://msesia.github.io/knockoffzoom-v2/images/knockoffzoom.png" alt="Annotated KnockoffZoom discoveries"
+<img src="images/knockoffzoom.png" alt="Annotated KnockoffZoom discoveries"
 	title="Annotated KnockoffZoom discoveries" width="80%" height="80%" />
 </p>
 
