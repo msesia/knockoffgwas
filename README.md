@@ -3,15 +3,15 @@
 A powerful and versatile statistical method for the analysis of genome-wide association data.
 This method localizes causal variants while controlling the false discovery rate, and is valid even if the samples have diverse ancestries and familial relatedness.
 
-For an earlier version restricted to homogeneous populations, see also [KnockoffZoom v1](https://github.com/msesia/knockoffzoom).
-
 Accompanying paper:
 > *Controlling the false discovery rate in GWAS with population structure* <br />
 > M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti <br />
 > preprint at bioRxiv; https://doi.org/10.1101/2020.08.04.236703
 
-
 For more information, visit: [https://msesia.github.io/knockoffzoom-v2](https://msesia.github.io/knockoffzoom-v2).
+
+For an earlier version restricted to homogeneous populations, see also [KnockoffZoom v1](https://github.com/msesia/knockoffzoom).
+
 
 ## Overview
 
