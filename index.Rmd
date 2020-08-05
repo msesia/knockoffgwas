@@ -40,7 +40,7 @@ M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br>
 preprint at bioRxiv; <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">doi:10.1101/2020.08.04.236703</a>
 </p>
 
-For an earlier version of KnockoffZoom restricted to homogeneous populations, see also [KnockoffZoom v1](https://github.com/msesia/knockoffzoom).
+For an earlier version of KnockoffZoom restricted to homogeneous populations, see also [KnockoffZoom v1](https://msesia.github.io/knockoffzoom/).
 
 &nbsp;
 

@@ -17,6 +17,9 @@ navbar:
     - text: "Contact"
       icon: fa-envelope-o
       href: mailto:sesia@marshall.usc.edu
+    - text: "About me"
+      icon: fa-address-card
+      href: https://msesia.github.io
 output:
   html_document:
     theme: cosmo
