@@ -68,7 +68,7 @@ The expected results for the analysis of this toy dataset are provided in the di
 ## Large-scale applications
 
 *KnockoffZoom* is computationally efficient and we have successfully applied it to the analysis of the genetic data in the UK Biobank. For more information, visit [https://msesia.github.io/knockoffzoom-v2/ukbiobank.html](https://msesia.github.io/knockoffzoom-v2/ukbiobank.html).
-The analysis of large datasets cannot be carried out on a personal computer. The computational resources required for the analysis of the UK Biobank data are summarized in the [accompanying paper]().
+The analysis of large datasets cannot be carried out on a personal computer. The computational resources required for the analysis of the UK Biobank data are summarized in the [accompanying paper](https://doi.org/10.1101/2020.08.04.236703).
 
 The modular nature of our method allows the code contained in each of the 4 main scripts to be easily deployed on a computing cluster for large-scale applications. This task will require some additional user effort compared to the toy example, but the scripts for each module are documented and quite intuitive.
 
