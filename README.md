@@ -75,7 +75,7 @@ The modular nature of our method allows the code contained in each of the 4 main
 
 ## Authors
 
-   - [Matteo Sesia](https://msesia.github.io/) (Stanford University).
+   - [Matteo Sesia](https://msesia.github.io/) (University of Southern California).
 
 ## Contributors
 
