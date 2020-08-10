@@ -1,5 +1,7 @@
 # KnockoffZoom v2
 
+ [![Build Status](https://travis-ci.org/msesia/knockoffzoom-v2.svg?branch=master)](https://travis-ci.org/msesia/knockoffzoom-v2)
+
 A powerful and versatile statistical method for the analysis of genome-wide association data with population structure.
 This method localizes causal variants while controlling the false discovery rate, and is valid even if the samples have diverse ancestries and familial relatedness.
 
