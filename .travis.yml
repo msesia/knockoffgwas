@@ -6,6 +6,13 @@ compiler:
   - gcc
 
 # Build steps
-script: 
+install: 
   - cd snpknock2
   - make
+  - cd ..
+
+# Test
+script:
+  - cd examples
+  - ./example_0_snpknock2.sh
+  - ./example_1_generate_knockoffs.sh

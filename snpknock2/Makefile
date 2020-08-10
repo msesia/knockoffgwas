@@ -12,17 +12,19 @@ STATIC_LIBS = $(addprefix lib/, ${LIBS_NAMES})
 # -DWITHGPERFTOOLS -g
 # -O3 
 # -Ofast
-FLAGS = -g -std=c++11 \
+FLAGS = -Ofast -std=c++11 \
+-Wno-deprecated-declarations -Wno-constant-conversion -Wno-deprecated-register -Wno-shift-op-parentheses \
 -Iinclude/bgen/genfile/include \
 -Iinclude/zstd-1.1.0/src \
 -Iinclude/alglib-3.15/src \
--Llib
+-Iinclude/boost-1.55.0
 
 #-L/home/groups/candes/Software/usr/lib \
 # -lprofiler
 
 # Linker flags
-LINKS = -lpthread -lboost_iostreams -lboost_thread -lboost_filesystem -lboost_system -lz -lzstd -ldb -lsqlite3
+#LINKS = -Llib -lpthread -lboost_iostreams -lboost_thread -lboost_filesystem -lboost_system -lz -lzstd -ldb -lsqlite3
+LINKS = -Llib -lpthread -lbz2 -lboost -lz -lzstd -ldb -lsqlite3
 
 # List of objects
 OBJECTS = build/utils.o build/bgen_utils.o build/bgen_reader.o build/haps_reader.o build/generator_master.o build/main.o build/chaplotype.o build/filter_reader.o build/arguments.o build/utils_graph.o build/cross_validation.o build/haplotypes.o build/knockoffs.o build/dataset.o build/kinship_computer.o build/kinship.o build/covariates.o build/windows.o build/metadata.o build/ibd.o build/family_bp.o build/family_knockoffs.o build/plink_interface.o ${STATIC_LIBS}

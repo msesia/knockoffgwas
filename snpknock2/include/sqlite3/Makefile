@@ -4,7 +4,7 @@ CXX=gcc
 CURRENT_DIR=.
 
 # Compiler flags
-FLAGS = -O3
+FLAGS = -O3 -Wno-deprecated-declarations
 
 TARGET = libsqlite3.a
 

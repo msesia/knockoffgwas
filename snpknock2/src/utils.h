@@ -23,9 +23,6 @@
 #define BIG_POS_INT 1000000000
 #define BIG_NEG_INT -1000000000
 
-#define BOOST_PENDING_INTEGER_LOG2_HPP
-#include <boost/integer/integer_log2.hpp>
-
 #include <string>
 #include <vector>
 #include <queue>
@@ -58,6 +55,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/random.hpp>
 
+//#define BOOST_PENDING_INTEGER_LOG2_HPP
+#include <boost/pending/integer_log2.hpp>
 
 using namespace std;
 namespace bio = boost::iostreams;

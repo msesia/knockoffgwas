@@ -15,8 +15,8 @@ LIB_DIR = ${CURRENT_DIR}/../../lib
 SRC_SYSTEM = $(wildcard $(SRC_DIR)/system/src/*.cpp)
 OBJ_SYSTEM = $(patsubst $(SRC_DIR)/system/src/%.cpp,$(OBJ_DIR)/system/%.o,$(SRC_SYSTEM))
 
-SRC_THREAD = $(wildcard $(SRC_DIR)/thread/src/*.cpp)
-OBJ_THREAD = $(patsubst $(SRC_DIR)/thread/src/%.cpp,$(OBJ_DIR)/thread/%.o,$(SRC_THREAD))
+SRC_THREAD = $(wildcard $(SRC_DIR)/thread/src/pthread/*.cpp)
+OBJ_THREAD = $(patsubst $(SRC_DIR)/thread/src/pthread/%.cpp,$(OBJ_DIR)/thread/%.o,$(SRC_THREAD))
 
 SRC_FILESYSTEM = $(wildcard $(SRC_DIR)/filesystem/src/*.cpp)
 OBJ_FILESYSTEM = $(patsubst $(SRC_DIR)/filesystem/src/%.cpp,$(OBJ_DIR)/filesystem/%.o,$(SRC_FILESYSTEM))
@@ -30,8 +30,11 @@ OBJ_TIMER = $(patsubst $(SRC_DIR)/timer/src/%.cpp,$(OBJ_DIR)/timer/%.o,$(SRC_TIM
 SRC_CHRONO = $(wildcard $(SRC_DIR)/chrono/src/*.cpp)
 OBJ_CHRONO = $(patsubst $(SRC_DIR)/chrono/src/%.cpp,$(OBJ_DIR)/chrono/%.o,$(SRC_CHRONO))
 
-SRC_FILES = ${SRC_SYSTEM} ${SRC_FILESYSTEM} ${SRC_THREAD} ${SRC_DATETIME} ${SRC_TIMER} ${SRC_CHRONO}
-OBJ_FILES = ${OBJ_SYSTEM} ${OBJ_FILESYSTEM} ${OBJ_THREAD} ${OBJ_DATETIME} ${OBJ_TIMER} ${OBJ_CHRONO}
+SRC_IOSTREAMS = $(wildcard $(SRC_DIR)/iostreams/src/*.cpp)
+OBJ_IOSTREAMS = $(patsubst $(SRC_DIR)/iostreams/src/%.cpp,$(OBJ_DIR)/iostreams/%.o,$(SRC_IOSTREAMS))
+
+SRC_FILES = ${SRC_SYSTEM} ${SRC_FILESYSTEM} ${SRC_THREAD} ${SRC_DATETIME} ${SRC_TIMER} ${SRC_CHRONO} ${SRC_IOSTREAMS}
+OBJ_FILES = ${OBJ_SYSTEM} ${OBJ_FILESYSTEM} ${OBJ_THREAD} ${OBJ_DATETIME} ${OBJ_TIMER} ${OBJ_CHRONO} ${OBJ_IOSTREAMS}
 
 all : ${LIB_DIR}/${TARGET}
 
@@ -46,7 +49,7 @@ $(OBJ_DIR)/system/%.o: $(SRC_DIR)/system/src/%.cpp
 $(OBJ_DIR)/filesystem/%.o: $(SRC_DIR)/filesystem/src/%.cpp
 	${CXX} $(FLAGS) -o $@ -c $<
 
-$(OBJ_DIR)/thread/%.o: $(SRC_DIR)/thread/src/%.cpp
+$(OBJ_DIR)/thread/%.o: $(SRC_DIR)/thread/src/pthread/%.cpp
 	${CXX} $(FLAGS) -o $@ -c $<
 
 $(OBJ_DIR)/datetime/%.o: $(SRC_DIR)/datetime/src/%.cpp
@@ -58,6 +61,9 @@ $(OBJ_DIR)/timer/%.o: $(SRC_DIR)/timer/src/%.cpp
 $(OBJ_DIR)/chrono/%.o: $(SRC_DIR)/chrono/src/%.cpp
 	${CXX} $(FLAGS) -o $@ -c $<
 
+$(OBJ_DIR)/iostreams/%.o: $(SRC_DIR)/iostreams/src/%.cpp
+	${CXX} $(FLAGS) -o $@ -c $<
+
 ${LIB_DIR}/${TARGET} : $(OBJ_FILES)
 	ar rvs ${LIB_DIR}/${TARGET} $(OBJ_FILES)
 
@@ -66,5 +72,5 @@ clean :
 	@rm -f ${LIB_DIR}/${TARGET}
 
 # Create output directory
-DIRS = ${OBJ_DIR} ${OBJ_DIR}/system ${OBJ_DIR}/filesystem ${OBJ_DIR}/thread ${OBJ_DIR}/datetime ${OBJ_DIR}/timer  ${OBJ_DIR}/chrono ${LIB_DIR}
+DIRS = ${OBJ_DIR} ${OBJ_DIR}/system ${OBJ_DIR}/filesystem ${OBJ_DIR}/thread ${OBJ_DIR}/datetime ${OBJ_DIR}/timer ${OBJ_DIR}/chrono ${OBJ_DIR}/iostreams ${LIB_DIR} ${LIB_DIR}
 $(shell mkdir -p $(DIRS))

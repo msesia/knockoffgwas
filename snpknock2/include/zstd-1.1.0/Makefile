@@ -25,7 +25,7 @@ VERSION?= $(LIBVER)
 CPPFLAGS= -I${SRC_DIR} -I${SRC_DIR}/common
 CFLAGS ?= -O3
 CFLAGS += -Wall -Wextra -Wcast-qual -Wcast-align -Wshadow -Wstrict-aliasing=1 \
-          -Wswitch-enum -Wdeclaration-after-statement -Wstrict-prototypes -Wundef
+          -Wswitch-enum -Wdeclaration-after-statement -Wstrict-prototypes -Wundef -Wno-implicit-fallthrough
 FLAGS   = $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $(MOREFLAGS)
 
 

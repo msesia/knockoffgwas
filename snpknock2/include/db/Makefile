@@ -4,10 +4,12 @@ CXX=g++
 CURRENT_DIR=.
 
 # Compiler flags
-FLAGS = -O3 \
+FLAGS = -std=c++11 -O3 \
+ -Wno-deprecated-declarations \
 -I${CURRENT_DIR}/genfile/include \
 -I${CURRENT_DIR}/include \
--I${CURRENT_DIR}/../sqlite3
+-I${CURRENT_DIR}/../sqlite3 \
+-I${CURRENT_DIR}/../boost-1.55.0
 
 TARGET = libdb.a
 
