@@ -1,17 +1,17 @@
-#travis configuration for coverage testing
 language: c++
 
-# Compiler selection
+os:
+  - linux
+  - osx
+
 compiler:
   - gcc
 
-# Build steps
 install: 
   - cd snpknock2
   - make
   - cd ..
 
-# Test
 script:
   - cd examples
   - ./example_0_snpknock2.sh
