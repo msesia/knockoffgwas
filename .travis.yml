@@ -1,0 +1,11 @@
+#travis configuration for coverage testing
+language: c++
+
+# Compiler selection
+compiler:
+  - gcc
+
+# Build steps
+script: 
+  - cd snpknock2
+  - make
