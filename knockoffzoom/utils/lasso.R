@@ -30,6 +30,9 @@ out.basename   <- as.character(args[4])
 ncores <- 1
 dfmax  <- 10000
 
+# Set random seed for cross-validated lasso statistics
+set.seed(2020)
+
 ####################
 ## Load genotypes ##
 ####################
