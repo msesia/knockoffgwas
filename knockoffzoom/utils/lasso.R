@@ -13,11 +13,11 @@ suppressMessages(library(tidyverse))
 suppressMessages(library(bigsnpr))
 
 # Default arguments (for debugging)
-basename       <- "../../tmp/knockoffs_full/example_res7"
+basename       <- "../../tmp/knockoffs_full/example_res0"
 part.file     <- "../../tmp/partitions/example_chr21.txt"
 pheno.file     <- "../../data/phenotypes/phenotypes.tab"
 pheno.name     <- "y"
-out.basename   <- "../../tmp/example_res7"
+out.basename   <- "../../tmp/example_res0"
 
 # Input arguments
 args <- commandArgs(trailingOnly=TRUE)
@@ -62,19 +62,16 @@ SNP <- obj.bigSNP$map$marker.ID
 #############################
 
 ## Load list of variants and partitions
-chr.list <- unique(map$CHR)
-Variants <- lapply(chr.list, function(chr) {
-    bim.file <- sprintf("%s.bim", basename)
-    Variants.chr <- read_delim(bim.file, delim="\t", col_names=c("CHR", "SNP", "X0", "BP", "X1", "X2"), col_types=cols()) %>%
-        separate(SNP, c("SNP", "Knockoff"), fill="right") %>%
-        mutate(Knockoff = ifelse(is.na(Knockoff), FALSE, TRUE)) %>%
-        select(CHR, SNP, BP, Knockoff)
-    grp.file <- sprintf("%s_grp.txt", basename)
-    df <- read_delim(grp.file, delim=" ", col_names=c("SNP", "Group"), col_types=cols())
-    Variants.chr <- Variants.chr %>% left_join(df, by = "SNP")
-    return(Variants.chr)
-})
-Variants <- do.call("rbind", Variants)
+bim.file <- sprintf("%s.bim", basename)
+Variants <- read_delim(bim.file, delim="\t", col_names=c("CHR", "SNP", "X0", "BP", "X1", "X2"),
+                       col_types=cols(.default=col_integer(), CHR=col_character(), SNP=col_character())) %>%
+    separate(SNP, c("SNP", "Knockoff"), fill="right") %>%
+    mutate(Knockoff = ifelse(is.na(Knockoff), FALSE, TRUE)) %>%
+    select(CHR, SNP, BP, Knockoff)
+grp.file <- sprintf("%s_grp.txt", basename)
+df <- read_delim(grp.file, delim=" ", col_names=c("SNP", "Group"),
+                 col_types=cols(.default=col_integer(), SNP=col_character()))
+Variants <- Variants %>% left_join(df, by = "SNP")
 
 # Compute scaling factor for the genotypes
 cat("Computing scaling factors for all variants... ")
@@ -176,7 +173,6 @@ W.stats <- function(Z, knockoff) {
 Stats <- Lasso.res %>%
     select("CHR", "Group", "SNP", "BP", "Knockoff", "Z") %>%
     filter(Z!=0) %>%
-    left_join(Variants, by = c("CHR", "Group", "SNP", "BP", "Knockoff")) %>%
     group_by(CHR, Group) %>%
     summarize(W = W.stats(abs(Z),Knockoff),
               Lead=which.max(abs(Z)), SNP.lead=SNP[Lead], BP.lead=BP[Lead],
