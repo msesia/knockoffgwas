@@ -1,7 +1,7 @@
-name: "KnockoffZoom v2"
+name: "KnockoffGWAS"
 output_dir: "."
 navbar:
-  title: "KnockoffZoom v2"
+  title: "KnockoffGWAS"
   type: inverse
   left:
     - text: "Home"

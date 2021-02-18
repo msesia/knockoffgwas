@@ -1,5 +1,5 @@
 ---
-title: "KnockoffZoom v2"
+title: "KnockoffGWAS"
 ---
 
 <head>
@@ -25,11 +25,11 @@ border-radius: 5px;
 
 </style>
 
-KnockoffZoom v2 is a powerful and versatile statistical method for the analysis of genome-wide association data with population structure.
+KnockoffGWAS is a powerful and versatile statistical method for the analysis of genome-wide association data with population structure.
 
 ## Overview
 
-*KnockoffZoom* localizes causal variants precisely, controlling the false discovery rate even if the samples have diverse ancestries or close familial relatedness.
+*KnockoffGWAS* localizes causal variants precisely, controlling the false discovery rate even if the samples have diverse ancestries or close familial relatedness.
 This method is equally valid for quantitative and binary phenotypes, making no assumptions about their genetic architectures. Instead, we rely on hidden Markov models for the distribution of haplotypes.
 
 For more information, read the accompanying <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">paper</a>:
@@ -40,13 +40,13 @@ M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br>
 preprint at bioRxiv; <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">doi:10.1101/2020.08.04.236703</a>
 </p>
 
-For an earlier version of KnockoffZoom restricted to homogeneous populations, see also [KnockoffZoom v1](https://msesia.github.io/knockoffzoom/).
+For an earlier version of KnockoffGWAS restricted to homogeneous populations, see also [KnockoffZoom](https://msesia.github.io/knockoffzoom/).
 
 &nbsp;
 
 <p style="text-align:center;">
-<img src="images/cvd_genes.png" alt="KnockoffZoom discoveries"
-	title="KnockoffZoom discoveries" width="80%" height="80%" />
+<img src="images/cvd_genes.png" alt="KnockoffGWAS discoveries"
+	title="KnockoffGWAS discoveries" width="80%" height="80%" />
 </p>
 
 We partition the genome into contiguous LD blocks and test whether the trait is independent of

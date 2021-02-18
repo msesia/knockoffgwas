@@ -11,7 +11,7 @@
 
 
 
-<title>KnockoffZoom v2</title>
+<title>KnockoffGWAS</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,8 +22,19 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -269,7 +280,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">KnockoffZoom v2</a>
+      <a class="navbar-brand" href="index.html">KnockoffGWAS</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -319,7 +330,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">KnockoffZoom v2</h1>
+<h1 class="title toc-ignore">KnockoffGWAS</h1>
 
 </div>
 
@@ -345,19 +356,19 @@ border-radius: 5px;
 }
 
 </style>
-<p>KnockoffZoom v2 is a powerful and versatile statistical method for the analysis of genome-wide association data with population structure.</p>
+<p>KnockoffGWAS is a powerful and versatile statistical method for the analysis of genome-wide association data with population structure.</p>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p><em>KnockoffZoom</em> localizes causal variants precisely, controlling the false discovery rate even if the samples have diverse ancestries or close familial relatedness. This method is equally valid for quantitative and binary phenotypes, making no assumptions about their genetic architectures. Instead, we rely on hidden Markov models for the distribution of haplotypes.</p>
+<p><em>KnockoffGWAS</em> localizes causal variants precisely, controlling the false discovery rate even if the samples have diverse ancestries or close familial relatedness. This method is equally valid for quantitative and binary phenotypes, making no assumptions about their genetic architectures. Instead, we rely on hidden Markov models for the distribution of haplotypes.</p>
 <p>For more information, read the accompanying <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">paper</a>:</p>
 <p class="comment">
 <i>Controlling the false discovery rate in GWAS with population structure</i><br> M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br> preprint at bioRxiv; <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">doi:10.1101/2020.08.04.236703</a>
 </p>
-<p>For an earlier version of KnockoffZoom restricted to homogeneous populations, see also <a href="https://msesia.github.io/knockoffzoom/">KnockoffZoom v1</a>.</p>
+<p>For an earlier version of KnockoffGWAS restricted to homogeneous populations, see also <a href="https://msesia.github.io/knockoffzoom/">KnockoffZoom</a>.</p>
 <p> </p>
 <p style="text-align:center;">
-<img src="images/cvd_genes.png" alt="KnockoffZoom discoveries"
-    title="KnockoffZoom discoveries" width="80%" height="80%" />
+<img src="images/cvd_genes.png" alt="KnockoffGWAS discoveries"
+    title="KnockoffGWAS discoveries" width="80%" height="80%" />
 </p>
 <p>We partition the genome into contiguous LD blocks and test whether the trait is independent of the SNPs in any block, conditioning on the others. The resolution of the hypotheses is determined by the size and homogeneity of the LD blocks, which we choose in advance. To balance power and resolution, we consider multiple partitions, starting with a coarse view and successively refining it. Some of the results obtained at different resolutions for cardiovascular disease in the UK Biobank are visualized below.</p>
 </div>
@@ -371,7 +382,7 @@ border-radius: 5px;
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

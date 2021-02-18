@@ -22,8 +22,19 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -269,7 +280,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">KnockoffZoom v2</a>
+      <a class="navbar-brand" href="index.html">KnockoffGWAS</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -335,13 +346,13 @@ $(document).ready(function () {
   gtag('config', 'UA-110810441-3');
 </script>
 </head>
-<p>We apply KnockoffZoom v2 to several phenotypes in the <a target="_blank" href="https://www.ukbiobank.ac.uk/">UK Biobank</a> data and obtain many new findings.<br> To learn more about this analysis and the method behind it, read the accompanying <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">paper</a>.</p>
-<p>To produce more plots like the one below and explore our results interactively, visit: <a target="_blank" href="https://msesia.shinyapps.io/knockoffzoom-v2/">https://msesia.shinyapps.io/knockoffzoom-v2/</a>.</p>
+<p>We apply KnockoffGWAS to several phenotypes in the <a target="_blank" href="https://www.ukbiobank.ac.uk/">UK Biobank</a> data and obtain many new findings.<br> To learn more about this analysis and the method behind it, read the accompanying <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">paper</a>.</p>
+<p>To produce more plots like the one below and explore our results interactively, visit: <a target="_blank" href="https://sesia.shinyapps.io/knockoffgwas/">https://sesia.shinyapps.io/knockoffgwas/</a>.</p>
 <p style="text-align:center;">
-<img src="images/knockoffzoom.png" alt="Annotated KnockoffZoom discoveries"
-    title="Annotated KnockoffZoom discoveries" width="80%" height="80%" />
+<img src="images/knockoffzoom.png" alt="Annotated KnockoffGWAS discoveries"
+    title="Annotated KnockoffGWAS discoveries" width="80%" height="80%" />
 </p>
-<p><a target="_blank" href="data/ukb_discoveries.zip">Download</a> the complete list of multi-resolution <em>KnockoffZoom</em> discoveries for each trait.<br> <a target="_blank" href="data/ukb_stats.tar.xz">Download</a> the complete list of <em>KnockoffZoom</em> test statistics at each resolution.</p>
+<p><a target="_blank" href="data/ukb_discoveries.zip">Download</a> the complete list of multi-resolution <em>KnockoffGWAS</em> discoveries for each trait.<br> <a target="_blank" href="data/ukb_stats.tar.xz">Download</a> the complete list of <em>KnockoffGWAS</em> test statistics at each resolution.</p>
 
 
 
@@ -352,7 +363,7 @@ $(document).ready(function () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
