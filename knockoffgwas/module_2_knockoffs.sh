@@ -1,7 +1,4 @@
 #!/bin/bash
-# UK Biobank GWAS
-#
-# Class: script
 #
 # Generate knockoff negative-controls
 #

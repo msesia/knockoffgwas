@@ -3,7 +3,7 @@
 #
 # Class: script
 #
-# Run KnockoffZoom on a toy dataset
+# Run KnockoffGWAS on a toy dataset
 #
 # Authors: Matteo Sesia
 # Date:    04/24/2019
@@ -13,21 +13,21 @@
 #########
 
 # Print header
-printf "KnockoffZoom v2.0 (21 July 2020) \n"
-printf "https://bitbucket.org/msesia/knockoffzoom-2 \n"
+printf "KnockoffGWAS (21 July 2020) \n"
+printf "https://bitbucket.org/msesia/knockoffgwas \n"
 printf "(C) 2020 Matteo Sesia (Stanford University)   GNU General Public License v3 \n\n"
 
 # Setup spinner for long jobs
 source "misc/spinner.sh"
 
 # Log file
-LOG_FILE="knockoffzoom.log"
+LOG_FILE="knockoffgwas.log"
 rm -f $LOG_FILE
 touch $LOG_FILE
 echo "Log file: "$LOG_FILE
 
 # Enter the directory where the scripts are stored
-cd knockoffzoom
+cd knockoffgwas
 
 ######################
 # Check dependencies #
@@ -56,7 +56,7 @@ Rscript --vanilla "utils/check_packages.R" &>> "../"$LOG_FILE
 stop_spinner $?
 
 ####################
-# Run KnockoffZoom #
+# Run KnockoffGWAS #
 ####################
 
 printf "\nData analysis\n"

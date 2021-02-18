@@ -1,9 +1,6 @@
 #!/bin/bash
-# UK Biobank GWAS
 #
-# Class: script
-#
-# Compute the KnockoffZoom test statistics
+# Compute the KnockoffGWAS test statistics
 #
 # Authors: Matteo Sesia
 # Date:    07/21/2020

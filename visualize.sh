@@ -1,9 +1,6 @@
 #!/bin/bash
-# UK Biobank GWAS
 #
-# Class: script
-#
-# Visualize KnockoffZoom discoveries on a toy dataset
+# Visualize KnockoffGWAS discoveries on a toy dataset
 #
 # Authors: Matteo Sesia
 # Date:    04/24/2019
@@ -13,15 +10,15 @@
 #########
 
 # Print header
-printf "KnockoffZoomView v0.1 (24 Apr 2019) \n"
-printf "https://bitbucket.org/msesia/knockoffzoom \n"
+printf "KnockoffGWASView v0.1 (24 Apr 2019) \n"
+printf "https://bitbucket.org/msesia/knockoffgwas \n"
 printf "(C) 2019 Matteo Sesia, Eugene Katsevich (Stanford University)   GNU General Public License v3 \n\n"
 
 # Setup spinner for long jobs
 source "misc/spinner.sh"
 
 # Log file
-LOG_FILE="knockoffzoomview.log"
+LOG_FILE="knockoffgwasview.log"
 rm -f $LOG_FILE
 touch $LOG_FILE
 echo "Log file: "$LOG_FILE

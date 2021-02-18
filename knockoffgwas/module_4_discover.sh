@@ -1,9 +1,6 @@
 #!/bin/bash
-# UK Biobank GWAS
 #
-# Class: script
-#
-# Threshold the the KnockoffZoom test statistics with the knockoff filter
+# Threshold the the KnockoffGWAS test statistics with the knockoff filter
 # and report discoveries
 #
 # Authors: Matteo Sesia

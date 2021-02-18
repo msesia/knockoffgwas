@@ -1,7 +1,4 @@
 #!/bin/bash
-# UK Biobank GWAS
-#
-# Class: script
 #
 # Partition the variants through adjacent clustering
 #
