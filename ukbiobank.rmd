@@ -26,3 +26,17 @@ To produce more plots like the one below and explore our results interactively, 
 
 <a target="_blank" href="data/ukb_discoveries.zip">Download</a> the complete list of multi-resolution *KnockoffGWAS* discoveries for each trait.<br>
 <a target="_blank" href="data/ukb_stats.tar.xz">Download</a> the complete list of *KnockoffGWAS* test statistics at each resolution.
+
+
+## Discoveries that are invariant across populations
+
+
+The following paper applies KnockoffGWAS to the UK Biobank data to discover genetic associations that are invariant across populations with different ancestries.
+
+<p class="comment">
+<i>Searching for consistent associations with a multi-environment knockoff filter</i><br>
+S. Li, M. Sesia, Y. Romano, E. Candès, C Sabatti<br>
+preprint at arXiv; <a target="_blank" href="https://arxiv.org/abs/2106.04118">https://arxiv.org/abs/2106.04118</a>
+</p>
+
+<a target="_blank" href="data/ukb_discoveries_invariant.zip">Download</a> the complete list of multi-resolution *KnockoffGWAS* invariant discoveries for each trait.<br>
