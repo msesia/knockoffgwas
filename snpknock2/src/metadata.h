@@ -38,8 +38,8 @@ public:
   // Methods
   void clear();
   void push_back(vector<string> row);
-  vector<string> row(int idx) const;
-  int size() const;
+  vector<string> row(unsigned int idx) const;
+  unsigned int size() const;
   void filter(const vector<string>& id_list);
   Sample extract_filtered() const;
 
@@ -61,15 +61,15 @@ public:
   // Methods
   void clear();
   void push_back(vector<string> row);
-  vector<string> row(int idx) const;
-  int size() const;
+  vector<string> row(unsigned int idx) const;
+  unsigned int size() const;
   void filter(const vector<string>& id_list);
   Legend extract_filtered() const;
   void print() const;
 
   // Data
   vector<string> chr, ID;
-  vector<int> bp;
+  vector<unsigned int> bp;
   vector<double> cm;
   vector<string> A0, A1;
   vector<bool> extract;
@@ -78,49 +78,49 @@ public:
 class Metadata {
 public:
   // Constructors/destructors
-  Metadata(const DataFiles& _df, string _chr_id, int _window_size);
+  Metadata(const DataFiles& _df, string _chr_id, unsigned int _window_size);
   Metadata(const Metadata& obj);
   ~Metadata();
 
   // Methods
-  int num_snps() const;
-  int num_samples() const;
-  int num_haps() const;
+  unsigned int num_snps() const;
+  unsigned int num_samples() const;
+  unsigned int num_haps() const;
   string get_chr_id() const;
-  Metadata thin(int compression) const;
+  Metadata thin(unsigned int compression) const;
   void print_segments() const;
 
   // Data
   DataFiles df;                           // Data files
   Legend legend, legend_filter;           // Variant legend
   Sample sample, sample_filter;           // Sample information
-  vector< vector<int> > partitions;       // Variant partitions
+  vector< vector<unsigned int> > partitions;       // Variant partitions
   vector< vector<IbdSeg> > ibd_segments;  // IBD segments
-  vector< vector<int> > related_samples;  // Groups of individuals sharing at least one IBD segment
-  vector< vector<int> > related_families; // Indices of groups of haplotypes sharing at least one IBD segment
-  set<int> unrelated;                     // List of unrelated individuals
-  set<int> related;                       // List of unrelated individuals
+  vector< vector<unsigned int> > related_samples;  // Groups of individuals sharing at least one IBD segment
+  vector< vector<unsigned int> > related_families; // Indices of groups of haplotypes sharing at least one IBD segment
+  set<unsigned int> unrelated;                     // List of unrelated individuals
+  set<unsigned int> related;                       // List of unrelated individuals
   Windows windows;
 
 protected:
   string chr_id;
-  int num_snps_;
-  int num_samples_;
-  int window_size;
+  unsigned int num_snps_;
+  unsigned int num_samples_;
+  unsigned int window_size;
 
   void load_sample();
   void load_legend();
   void apply_filters();
-  void read_matrix(string filename, int num_columns, int skip, vector< vector<string> >& output) const;
+  void read_matrix(string filename, unsigned int num_columns, unsigned int skip, vector< vector<string> >& output) const;
   void load_partitions();
   void load_genetic_map();
-  int load_ibd_segments();
-  int find_variant(string _id) const;
-  int find_variant(int _bp) const;
-  int find_sample(string _id) const;
+  unsigned int load_ibd_segments();
+  unsigned int find_variant(string _id) const;
+  unsigned int find_variant(unsigned int _bp) const;
+  unsigned int find_sample(string _id) const;
   void interpolate(const vector<double>& x, const vector<double>& y,
                    const vector<double>& x_new, vector<double>& y_new) const;
-  void define_windows(int _window_size);
+  void define_windows(unsigned int _window_size);
 };
 
 

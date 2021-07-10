@@ -23,7 +23,7 @@ $SNPKNOCK2 \
   --hmm-rho 1 \
   --hmm-lambda 1e-3 \
   --windows 0 \
-  --n_threads 10 \
+  --n_threads 1 \
   --seed 2020 \
   --compute-references \
   --generate-knockoffs \

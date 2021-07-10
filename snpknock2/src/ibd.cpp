@@ -20,12 +20,12 @@ IbdCluster::IbdCluster(const set<IbdSeg> & segments_) : segments(segments_) {
 
 }
 
-void IbdCluster::get(int k, IbdSeg & placeholder) const {
+void IbdCluster::get(unsigned int k, IbdSeg & placeholder) const {
   auto it = std::next(segments.begin(), k);
   placeholder = *it;
 }
 
-int IbdCluster::size() const {
+unsigned int IbdCluster::size() const {
   return(segments.size());
 }
 
@@ -39,9 +39,9 @@ void IbdCluster::print() const {
   }
 }
 
-set<IbdSeg>::iterator IbdCluster::find_short_segments(int min_length) const {
+set<IbdSeg>::iterator IbdCluster::find_short_segments(unsigned int min_length) const {
   // Look for short segments (in BP)
-  for(int i1=0; i1<segments.size(); i1++) {
+  for(unsigned int i1=0; i1<segments.size(); i1++) {
     auto it = std::next(segments.begin(), i1);
     if((*it).bp_max - (*it).bp_min < min_length) {
       return(it);
@@ -53,8 +53,8 @@ set<IbdSeg>::iterator IbdCluster::find_short_segments(int min_length) const {
 pair<set<IbdSeg>::iterator,set<IbdSeg>::iterator> IbdCluster::find_overlapping_segments() const {
   // Look for a pairwise overlaps between IBDs in this cluster
   pair<set<IbdSeg>::iterator, set<IbdSeg>::iterator > output;
-  for(int i1=0; i1<segments.size(); i1++) {
-    for(int i2=i1+1; i2<segments.size(); i2++) {
+  for(unsigned int i1=0; i1<segments.size(); i1++) {
+    for(unsigned int i2=i1+1; i2<segments.size(); i2++) {
       auto it1 = std::next(segments.begin(), i1);
       auto it2 = std::next(segments.begin(), i2);
       if((*it1).overlaps_with(*it2)>0) {
@@ -68,8 +68,8 @@ pair<set<IbdSeg>::iterator,set<IbdSeg>::iterator> IbdCluster::find_overlapping_s
 pair<set<IbdSeg>::iterator,set<IbdSeg>::iterator> IbdCluster::find_touching_segments() const {
   // Look for a pairwise overlaps between IBDs in this cluster
   pair<set<IbdSeg>::iterator, set<IbdSeg>::iterator > output;
-  for(int i1=0; i1<segments.size(); i1++) {
-    for(int i2=i1+1; i2<segments.size(); i2++) {
+  for(unsigned int i1=0; i1<segments.size(); i1++) {
+    for(unsigned int i2=i1+1; i2<segments.size(); i2++) {
       auto it1 = std::next(segments.begin(), i1);
       auto it2 = std::next(segments.begin(), i2);
       if((*it1).touches_with(*it2)>0) {
@@ -81,11 +81,11 @@ pair<set<IbdSeg>::iterator,set<IbdSeg>::iterator> IbdCluster::find_touching_segm
 }
 
 pair<set<IbdSeg>::iterator,set<IbdSeg>::iterator>
-IbdCluster::find_close_segments(int min_dist, bool same_indices) const {
+IbdCluster::find_close_segments(unsigned int min_dist, bool same_indices) const {
   // Look for pairs of segments (involving the same haplotypes) that are close to each other
   pair<set<IbdSeg>::iterator, set<IbdSeg>::iterator > output;
-  for(int i1=0; i1<segments.size(); i1++) {
-    for(int i2=i1+1; i2<segments.size(); i2++) {
+  for(unsigned int i1=0; i1<segments.size(); i1++) {
+    for(unsigned int i2=i1+1; i2<segments.size(); i2++) {
       auto it1 = std::next(segments.begin(), i1);
       auto it2 = std::next(segments.begin(), i2);
       if((*it1).close_to(*it2, min_dist, same_indices)) {
@@ -96,15 +96,15 @@ IbdCluster::find_close_segments(int min_dist, bool same_indices) const {
   return(std::make_pair(segments.end(),segments.end()));
 }
 
-void IbdCluster::tidy() {
+void IbdCluster::tidy() { 
   const bool do_tidy_overlapping = true;
   const bool do_tidy_touching = true;
   const bool do_tidy_short = true;
   const bool do_merge_close = true;
   const bool do_expand_close = false;
 
-  const int min_length = (int) 0.1e6;
-  const int min_dist = (int) 0;
+  const unsigned int min_length = (unsigned int) 0.1e6;
+  const unsigned int min_dist = (unsigned int) 0;
 
   bool found_overlap = do_tidy_overlapping;
   bool found_contact = do_tidy_touching;
@@ -121,7 +121,7 @@ void IbdCluster::tidy() {
       if( (it.first != segments.end()) && (it.second != segments.end()) ) {
         found_overlap = true;
         tidy_overlapping (*(it.first), *(it.second), min_length);
-        // print(); // DEBUG
+        // prunsigned int(); // DEBUG
       } else {
         found_overlap = false;
       }
@@ -186,9 +186,10 @@ void IbdCluster::tidy() {
     }
 
   }
+
 }
 
-void IbdCluster::tidy_touching(const IbdSeg & s1, const IbdSeg & s2, int min_length) {
+void IbdCluster::tidy_touching(const IbdSeg & s1, const IbdSeg & s2, unsigned int min_length) {
   //assert(s1.size()>1);
   //assert(s2.size()>1);
   // Find longer segment and shorten it
@@ -238,7 +239,7 @@ void IbdCluster::tidy_touching(const IbdSeg & s1, const IbdSeg & s2, int min_len
   }
 }
 
-void IbdCluster::tidy_overlapping(const IbdSeg & s1, const IbdSeg & s2, int min_length) {
+void IbdCluster::tidy_overlapping(const IbdSeg & s1, const IbdSeg & s2, unsigned int min_length) {
   // Find shared segment
   IbdSeg shared = s1.find_shared(s2);
   // See what's left when the shared segment is removed
@@ -278,8 +279,8 @@ void IbdCluster::tidy_overlapping(const IbdSeg & s1, const IbdSeg & s2, int min_
 }
 
 void IbdCluster::expand_close(const IbdSeg & s1, const IbdSeg & s2) {
-  int j1_min, j1_max, bp1_min, bp1_max;
-  int j2_min, j2_max, bp2_min, bp2_max;
+  unsigned int j1_min, j1_max, bp1_min, bp1_max;
+  unsigned int j2_min, j2_max, bp2_min, bp2_max;
 
   if(s1.j_min <= s2.j_min) {
     // Update first segment
@@ -296,8 +297,8 @@ void IbdCluster::expand_close(const IbdSeg & s1, const IbdSeg & s2) {
     expand_close(s2, s1);
     return;
   }
-  IbdSeg new_s1(s1.indices, j1_min, j1_max, bp1_min, bp1_max);
-  IbdSeg new_s2(s2.indices, j2_min, j2_max, bp2_min, bp2_max);
+  IbdSeg new_s1(s1.indices, 1, j1_min, j1_max, bp1_min, bp1_max);
+  IbdSeg new_s2(s2.indices, 1, j2_min, j2_max, bp2_min, bp2_max);
 
   // Debug
   if(DEBUG) {
@@ -322,13 +323,13 @@ void IbdCluster::expand_close(const IbdSeg & s1, const IbdSeg & s2) {
 
 void IbdCluster::merge_close(const IbdSeg & s1, const IbdSeg & s2) {
   // Merge indices
-  set<int> new_indices = set_union(s1.indices, s2.indices);
+  set<unsigned int> new_indices = set_union(s1.indices, s2.indices);
   // Merge variant ranges, inserting gap
-  int j_min = std::min(s1.j_min, s2.j_min);
-  int bp_min = std::min(s1.bp_min, s2.bp_min);
-  int j_max = std::max(s1.j_max, s2.j_max);
-  int bp_max = std::max(s1.bp_max, s2.bp_max);
-  IbdSeg new_segment(new_indices, j_min, j_max, bp_min, bp_max);
+  unsigned int j_min = std::min(s1.j_min, s2.j_min);
+  unsigned int bp_min = std::min(s1.bp_min, s2.bp_min);
+  unsigned int j_max = std::max(s1.j_max, s2.j_max);
+  unsigned int bp_max = std::max(s1.bp_max, s2.bp_max);
+  IbdSeg new_segment(new_indices, 1, j_min, j_max, bp_min, bp_max);
 
   // Debug
   if(DEBUG) {
@@ -352,8 +353,9 @@ void IbdCluster::merge_close(const IbdSeg & s1, const IbdSeg & s2) {
 IbdSeg::IbdSeg() {
 }
 
-IbdSeg::IbdSeg(const set<int> & indices_, int j_min_, int j_max_, int bp_min_, int bp_max_) {
+IbdSeg::IbdSeg(const set<unsigned int> & indices_, unsigned int nonempty_, unsigned int j_min_, unsigned int j_max_, unsigned int bp_min_, unsigned int bp_max_) {
   indices = indices_;
+  nonempty = nonempty_;
   j_min = j_min_;
   j_max = j_max_;
   bp_min = bp_min_;
@@ -377,10 +379,14 @@ void IbdSeg::print() const {
 }
 
 IbdSeg IbdSeg::find_shared(const IbdSeg & obj) const {
-  set<int> indices_union = set_union(indices, obj.indices);
-  pair<int,int> j_range = segment_intersection(j_min, j_max, obj.j_min, obj.j_max);
-  pair<int,int> bp_range = segment_intersection(bp_min, bp_max, obj.bp_min, obj.bp_max);
-  IbdSeg intersection(indices_union, j_range.first, j_range.second, bp_range.first, bp_range.second);
+  set<unsigned int> indices_union = set_union(indices, obj.indices);
+  tuple<unsigned int,unsigned int,unsigned int> j_range = segment_intersection(j_min, j_max, obj.j_min, obj.j_max);
+  tuple<unsigned int,unsigned int,unsigned int> bp_range = segment_intersection(bp_min, bp_max, obj.bp_min, obj.bp_max);
+  unsigned int nonempty = std::get<0>(j_range);
+  if(nonempty==0) {
+    cout << "nonempty = 0" << endl;
+  }
+  IbdSeg intersection(indices_union, nonempty, std::get<1>(j_range), std::get<2>(j_range), std::get<2>(bp_range), std::get<2>(bp_range));
   return(intersection);
 }
 
@@ -390,19 +396,19 @@ vector<IbdSeg> IbdSeg::subtract(const IbdSeg & obj) const {
   // TODO: make sure this is correct in general
   if(j_min == obj.j_min) {
     // If the two segments share the left-hand side
-    output.emplace_back(indices, obj.j_max, j_max, obj.bp_max, bp_max);
+    output.emplace_back(indices, 1, obj.j_max, j_max, obj.bp_max, bp_max);
   } else if(j_max == obj.j_max) {
     // If the two segments share the right-hand side
-    output.emplace_back(indices, j_min, obj.j_min, bp_min, obj.bp_min);
+    output.emplace_back(indices, 1, j_min, obj.j_min, bp_min, obj.bp_min);
   } else {
     // If the second segment is in the middle of the first segment
-    output.emplace_back(indices, j_min, obj.j_min, bp_min, obj.bp_min);
-    output.emplace_back(indices, obj.j_max, j_max, obj.bp_max, bp_max);
+    output.emplace_back(indices, 1, j_min, obj.j_min, bp_min, obj.bp_min);
+    output.emplace_back(indices, 1, obj.j_max, j_max, obj.bp_max, bp_max);
   }
   return(output);
 }
 
-bool IbdSeg::close_to(const IbdSeg & obj, int min_dist, bool same_indices) const {
+bool IbdSeg::close_to(const IbdSeg & obj, unsigned int min_dist, bool same_indices) const {
   if(same_indices) {
     // Check whether two segments share all haplotype indices
     if(indices.size() != obj.indices.size()) return(false);
@@ -425,11 +431,11 @@ bool IbdSeg::close_to(const IbdSeg & obj, int min_dist, bool same_indices) const
   return(false);
 }
 
-int IbdSeg::length() const {
+unsigned int IbdSeg::length() const {
   return(bp_max-bp_min+1);
 }
 
-int IbdSeg::size() const {
+unsigned int IbdSeg::size() const {
   return(j_max-j_min+1);
 }
 
@@ -516,12 +522,12 @@ bool IbdSeg::operator== (const IbdSeg & obj) const {
 }
 
 IbdSeg IbdSeg::shave_from_start() const {
-  IbdSeg new_obj(indices, j_min+1, j_max, bp_min, bp_max);
+  IbdSeg new_obj(indices, 1, j_min+1, j_max, bp_min, bp_max);
   return(new_obj);
 }
 
 IbdSeg IbdSeg::shave_from_end() const {
-  IbdSeg new_obj(indices, j_min, j_max-1, bp_min, bp_max);
+  IbdSeg new_obj(indices, 1, j_min, j_max-1, bp_min, bp_max);
   return(new_obj);
 }
 

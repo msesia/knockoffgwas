@@ -17,15 +17,15 @@ public:
   // Methods
   void load_data(bool verbose, int nthreads);
   void writeHaplotypes(string filename) const;
-  int rpartition(double w, vector<int> & output);
-  int distance(const int i1, const int i2) const;
-  int distance(const int i1, const int i2, const int j_start, const int j_end) const;
+  unsigned int rpartition(double w, vector<unsigned int> & output);
+  unsigned int distance(const unsigned int i1, const unsigned int i2) const;
+  unsigned int distance(const unsigned int i1, const unsigned int i2, const unsigned int j_start, const unsigned int j_end) const;
   void compute_maf(vector<double>& maf) const;
 
   // Get/set
-  int get_num_snps() const;
-  int get_num_haps() const;
-  void push_back(const vector<int> & input);
+  unsigned int get_num_snps() const;
+  unsigned int get_num_haps() const;
+  void push_back(const vector<unsigned int> & input);
   void push_back(const vector<bool> & input);
 
   // Data
@@ -34,8 +34,8 @@ public:
   friend class KinshipComputer;
 	
 protected:	
-  int num_snps;
-  int num_haps;
+  unsigned int num_snps;
+  unsigned int num_haps;
   Metadata metadata;
 
 };

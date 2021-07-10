@@ -8,15 +8,15 @@
 class Windows {
   public:
   Windows();
-  Windows(int _num_snps);
+  Windows(unsigned int _num_snps);
   Windows(const Windows& obj);
 
-  void load(const vector<int>& start_points, const int _num_snps);
+  void load(const vector<unsigned int>& start_points, const unsigned int _num_snps);
   void print() const;
     
-  int num_snps, num_windows;
-  vector<int> start, end; 
-  vector<int> window;
+  unsigned int num_snps, num_windows;
+  vector<unsigned int> start, end; 
+  vector<unsigned int> window;
 };
 
 #endif

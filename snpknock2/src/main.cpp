@@ -16,13 +16,13 @@ lfile LOG;
 void print_header() {
   cout<<"\t" << "+----------------------+" << endl;
   cout<<"\t" << "|                      |" << endl;
-  cout<<"\t" << "|  SNPKNOCK2, v0.3     |" << endl;
-  cout<<"\t" << "|  July 21, 2020       |" << endl;
+  cout<<"\t" << "|  SNPKNOCK2, v0.31    |" << endl;
+  cout<<"\t" << "|  July 08, 2021       |" << endl;
   cout<<"\t" << "|  Matteo Sesia        |" << endl;
   cout<<"\t" << "|                      |" << endl;
   cout<<"\t" << "+----------------------+" << endl;
   cout << endl;
-  cout << "Copyright (C) 2020 Stanford University." << endl;
+  cout << "Copyright (C) 2020,2021 Matteo Sesia." << endl;
   cout << "Distributed under the GNU GPLv3 open source license." << endl << endl;
   cout << "Use --help for more information." << endl;
   cout << endl;
@@ -49,15 +49,15 @@ int main(int argc, const char * argv[]) {
   args.check();
 
   // Extract parameters
-  const int num_chrs = args.num_chrs();
-  const int num_threads = args.num_threads();
+  const unsigned int num_chrs = args.num_chrs();
+  const unsigned int num_threads = args.num_threads();
   const bool compute_kinship = args.get_compute_kinship();
   const bool generate_knockoffs = args.get_generate_knockoffs();
   const bool estimate_hmm = args.get_estimate_hmm();
   const int debug = args.get_debug();
-  const int requested_resolution = args.get_resolution();
-  const int seed = args.get_seed();
-  const int window_size = args.get_window_size();
+  const unsigned int requested_resolution = args.get_resolution();
+  const unsigned int seed = args.get_seed();
+  const unsigned int window_size = args.get_window_size();
 
   // Process metadata
   cout << endl << DELIMITER << endl;
@@ -65,7 +65,7 @@ int main(int argc, const char * argv[]) {
   cout << DELIMITER << endl;
 
   vector<Metadata> metadata;
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     string chr_id = std::to_string(chr+1);
     metadata.push_back(Metadata(args.get_filenames(chr), chr_id, window_size));
   }
@@ -96,9 +96,9 @@ int main(int argc, const char * argv[]) {
     cout << DELIMITER << endl;
 
     // Compute kinship
-    const int K = args.get_K();
+    const unsigned int K = args.get_K();
     assert(K>0);
-    const int compression = 10;
+    const unsigned int compression = 10;
     cout << "Reached 1" << endl;
     if(use_covariates) {
       // Compute kinship using covariates (principal components)
@@ -120,7 +120,7 @@ int main(int argc, const char * argv[]) {
   }
 
   if(generate_knockoffs) {
-    for(int chr=0; chr<num_chrs; chr++) {
+    for(unsigned int chr=0; chr<num_chrs; chr++) {
       cout << endl << DELIMITER << endl;
       cout << "Knockoffs for chromosome " << chr+1 << endl;
       cout << DELIMITER << endl;
@@ -156,7 +156,7 @@ int main(int argc, const char * argv[]) {
       }
 
       // Generate knockoffs at each resolution
-      for(int r=0; r<knockoffs.num_partitions(); r++) {
+      for(unsigned int r=0; r<knockoffs.num_partitions(); r++) {
         if(requested_resolution!=-1) {
           if(r!=requested_resolution) continue;
         }

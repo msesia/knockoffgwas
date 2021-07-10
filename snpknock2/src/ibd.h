@@ -15,7 +15,7 @@ class IbdSeg {
   public:
   // Constructors/destructors
   IbdSeg();
-  IbdSeg(const set<int> & indices_, int j_min_, int j_max_, int bp_min_, int bp_max_);
+  IbdSeg(const set<unsigned int> & indices_, unsigned int nonempty_, unsigned int j_min_, unsigned int j_max_, unsigned int bp_min_, unsigned int bp_max_);
   IbdSeg(const IbdSeg& obj);
 
   // Methods
@@ -23,20 +23,20 @@ class IbdSeg {
   bool operator== (const IbdSeg & obj) const;
   int overlaps_with (const IbdSeg & obj) const;
   int touches_with(const IbdSeg & obj) const;
-  bool close_to(const IbdSeg & obj, int min_dist, bool same_indices) const;
+  bool close_to(const IbdSeg & obj, unsigned int min_dist, bool same_indices) const;
   void print() const;
   IbdSeg find_shared(const IbdSeg & obj) const;
   vector<IbdSeg> subtract(const IbdSeg & obj) const;
-  int length() const;
-  int size() const;
+  unsigned int length() const;
+  unsigned int size() const;
   IbdSeg shave_from_start() const;
   IbdSeg shave_from_end() const;
   
   // Data
-  set<int> indices;
-  int j_min, j_max;
-  int bp_min, bp_max;
-
+  set<unsigned int> indices;
+  unsigned int j_min, j_max;
+  unsigned int bp_min, bp_max;
+  unsigned int nonempty;
 };
 
 class IbdCluster {
@@ -44,8 +44,8 @@ class IbdCluster {
   // Constructors/destructors
   IbdCluster(const set<IbdSeg> & segments_);
   void print() const;
-  int size() const;
-  void get(int k, IbdSeg & placeholder) const;
+  unsigned int size() const;
+  void get(unsigned int k, IbdSeg & placeholder) const;
 
   private:
   // Data
@@ -53,15 +53,15 @@ class IbdCluster {
 
   // Methods
   void tidy();
-  void tidy_overlapping(const IbdSeg & s1, const IbdSeg & s2, int min_length);
-  void tidy_touching(const IbdSeg & s1, const IbdSeg & s2, int min_length);
+  void tidy_overlapping(const IbdSeg & s1, const IbdSeg & s2, unsigned int min_length);
+  void tidy_touching(const IbdSeg & s1, const IbdSeg & s2, unsigned int min_length);
   void merge_close(const IbdSeg & s1, const IbdSeg & s2);
   void expand_close(const IbdSeg & s1, const IbdSeg & s2);
 
   pair<set<IbdSeg>::iterator,set<IbdSeg>::iterator> find_overlapping_segments() const;
   pair<set<IbdSeg>::iterator,set<IbdSeg>::iterator> find_touching_segments() const;
-  pair<set<IbdSeg>::iterator,set<IbdSeg>::iterator> find_close_segments(int min_dist, bool same_indices) const;
-  set<IbdSeg>::iterator find_short_segments(int min_length) const;
+  pair<set<IbdSeg>::iterator,set<IbdSeg>::iterator> find_close_segments(unsigned int min_dist, bool same_indices) const;
+  set<IbdSeg>::iterator find_short_segments(unsigned int min_length) const;
 
 };
 

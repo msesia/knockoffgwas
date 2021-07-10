@@ -6,15 +6,16 @@
 #include "utils.h"
 #include "metadata.h"
 
-typedef vector< vector<int> > ivector2d;
+typedef vector< vector<unsigned int> > ivector2d;
 typedef vector< ivector2d > ivector3d;
 
 class KnockoffGenerator {
 public:
   // Constructors/desctructors
   KnockoffGenerator(const vector<Metadata>& _metadata, 
-                    const ivector3d & references_local, const ivector2d & references_global, 
-                    int _num_threads, int _debug, int _seed, const string & _logfile);
+                    const ivector3d& references_local, const ivector2d& references_global,
+                    unsigned int _num_threads, unsigned int _debug, unsigned int _seed, const string& _logfile);
+
 
   // Methods
   void generate();
@@ -22,8 +23,8 @@ public:
   void tune_hmm();
   void load_hmm(vector<string> hmm_files);
   void init_hmm(double hmm_rho, double hmm_lambda);
-  void set_partition(int r);
-  int num_partitions() const;
+  void set_partition(unsigned int r);
+  unsigned int num_partitions() const;
 
   // Output
   void writeKnockoffs(const vector<string> & out_file_name) const;
@@ -37,16 +38,16 @@ private:
   // Data
   vector<Knockoffs> chromosomes;
   vector<Metadata> metadata;
-  int K;
-  int num_chrs;
-  int num_haps;
-  int num_threads;
-  int debug;
-  int seed;
+  unsigned int K;
+  unsigned int num_chrs;
+  unsigned int num_haps;
+  unsigned int num_threads;
+  unsigned int debug;
+  unsigned int seed;
 
   // Methods
-  void generate_worker(int chr, const vector<int> & i_list, boost::random::taus88 & rng, int wid, 
-                       vector<int> &progress, int progress_total);
+  void generate_worker(unsigned int chr, const vector<unsigned int> & i_list, boost::random::taus88 & rng, unsigned int wid, 
+                       vector<unsigned int> &progress, unsigned int progress_total);
   void check_sanity();
 };
 

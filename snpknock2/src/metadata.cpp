@@ -5,7 +5,7 @@
 
 #include "metadata.h"
 
-Metadata::Metadata(const DataFiles& _df, string _chr_id, int _window_size) {
+Metadata::Metadata(const DataFiles& _df, string _chr_id, unsigned int _window_size) {
   df = _df;
   chr_id = _chr_id;
   // Check format
@@ -32,14 +32,14 @@ Metadata::Metadata(const DataFiles& _df, string _chr_id, int _window_size) {
   // Load genetic maps
   load_genetic_map();
   // Load list of IBD segments
-  int segment_num = 0;
+  unsigned int segment_num = 0;
   if(df.ibd != "") {
     segment_num = load_ibd_segments();
   } else {
     unrelated.clear();
-    for(int i=0; i<num_haps(); i++) unrelated.insert(i);
-    related_samples.resize(num_samples_, vector<int>(0));
-    related_families.resize(2*num_samples_, vector<int>(0));
+    for(unsigned int i=0; i<num_haps(); i++) unrelated.insert(i);
+    related_samples.resize(num_samples_, vector<unsigned int>(0));
+    related_families.resize(2*num_samples_, vector<unsigned int>(0));
   }
 
   // Define genomic windows
@@ -83,18 +83,18 @@ Metadata::Metadata(const Metadata& obj) {
 Metadata::~Metadata() {
 }
 
-void Metadata::define_windows(int _window_size) {
+void Metadata::define_windows(unsigned int _window_size) {
   //cout << "[DEBUG] in Metadata::define_windows(" << _window_size << ")" << endl;
   window_size = _window_size;
-  vector<int> start_points = {0};
+  vector<unsigned int> start_points = {0};
   if(_window_size>0) {
     // Assume the last partition is the coarsest one
-    const vector<int>& partition = partitions.back();
-    int w = 0;
-    int bp_cum = 0;  
-    for(int j=1; j<num_snps_; j++) {
-      const int bp_current = legend_filter.bp[j];
-      const int bp_previous = legend_filter.bp[j-1];
+    const vector<unsigned int>& partition = partitions.back();
+    unsigned int w = 0;
+    unsigned int bp_cum = 0;  
+    for(unsigned int j=1; j<num_snps_; j++) {
+      const unsigned int bp_current = legend_filter.bp[j];
+      const unsigned int bp_previous = legend_filter.bp[j-1];
       bp_cum += bp_current - bp_previous;
       if((bp_cum > window_size) && (partition[j]!=partition[j-1])) {
         w++;
@@ -111,7 +111,7 @@ void Metadata::load_legend() {
   // Load variant legend file
   cout << "Loading legend from:" << endl;
   cout << "  " << df.legend << endl;
-  int line_num = 0;
+  unsigned int line_num = 0;
   string buffer;
   vector<string> tokens;
   ifstream file(df.legend);
@@ -133,7 +133,7 @@ void Metadata::load_sample() {
   cout << "Loading sample information from:" << endl;
   cout << "  " << df.sample << endl;
   sample.clear();
-  int line_num = 0;
+  unsigned int line_num = 0;
   string buffer;
   vector<string> tokens;
   ifstream file(df.sample);
@@ -146,23 +146,23 @@ void Metadata::load_sample() {
   //cout << "Sample size: " << sample.size() << endl;
 }
 
-int Metadata::load_ibd_segments() {
+unsigned int Metadata::load_ibd_segments() {
   cout << "Loading IBD segments from:" << endl;
   cout << "  " << df.ibd << endl;
 
   // Initialize list of IBD segments
-  int num_haps = 2 * num_samples_;
+  unsigned int num_haps = 2 * num_samples_;
   ibd_segments.clear();
   ibd_segments.resize(num_haps);
   // Initialize list of IBD families and clusters
-  vector< vector<int> > related_samples_tmp(num_samples_);
-  vector< vector<int> > related_families_tmp(num_haps);
+  vector< vector<unsigned int> > related_samples_tmp(num_samples_);
+  vector< vector<unsigned int> > related_families_tmp(num_haps);
   // Initialize list of unrelated individuals
   unrelated.clear();
-  for(int i=0; i<num_haps; i++) unrelated.insert(i);
+  for(unsigned int i=0; i<num_haps; i++) unrelated.insert(i);
   // Load sample information file
-  int line_num = 1;
-  int segment_num = 0;
+  unsigned int line_num = 1;
+  unsigned int segment_num = 0;
   string buffer;
   vector<string> tokens;
   ifstream file(df.ibd);
@@ -184,7 +184,7 @@ int Metadata::load_ibd_segments() {
     }
 
     // // DEBUG (print line)
-    // for(int i=0; i<tokens.size(); i++) {
+    // for(unsigned int i=0; i<tokens.size(); i++) {
     //   cout << tokens[i] << " ";
     // }
     // cout << endl;
@@ -192,11 +192,11 @@ int Metadata::load_ibd_segments() {
     // Parse segment information
     string chr = tokens[0];
     string ID1 = tokens[1];
-    int HID1 = stoi(tokens[2]);
+    unsigned int HID1 = stoi(tokens[2]);
     string ID2 = tokens[3];
-    int HID2 = stoi(tokens[4]);
-    int bp_min = stoi(tokens[5]);
-    int bp_max = stoi(tokens[6]);
+    unsigned int HID2 = stoi(tokens[4]);
+    unsigned int bp_min = stoi(tokens[5]);
+    unsigned int bp_max = stoi(tokens[6]);
 
     // Sanity checks
     if(ID1!=ID2) {
@@ -214,8 +214,8 @@ int Metadata::load_ibd_segments() {
     }
 
     // Find index of ID1 and ID2 in the sample list, then convert to haplotype indices
-    int s1 = find_sample(ID1);
-    int s2 = find_sample(ID2);
+    unsigned int s1 = find_sample(ID1);
+    unsigned int s2 = find_sample(ID2);
 
     // Skip IBD segments for individuals that we do not want to keep
     if((s1<0)|(s2<0)) {
@@ -224,12 +224,12 @@ int Metadata::load_ibd_segments() {
       continue;
     }
 
-    int i1 = 2 * s1 + HID1;
-    int i2 = 2 * s2 + HID2;
+    unsigned int i1 = 2 * s1 + HID1;
+    unsigned int i2 = 2 * s2 + HID2;
 
     // Find end points of segment
-    int j_min = find_variant(bp_min);
-    int j_max = find_variant(bp_max);
+    unsigned int j_min = find_variant(bp_min);
+    unsigned int j_max = find_variant(bp_max);
 
     // Sanity check
     if(j_min >= j_max) {
@@ -239,8 +239,8 @@ int Metadata::load_ibd_segments() {
     }
 
     // Add segment to list
-    ibd_segments[i1].push_back(IbdSeg({i1, i2}, j_min, j_max, bp_min, bp_max));
-    ibd_segments[i2].push_back(IbdSeg({i2, i1}, j_min, j_max, bp_min, bp_max));
+    ibd_segments[i1].push_back(IbdSeg({i1, i2}, 1, j_min, j_max, bp_min, bp_max));
+    ibd_segments[i2].push_back(IbdSeg({i2, i1}, 1, j_min, j_max, bp_min, bp_max));
 
     // Increment segment count
     segment_num++;
@@ -285,16 +285,16 @@ int Metadata::load_ibd_segments() {
   connected_components(related_families_tmp, related_families);
 
   // Sort list of individuals in IBD families
-  for(int f=0; f<related_samples.size(); f++) {
+  for(unsigned int f=0; f<related_samples.size(); f++) {
     std::sort(related_samples[f].begin(), related_samples[f].end());
   }
-  for(int f=0; f<related_families.size(); f++) {
+  for(unsigned int f=0; f<related_families.size(); f++) {
     std::sort(related_families[f].begin(), related_families[f].end());
   }
 
   if(DEBUG) {
     cout << "[DEBUG] IBD clusters:" << endl;
-    for(int i=0; i<related_families.size(); i++) {
+    for(unsigned int i=0; i<related_families.size(); i++) {
       if(related_families[i].size()>1) {
         cout << "\t" << i << " : ";
         for(auto it = related_families[i].begin(); it!=related_families[i].end(); ++it) {
@@ -304,7 +304,7 @@ int Metadata::load_ibd_segments() {
       }
     }
     cout << "[DEBUG] IBD related samples:" << endl;
-    for(int i=0; i<related_samples.size(); i++) {
+    for(unsigned int i=0; i<related_samples.size(); i++) {
       if(related_samples[i].size()>1) {
         cout << "\t" << i << " : ";
         for(auto it = related_samples[i].begin(); it!=related_samples[i].end(); ++it) {
@@ -322,7 +322,7 @@ int Metadata::load_ibd_segments() {
 void Metadata::print_segments() const {
     //cout << "Sample size = " << sample_filter.size() << endl;
     cout << "[DEBUG] IBD segments:" << endl;
-    for(int i=0; i<ibd_segments.size(); i++) {
+    for(unsigned int i=0; i<ibd_segments.size(); i++) {
       if(ibd_segments[i].size()>0) {
         cout << "Individual i=" << i << " (ID=" << sample_filter.ID[i/2] << "): " << endl;
         for(auto seg : ibd_segments[i]) {
@@ -334,10 +334,10 @@ void Metadata::print_segments() const {
     }
 }
 
-void Metadata::read_matrix(string filename, int num_columns, int skip, vector< vector<string> >& output) const {
+void Metadata::read_matrix(string filename, unsigned int num_columns, unsigned int skip, vector< vector<string> >& output) const {
   output.clear();
   output.resize(num_columns);
-  int line_num = 0;
+  unsigned int line_num = 0;
   string buffer;
   vector<string> tokens;
   ifstream file(filename);
@@ -347,7 +347,7 @@ void Metadata::read_matrix(string filename, int num_columns, int skip, vector< v
       throw_error_input("in Metadata::read_matrix(), tokens.size()!=num_columns on row "
                         +std::to_string(line_num));
     }
-    for(int col=0; col<num_columns; col++) {
+    for(unsigned int col=0; col<num_columns; col++) {
       if(line_num >= skip) output[col].push_back(tokens[col]);
     }
     line_num++;
@@ -408,7 +408,7 @@ void Metadata::interpolate(const vector<double>& x, const vector<double>& y,
 
    y_new.clear();
    y_new.resize(x_new.size());
-   for(int i=0; i<x_new.size(); i++) {
+   for(unsigned int i=0; i<x_new.size(); i++) {
      y_new[i] = alglib::spline1dcalc(spline,x_new[i]);
    }
 }
@@ -425,11 +425,10 @@ void Metadata::load_genetic_map() {
     vector<double> map_cm;
     string buffer;
     vector <string> tokens;
-    int line = 0;
-    line = -1;
+    unsigned int line = 0;
     ifile fd_map(df.map);
     while (getline(fd_map, buffer, '\n')) {
-      if(line>=0) {
+      if(line>=1) {
         // Divide line into columns
         boost::split(tokens, buffer, boost::is_any_of(" ,\t"));
         assert(tokens.size() == 4);
@@ -456,39 +455,39 @@ void Metadata::load_genetic_map() {
   }
 }
 
-int Metadata::find_sample(string _id) const {
+unsigned int Metadata::find_sample(string _id) const {
   // Search subject by ID
   auto it = std::find(sample_filter.ID.begin(), sample_filter.ID.end(), _id);
   if(it != sample_filter.ID.end()) {
-    int j = std::distance(sample_filter.ID.begin(), it);
+    unsigned int j = std::distance(sample_filter.ID.begin(), it);
     return(j);
   } else {
     // cerr << "Error: sample " << _id << " not found." << endl;
-    return(-1);
+    exit(-1);
   }
 }
 
-int Metadata::find_variant(string _id) const {
+unsigned int Metadata::find_variant(string _id) const {
   // Search variant by ID
   auto it = std::find(legend_filter.ID.begin(), legend_filter.ID.end(), _id);
   if(it != legend_filter.ID.end()) {
-    int j = std::distance(legend_filter.ID.begin(), it);
+    unsigned int j = std::distance(legend_filter.ID.begin(), it);
     return(j);
   } else {
     cerr << "Error: variant " << _id << " not found." << endl;
-    return(-1);
+    exit(-1);
   }
 }
 
-int Metadata::find_variant(int _bp) const {
+unsigned int Metadata::find_variant(unsigned int _bp) const {
   // Search variant by ID
   auto it = std::lower_bound(legend_filter.bp.begin(), legend_filter.bp.end(), _bp);
   if(it != legend_filter.bp.end()) {
-    int j = std::distance(legend_filter.bp.begin(), it);
+    unsigned int j = std::distance(legend_filter.bp.begin(), it);
     return(j);
   } else {
     cerr << "Error: variant at position " << _bp << " not found." << endl;
-    return(-1);
+    exit(-1);
   }
 }
 
@@ -501,23 +500,23 @@ void Metadata::load_partitions() {
   // Read file header and determine number of partitions
   getline(fd, buffer, '\n');
   boost::split(tokens, buffer, boost::is_any_of(" ,\t"));
-  int num_partitions = tokens.size()-1;
+  unsigned int num_partitions = tokens.size()-1;
   // cout << "num_partitions = " << num_partitions << endl;
   assert(num_partitions>=1);
   partitions.resize(num_partitions);
-  for(int r=0; r<num_partitions; r++) {
+  for(unsigned int r=0; r<num_partitions; r++) {
     partitions[r].resize(num_snps_,-1);
   }
 
   // Read file body
-  int line = 0;
+  unsigned int line = 0;
   while (getline(fd, buffer, '\n')) {
     boost::split(tokens, buffer, boost::is_any_of(" ,\t"));
     assert(tokens.size() == num_partitions+1);
     // Make sure that the SNP id matches that in the post-filter legend
     assert(tokens[0] == legend_filter.ID.at(line));
     // Store group assignments for each partition
-    for(int r=0; r<num_partitions; r++) {
+    for(unsigned int r=0; r<num_partitions; r++) {
       partitions[r][line] = std::stoi(tokens[1+r]);
     }
     line++;
@@ -530,10 +529,10 @@ void Metadata::load_partitions() {
   assert(line==num_snps_);
 
   // Make sure that group numbering starts from 0
-  for(int r=0; r<partitions.size(); r++) {
-    int new_group = 0;
-    int old_group = 0;
-    for(int j=0; j<num_snps_; j++) {
+  for(unsigned int r=0; r<partitions.size(); r++) {
+    unsigned int new_group = 0;
+    unsigned int old_group = 0;
+    for(unsigned int j=0; j<num_snps_; j++) {
       if(j>0) {
         if(partitions[r][j]!=old_group) new_group++;
       }
@@ -544,15 +543,15 @@ void Metadata::load_partitions() {
  //cout << "Loaded " << partitions.size() << " partitions for " << partitions[0].size() << " variants." << endl;
 }
 
-int Metadata::num_samples() const {
+unsigned int Metadata::num_samples() const {
   return(num_samples_);
 }
 
-int Metadata::num_haps() const {
+unsigned int Metadata::num_haps() const {
   return(2*num_samples_);
 }
 
-int Metadata::num_snps() const {
+unsigned int Metadata::num_snps() const {
   return(num_snps_);
 }
 
@@ -560,7 +559,7 @@ string Metadata::get_chr_id() const {
   return(chr_id);
 }
 
-Metadata Metadata::thin(int compression) const {
+Metadata Metadata::thin(unsigned int compression) const {
   assert(compression>=1);
 
   // Clone this object
@@ -568,7 +567,7 @@ Metadata Metadata::thin(int compression) const {
 
   // Thin out the SNPs in cloned object
   vector<string> new_snp_ids;
-  for(int j=0; j<num_snps_; j++) {
+  for(unsigned int j=0; j<num_snps_; j++) {
     if(j % compression == 0) {
       new_snp_ids.push_back(legend_filter.ID[j]);
     }
@@ -611,7 +610,7 @@ void Sample::push_back(vector<string> row_) {
   keep.push_back(true);
 }
 
-vector<string> Sample::row(int idx) const {
+vector<string> Sample::row(unsigned int idx) const {
   vector<string> output;
   output.push_back(ID.at(idx));
   output.push_back(famID.at(idx));
@@ -620,22 +619,22 @@ vector<string> Sample::row(int idx) const {
   return(output);
 }
 
-int Sample::size() const {
+unsigned int Sample::size() const {
   return(ID.size());
 }
 
 void Sample::filter(const vector<string>& id_list) {
-  vector<int> v;
+  vector<unsigned int> v;
   match_indices(ID, id_list, v);
   std::fill(keep.begin(),keep.end(),false);
-  for(int i=0; i<v.size(); i++) {
+  for(unsigned int i=0; i<v.size(); i++) {
     keep[v[i]] = true;
   }
 }
 
 Sample Sample::extract_filtered() const {
   Sample new_sample;
-  for(int j=0; j<size(); j++) {
+  for(unsigned int j=0; j<size(); j++) {
     if(keep[j]) {
       new_sample.push_back(row(j));
     }
@@ -701,7 +700,7 @@ void Legend::push_back(vector<string> row_) {
   }
 }
 
-vector<string> Legend::row(int idx) const {
+vector<string> Legend::row(unsigned int idx) const {
   vector<string> output;
   output.push_back(chr.at(idx));
   output.push_back(ID.at(idx));
@@ -712,25 +711,25 @@ vector<string> Legend::row(int idx) const {
   return(output);
 }
 
-int Legend::size() const {
+unsigned int Legend::size() const {
   return ID.size();
 }
 
 void Legend::filter(const vector<string>& id_list) {
   // new code
-  vector<int> v;
+  vector<unsigned int> v;
   match_indices(ID, id_list, v);
   std::fill(extract.begin(),extract.end(),false);
-  for(int i=0; i<v.size(); i++) {
+  for(unsigned int i=0; i<v.size(); i++) {
     extract[v[i]] = true;
   }
 
-  // int extracted = 0;
+  // unsigned int extracted = 0;
   // std::fill(extract.begin(),extract.end(),false);
   // for(auto snp_it = id_list.begin(); snp_it != id_list.end(); ++snp_it) {
   //    auto found_it = std::find(ID.begin(), ID.end(), *snp_it);
   //    if (found_it != std::end(ID)) {
-  //      int found_idx = std::distance(ID.begin(), found_it);
+  //      unsigned int found_idx = std::distance(ID.begin(), found_it);
   //      extract[found_idx] = true;
   //      extracted++;
   //    }
@@ -740,7 +739,7 @@ void Legend::filter(const vector<string>& id_list) {
 
 Legend Legend::extract_filtered() const {
   Legend new_legend;
-  for(int j=0; j<size(); j++) {
+  for(unsigned int j=0; j<size(); j++) {
     if(extract[j]) {
       new_legend.push_back(row(j));
     }
@@ -749,8 +748,8 @@ Legend Legend::extract_filtered() const {
 }
 
 void Legend::print() const {
-  cout << "Printing legend (size " << size() << ")" << endl;
-  for(int j=0; j<std::min(10,size()); j++) {
+  cout << "Prunsigned inting legend (size " << size() << ")" << endl;
+  for(unsigned int j=0; j<std::min((unsigned int)10,size()); j++) {
     cout << ID[j] << " " << bp[j] << " " << cm[j] << endl;
   }
 }

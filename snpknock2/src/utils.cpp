@@ -59,10 +59,10 @@ namespace putils {
     if (sum != 0.0) for (int i = 0 ; i < v.size() ; i++) v[i] /= sum;
   }
 
-  int sample(vector< double > & v, double sum) {
+  unsigned int sample(vector< double > & v, double sum) {
     double csum = v[0];
     double u = getRandom() * sum;
-    for (int i = 0; i < v.size() - 1; ++i) {
+    for (unsigned int i = 0; i < v.size() - 1; ++i) {
       if ( u < csum ) return i;
       csum += v[i+1];
     }
@@ -91,10 +91,10 @@ namespace putils {
 /*                  UTILS ALGORITHM                   */
 /******************************************************/
 namespace autils {
-  int max(vector < double > & v) {
+  unsigned int max(vector < double > & v) {
     double max = -1e300;
-    int index_max = 0;
-    for (int i = 0 ; i < v.size() ; i ++)
+    unsigned int index_max = 0;
+    for (unsigned int i = 0 ; i < v.size() ; i ++)
       if (v[i] > max) {
         max = v[i];
         index_max = i;
@@ -583,8 +583,8 @@ void lfile::error(string s) {
 // Matteo's utils //
 ////////////////////
 
-int count_lines(string filename) {
-  int num_lines = 0;
+unsigned int count_lines(string filename) {
+  unsigned int num_lines = 0;
   string line;
   ifstream file(filename);
   while (std::getline(file, line)) num_lines++;
@@ -592,31 +592,31 @@ int count_lines(string filename) {
   return(num_lines);
 }
 
-void match_indices(const vector<string>& v1, const vector<string>& v2_, vector<int>& v3) {
+void match_indices(const vector<string>& v1, const vector<string>& v2_, vector<unsigned int>& v3) {
   // Returns indices of v1 elements that match with at least one element in v2
   vector<string> v2(v2_);
   std::sort(v2.begin(), v2.end());
   v3.clear();
   v3.reserve(v2.size());
-  for (int i=0; i<v1.size(); i++) {
+  for (unsigned int i=0; i<v1.size(); i++) {
     if (std::binary_search(v2.begin(), v2.end(), v1[i])) v3.push_back(i);
   }
 }
 
-void right_join(const vector<string>& v1, const vector<string>& v2_, vector<int>& v3) {
+void right_join(const vector<string>& v1, const vector<string>& v2_, vector<unsigned int>& v3) {
   // For each value in v1, return the index of the matching v2 element
   vector<string> v2(v2_);
   std::sort(v2.begin(), v2.end());
-  vector<int> indices(v2.size());
+  vector<unsigned int> indices(v2.size());
   arg_sort(v2_, indices);
   v3.clear();
   v3.resize(v1.size());
-  for (int i=0; i<v1.size(); i++) {
+  for (unsigned int i=0; i<v1.size(); i++) {
     auto lower = std::lower_bound(v2.begin(), v2.end(), v1[i]);
     // check that value has been found
     const bool found = lower != v2.end() && *lower == v1[i];
     if(found) {
-      int j = (int) std::distance(v2.begin(), lower);
+      unsigned int j = (unsigned int) std::distance(v2.begin(), lower);
       v3[i] = indices[j];
     } else {
       v3[i] = -1;
@@ -624,17 +624,17 @@ void right_join(const vector<string>& v1, const vector<string>& v2_, vector<int>
   }
   // // DEBUG
   // cout << "[DEBUG]" << endl;
-  // for (int i=0; i<10; i++) {
+  // for (unsigned int i=0; i<10; i++) {
   //   cout << "v1[" << i << "]: " << v1[i] << "\t";
   //   cout << "v1[" << v3[i] << "]: " << v2_[v3[i]] << endl;
   // }
 }
 
-void arg_sort(const vector<string>& v, vector<int>& out) {
+void arg_sort(const vector<string>& v, vector<unsigned int>& out) {
     // Vector to store element with respective present index
-    vector< pair<string,int> > vp;
+    vector< pair<string,unsigned int> > vp;
     // Insert element in pair vector to keep track of previous indexes
-    for (int i = 0; i < v.size(); i++) {
+    for (unsigned int i = 0; i < v.size(); i++) {
       vp.push_back(make_pair(v[i], i));
     }
     // Sort pair vector
@@ -642,52 +642,55 @@ void arg_sort(const vector<string>& v, vector<int>& out) {
     // Return indices
     out.clear();
     out.resize(v.size());
-    for (int i = 0; i < v.size(); i++) {
+    for (unsigned int i = 0; i < v.size(); i++) {
       out[i] = vp[i].second;
     }
 }
 
-set<int> set_intersection(const set<int> & s1, const set<int> & s2) {
-  vector<int> v(std::min(s1.size(),s2.size()));
+set<unsigned int> set_intersection(const set<unsigned int> & s1, const set<unsigned int> & s2) {
+  vector<unsigned int> v(std::min(s1.size(),s2.size()));
   auto it = std::set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(), v.begin());
   v.resize(it-v.begin());
-  set<int> output;
+  set<unsigned int> output;
   for(auto i : v) output.insert(i);
   return(output);
 }
 
-set<int> set_union(const set<int> & s1, const set<int> & s2) {
-  vector<int> v(s1.size()+s2.size());
+set<unsigned int> set_union(const set<unsigned int> & s1, const set<unsigned int> & s2) {
+  vector<unsigned int> v(s1.size()+s2.size());
   auto it = std::set_union(s1.begin(), s1.end(), s2.begin(), s2.end(), v.begin());
   v.resize(it-v.begin());
-  set<int> output;
+  set<unsigned int> output;
   for(auto i : v) output.insert(i);
   return(output);
 }
 
-pair<int,int> segment_intersection(int j1_min, int j1_max, int j2_min, int j2_max) {
+std::tuple<unsigned int,unsigned int,unsigned int> segment_intersection(unsigned int j1_min, unsigned int j1_max, unsigned int j2_min, unsigned int j2_max) {
   // Make sure the first segment has the left-most start
   if(j1_min > j2_min) {
-    int j1_min_tmp = j1_min;
+    unsigned int j1_min_tmp = j1_min;
     j1_min = j2_min;
     j2_min = j1_min_tmp;
-    int j1_max_tmp = j1_max;
+    unsigned int j1_max_tmp = j1_max;
     j1_max = j2_max;
     j2_max = j1_max_tmp;
   }
-  int j_min, j_max;
+  unsigned int j_min, j_max;
+  unsigned int overlap;
   // Check whether the two segments overlap
   if(j1_max>=j2_min) {
+    overlap = 1;
     j_min = j2_min;
     j_max = std::min(j1_max, j2_max);
   } else {
-    j_min = -1;
-    j_max = -1;
+    overlap = 0;
+    j_min = 0;
+    j_max = 0;
   }
-  return(std::make_pair(j_min, j_max));
+  return(std::make_tuple(overlap,j_min, j_max));
 }
 
-int weighted_choice(const std::vector<double> & weights, boost::random::taus88 & rng) {
+unsigned int weighted_choice(const std::vector<double> & weights, boost::random::taus88 & rng) {
   double weights_sum = accumulate(weights.begin(),weights.end(),0.0);
   double R = runif(rng) * weights_sum;
   for(unsigned int i=0; i<weights.size(); i++) {

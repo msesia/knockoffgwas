@@ -5,12 +5,12 @@
 
 using namespace boost;
 
-void connected_components(const vector< vector<int> > & input, vector< vector<int> > & output) {
+void connected_components(const vector< vector<unsigned int> > & input, vector< vector<unsigned int> > & output) {
   typedef adjacency_list <vecS, vecS, undirectedS> Graph;
   typedef graph_traits<Graph>::vertex_descriptor Vertex;
   typedef graph_traits<Graph>::vertices_size_type VertexIndex;
 
-  const int VERTEX_COUNT = input.size();
+  const unsigned int VERTEX_COUNT = input.size();
   Graph graph(VERTEX_COUNT);
 
   std::vector<VertexIndex> rank(num_vertices(graph));
@@ -27,10 +27,10 @@ void connected_components(const vector< vector<int> > & input, vector< vector<in
   graph_traits<Graph>::edge_descriptor edge;
   bool flag;
 
-  for(int i=0; i<input.size(); i++) {
+  for(unsigned int i=0; i<input.size(); i++) {
     if(input[i].size()>0) {
       for(auto it = input[i].begin(); it!=input[i].end(); ++it) {
-        int j = *it;
+        unsigned int j = *it;
         if(i<=j) {
           boost::tie(edge, flag) = add_edge(i, j, graph);
           ds.union_set(i,j);
@@ -52,7 +52,7 @@ void connected_components(const vector< vector<int> > & input, vector< vector<in
 
   // Iterate through the component indices
   BOOST_FOREACH(VertexIndex current_index, components) {
-    int component_size = 0;
+    unsigned int component_size = 0;
     BOOST_FOREACH(VertexIndex child_index, components[current_index]) {
       component_size++;
     }

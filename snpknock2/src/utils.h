@@ -73,7 +73,7 @@ namespace putils {
   int getRandom(int);
   long getSeed();
   void normalise(vector < double > & v);
-  int sample(vector< double > & v, double sum);
+  unsigned int sample(vector< double > & v, double sum);
   double entropy(vector < double > & v);
   double KLdistance(vector < double > & P, vector < double > & Q);
 };
@@ -82,7 +82,7 @@ namespace putils {
 /*                  UTILS ALGORITHM                   */
 /******************************************************/
 namespace autils {
-  int max(vector < double > & v);
+  unsigned int max(vector < double > & v);
   int max(vector < int > & v);
   void findUniqueSet(vector < bool > & B, vector < int > & U);
   void decompose(int min, vector < vector < int > > & B, vector < vector < vector < int > > > & BB);
@@ -205,16 +205,16 @@ public:
 // Matteo's utils //
 ////////////////////
 
-int count_lines(string filename);
-void match_indices(const vector<string>& v1, const vector<string>& v2_, vector<int>& v3);
-void right_join(const vector<string>& v1, const vector<string>& v2_, vector<int>& v3);
-void arg_sort(const vector<string>& v, vector<int>& out);
-set<int> set_intersection(const set<int> & s1, const set<int> & s2);
-set<int> set_union(const set<int> & s1, const set<int> & s2);
-pair<int,int> segment_intersection(int j1_min, int j1_max, int j2_min, int j2_max);
+unsigned int count_lines(string filename);
+void match_indices(const vector<string>& v1, const vector<string>& v2_, vector<unsigned int>& v3);
+void right_join(const vector<string>& v1, const vector<string>& v2_, vector<unsigned int>& v3);
+void arg_sort(const vector<string>& v, vector<unsigned int>& out);
+set<unsigned int> set_intersection(const set<unsigned int> & s1, const set<unsigned int> & s2);
+set<unsigned int> set_union(const set<unsigned int> & s1, const set<unsigned int> & s2);
+tuple<unsigned int,unsigned int,unsigned int> segment_intersection(unsigned int j1_min, unsigned int j1_max, unsigned int j2_min, unsigned int j2_max);
 
 const boost::random::uniform_real_distribution<> runif;
-int weighted_choice(const std::vector<double> & weights, boost::random::taus88 & rng);
+unsigned int weighted_choice(const std::vector<double> & weights, boost::random::taus88 & rng);
 
 void throw_error_bug(const string message);
 void throw_error_input(const string message);

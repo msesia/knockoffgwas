@@ -11,10 +11,10 @@ class Dataset {
 public:
   // Constructors/desctructors
   Dataset();
-  Dataset(const vector<Metadata>& _metadata, int _num_threads, int _thinning);
+  Dataset(const vector<Metadata>& _metadata, unsigned int _num_threads, unsigned int _thinning);
 
   // Methods
-  int num_chrs() const;
+  unsigned int num_chrs() const;
 
   friend class KinshipComputer;
 
@@ -22,14 +22,14 @@ private:
   // Data
   vector<Haplotypes> chromosomes;
   vector<Metadata> metadata;
-  int num_haps;
-  int num_chrs_;
-  int num_threads;
+  unsigned int num_haps;
+  unsigned int num_chrs_;
+  unsigned int num_threads;
 
   // Methods
-  void load_worker(int chr_min, int chr_max, int wid, vector<int> &progress);
+  void load_worker(unsigned int chr_min, unsigned int chr_max, unsigned int wid, vector<unsigned int> &progress);
   void check_sanity() const;
-  int count_lines(string filename) const;
+  unsigned int count_lines(string filename) const;
 
 };
 

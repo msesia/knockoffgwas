@@ -37,17 +37,17 @@ void Covariates::mask_by_family(const Metadata & metadata) {
 
   vector< vector<double> > Z_masked = Z;
 
-  for(int i=0; i<Z.size(); i++) {
+  for(unsigned int i=0; i<Z.size(); i++) {
     if(DEBUG) cout << "[DEBUG] i = " << i << ": ";
-    const int fam_size = metadata.related_samples[i].size();
+    const unsigned int fam_size = metadata.related_samples[i].size();
     vector<double> z_tmp = Z[i];
-    for(int k=0; k<K; k++) {
+    for(unsigned int k=0; k<K; k++) {
       Z[i][k] /= (double) (fam_size+1);
     }
-    for(int s=0; s<fam_size; s++) {
-      int j = metadata.related_samples[i][s];
+    for(unsigned int s=0; s<fam_size; s++) {
+      unsigned int j = metadata.related_samples[i][s];
       if(DEBUG) cout << j << " ";
-      for(int k=0; k<K; k++) {
+      for(unsigned int k=0; k<K; k++) {
         z_tmp[k] += Z[j][k] / (double) (fam_size+1);
       }
     }
@@ -61,13 +61,13 @@ void Covariates::mask_by_family(const Metadata & metadata) {
 void Covariates::filter(const Metadata & metadata, Sample & sample_raw, vector< vector<double> > & Z_raw) {
   //cout << "[DEBUG] Filtering Z observations" << endl;
 
-  vector<int> idx_match;
+  vector<unsigned int> idx_match;
   right_join(metadata.sample_filter.ID, sample_raw.ID, idx_match);
 
   sample.clear();
   Z.clear();
-  for(int i=0; i<idx_match.size(); i++) {
-    int j = idx_match[i];    
+  for(unsigned int i=0; i<idx_match.size(); i++) {
+    unsigned int j = idx_match[i];    
     sample.push_back(sample_raw.row(j));
     Z.push_back(Z_raw[j]);
   }
@@ -79,7 +79,7 @@ void Covariates::filter(const Metadata & metadata, Sample & sample_raw, vector< 
       cout << "Error in Z file: sample IDs do not match data IDs" << endl;
       exit(1);
   }
-  for(int i=0; i<sample.size(); i++) {
+  for(unsigned int i=0; i<sample.size(); i++) {
     if(sample.ID[i] != metadata.sample_filter.ID[i]) {
       cout << "Error in Z file: sample IDs do not match data IDs" << endl;
       cout << "i " << i << " : " << sample.ID[i] << " " << metadata.sample_filter.ID[i] << endl;
@@ -90,8 +90,8 @@ void Covariates::filter(const Metadata & metadata, Sample & sample_raw, vector< 
 
 void Covariates::print() const {
   cout << "Printing covariates:" << endl;
-  for(int i=0; i<Z.size(); i++) {
-    for(int k=0; k<Z[i].size(); k++) {
+  for(unsigned int i=0; i<Z.size(); i++) {
+    for(unsigned int k=0; k<Z[i].size(); k++) {
       cout << " " << Z[i][k];
     }
     cout << endl;
@@ -99,15 +99,15 @@ void Covariates::print() const {
   cout << endl;
 }
 
-void load_data(const string & filename, int K_max, Sample & sample, vector< vector<double> > & Z) {
+void load_data(const string & filename, unsigned int K_max, Sample & sample, vector< vector<double> > & Z) {
   // Load genetic principal components
   cout << "Loading genetic principal components from " << filename << endl;
-  int K = 0;
+  unsigned int K = 0;
   Z.clear();
   vector<double> pc_means;
   vector<double> pc_counts;
   vector<string> sample_row(4, "0");
-  int line_num = 0;
+  unsigned int line_num = 0;
   string buffer;
   std::vector<string> tokens;
   ifstream file(filename);
@@ -128,7 +128,7 @@ void load_data(const string & filename, int K_max, Sample & sample, vector< vect
         exit(1);
       }
       vector<double> pc_row(K);
-      for(int k=0; k<K; k++) {
+      for(unsigned int k=0; k<K; k++) {
         if(tokens[2+k]=="NA") {
           // Impute missing value
           pc_row[k] = pc_means[k];          

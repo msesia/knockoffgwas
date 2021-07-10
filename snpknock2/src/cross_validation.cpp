@@ -3,9 +3,9 @@
 
 #include "cross_validation.h"
 
-CrossVal::CrossVal(const vector <chaplotype> & _H, const vector< vector<int> > & _ref,
+CrossVal::CrossVal(const vector <chaplotype> & _H, const vector< vector<unsigned int> > & _ref,
                    const vector< vector<double> > & _alpha, const vector <double> & _b,
-                   const vector <double> & _phys_dist, int _seed) :
+                   const vector <double> & _phys_dist, unsigned int _seed) :
   H(_H), ref(_ref), alpha(_alpha), b(_b), phys_dist(_phys_dist) {
 
   num_haps = H.size();
@@ -14,14 +14,14 @@ CrossVal::CrossVal(const vector <chaplotype> & _H, const vector< vector<int> > &
   seed = _seed;
 }
 
-pair<double,double> CrossVal::fit(int num_threads) {
+pair<double,double> CrossVal::fit(unsigned int num_threads) {
   // Parameters
-  int num_rep = std::min(1000,num_haps);
-  int num_it = 3;
-  int num_masks = 10;
-  int m_block_number = 5;
-  int m_block_length = 100;
-  int grid_size = 10;
+  unsigned int num_rep = std::min((unsigned int)1000,num_haps);
+  unsigned int num_it = 3;
+  unsigned int num_masks = 10;
+  unsigned int m_block_number = 5;
+  unsigned int m_block_length = 100;
+  unsigned int grid_size = 10;
   bool show_progress = true;
 
   vector<double> rho_grid, lambda_grid;
@@ -37,10 +37,10 @@ pair<double,double> CrossVal::fit(int num_threads) {
 
   // Initialize masks
   vector< vector<bool> > mask;
-  vector< vector< vector<int> > > masked_blocks;
-  for(int idx_mask=0; idx_mask<num_masks; idx_mask++) {
+  vector< vector< vector<unsigned int> > > masked_blocks;
+  for(unsigned int idx_mask=0; idx_mask<num_masks; idx_mask++) {
     vector<bool> one_mask;
-    vector< vector<int> > one_masked_blocks;
+    vector< vector<unsigned int> > one_masked_blocks;
     double q_start = (double)(m_block_number)/(double)(num_snps);
     double q_stop = 1.0/(double)m_block_length;
     init_mask(one_mask, one_masked_blocks, q_start, q_stop, rng);
@@ -49,12 +49,12 @@ pair<double,double> CrossVal::fit(int num_threads) {
   }
 
   // Initialize progress bar
-  int progress_nsteps = 100;
-  int progress_period = std::max(1, (int)(num_it*num_masks*grid_size/progress_nsteps));
-  int progress_step = 0;
+  unsigned int progress_nsteps = 100;
+  unsigned int progress_period = std::max((unsigned int)1, (unsigned int)(num_it*num_masks*grid_size/progress_nsteps));
+  unsigned int progress_step = 0;
   if(show_progress) {
     cout << "|" << flush;
-    for(int s=0; s<progress_nsteps; s++) cout << ".";
+    for(unsigned int s=0; s<progress_nsteps; s++) cout << ".";
     cout << "|" << endl;
     cout << "|" << flush;
   }
@@ -64,7 +64,7 @@ pair<double,double> CrossVal::fit(int num_threads) {
     cout << setw(6) << "Iter" << setw(12) << "Error" << setw(12) << "Rho" << setw(12) << "Lambda" << endl;
   }
 
-  for(int it=0; it<num_it; it++) {
+  for(unsigned int it=0; it<num_it; it++) {
     string optimizing;
     if(it%2==0) optimizing="rho";
     else optimizing="lambda";
@@ -73,8 +73,8 @@ pair<double,double> CrossVal::fit(int num_threads) {
     vector<double> cv_sd(grid_size,0);
     vector<double> cv_var(grid_size,0);
 
-    for(int idx_mask=0; idx_mask<num_masks; idx_mask++) {
-      for(int idx=0; idx<grid_size; idx++) {
+    for(unsigned int idx_mask=0; idx_mask<num_masks; idx_mask++) {
+      for(unsigned int idx=0; idx<grid_size; idx++) {
 
         vector <double> b_masked;
         vector <double> mut_rates;
@@ -101,18 +101,18 @@ pair<double,double> CrossVal::fit(int num_threads) {
         progress_step++;
       }
     }
-    for(int idx=0; idx<grid_size; idx++) {
+    for(unsigned int idx=0; idx<grid_size; idx++) {
       cv_sd[idx] = std::sqrt(cv_var[idx]);
     }
 
     // Find 1-SD best parameters
-    int new_idx_best = min_1sd(cv_mean, cv_sd, true);
+    unsigned int new_idx_best = min_1sd(cv_mean, cv_sd, true);
 
     // Find range of promising parameters
-    std::pair<int, int> new_range = range_1sd(cv_mean, cv_sd);
+    std::pair<unsigned int, unsigned int> new_range = range_1sd(cv_mean, cv_sd);
 
     if(!show_progress) {
-      for(int idx=0; idx<grid_size; idx++) {
+      for(unsigned int idx=0; idx<grid_size; idx++) {
         if(optimizing=="rho") {
           cout << "Parameters (" << setw(10) << setprecision(4) << rho_grid[idx];
           cout << ", " << setw(10) << setprecision(4) << lambda_best << ")";
@@ -148,7 +148,7 @@ pair<double,double> CrossVal::fit(int num_threads) {
 
   // Finalize progress bar
   if(show_progress) {
-    for(int s=progress_step; s<progress_nsteps; s++) {
+    for(unsigned int s=progress_step; s<progress_nsteps; s++) {
       cout << "=" << flush;
     }
     cout << "|" << endl;
@@ -161,26 +161,26 @@ pair<double,double> CrossVal::fit(int num_threads) {
 }
 
 void CrossVal::CV_errors(vector<double> & errors,
-                         const vector<bool> & mask, const vector< vector<int> > & masked_blocks,
+                         const vector<bool> & mask, const vector< vector<unsigned int> > & masked_blocks,
                          const vector <double> & b_masked, const vector <double> & mut_rates,
-                         int num_threads, boost::random::taus88 & rng) const {
+                         unsigned int num_threads, boost::random::taus88 & rng) const {
 
-  int num_rep = errors.size();
+  unsigned int num_rep = errors.size();
 
   // Randomly assign individuals to workers
-  vector<int> i_list_full(num_haps);
-  for(int i=0; i<num_haps; i++) i_list_full[i] = i;
+  vector<unsigned int> i_list_full(num_haps);
+  for(unsigned int i=0; i<num_haps; i++) i_list_full[i] = i;
   std::random_shuffle(i_list_full.begin(), i_list_full.end());
 
   vector< vector<double> > errors_w(num_threads);
-  vector< vector<int> > i_w;
-  for(int w=0; w<num_threads; w++ ) {
-    int i_start = w*num_rep/num_threads;
-    int i_end = (w+1)*num_rep/num_threads;
+  vector< vector<unsigned int> > i_w;
+  for(unsigned int w=0; w<num_threads; w++ ) {
+    unsigned int i_start = w*num_rep/num_threads;
+    unsigned int i_end = (w+1)*num_rep/num_threads;
     if(w==(num_threads-1)) i_end = num_rep;
-    int job_size = i_end-i_start;
-    vector<int> vec(job_size, 0);
-    for(int i=i_start; i<i_end; i++) vec[i-i_start] = i_list_full[i];
+    unsigned int job_size = i_end-i_start;
+    vector<unsigned int> vec(job_size, 0);
+    for(unsigned int i=i_start; i<i_end; i++) vec[i-i_start] = i_list_full[i];
     i_w.push_back(vec);
     errors_w[w].resize(job_size,0);
   }
@@ -190,7 +190,7 @@ void CrossVal::CV_errors(vector<double> & errors,
 
   // Create workers
   vector<boost::thread> workers;
-  for(int w=0; w<num_threads; w++ ) {
+  for(unsigned int w=0; w<num_threads; w++ ) {
     //cout << "Worker " << w << " : size " << i_w[w].size() << endl;
 
     // Seed the random number generator
@@ -205,31 +205,31 @@ void CrossVal::CV_errors(vector<double> & errors,
   }
 
   // Launch workers
-  for(int w=0; w<num_threads; w++ ) {
+  for(unsigned int w=0; w<num_threads; w++ ) {
     workers[w].join();
   }
 
   // Combine results
-  int idx=0;
-  for(int w=0; w<num_threads; w++) {
-    for(int i=0; i<errors_w[w].size(); i++) {
+  unsigned int idx=0;
+  for(unsigned int w=0; w<num_threads; w++) {
+    for(unsigned int i=0; i<errors_w[w].size(); i++) {
       errors[idx] = errors_w[w][i];
       idx++;
     }
   }
 }
 
-void CrossVal::CV_errors_worker(const vector<int> & i_list, vector<double> & errors,
-                                const vector<bool> & mask, const vector< vector<int> > & masked_blocks,
+void CrossVal::CV_errors_worker(const vector<unsigned int> & i_list, vector<double> & errors,
+                                const vector<bool> & mask, const vector< vector<unsigned int> > & masked_blocks,
                                 const vector <double> & b_masked, const vector <double> & mut_rates,
                                 boost::random::taus88 & rng) const {
   bool verbose = false;
 
-  for(int i_idx=0; i_idx<i_list.size(); i_idx++) {
-    int i = i_list[i_idx];
+  for(unsigned int i_idx=0; i_idx<i_list.size(); i_idx++) {
+    unsigned int i = i_list[i_idx];
 
     // Sample posterior
-    vector<int> z(num_snps, -1);
+    vector<unsigned int> z(num_snps, 0);
     //sample_posterior_MC(i, z, mask, rng);
     sample_posterior_MC(i, z, mask, b_masked, mut_rates, rng);
 
@@ -237,13 +237,13 @@ void CrossVal::CV_errors_worker(const vector<int> & i_list, vector<double> & err
     impute_MC(i, z, mask, masked_blocks, rng);
 
     // Impute HMM
-    vector<int> x(num_snps, 0);
+    vector<unsigned int> x(num_snps, 0);
     impute_HMM(i, x, z, mask, mut_rates, rng);
 
     // Count imputation errors
     double n_errors = 0;
     double num_missing = 0;
-    for(int j=0; j<num_snps; j++) {
+    for(unsigned int j=0; j<num_snps; j++) {
       if(mask[j]) {
         n_errors += (H[i][j] != x[j]);
         num_missing++;
@@ -256,12 +256,12 @@ void CrossVal::CV_errors_worker(const vector<int> & i_list, vector<double> & err
     // Debug
     if(verbose) {
       std::cout<<"True and imputed values:" << endl;
-      for(int j=0; j<num_snps; j++) {
+      for(unsigned int j=0; j<num_snps; j++) {
         cout << j << " " << mask[j] << " ";
         if(mask[j]) cout << "NA ";
         else cout << z[j] << " ";
         cout<<z[j]<<" ";
-        int k = z[j];
+        unsigned int k = z[j];
         cout<<H[i][j]<<" ";
         cout<<H[ref[i][k]][j]<<" ";
         cout<<x[j]<<" ";
@@ -274,11 +274,11 @@ void CrossVal::CV_errors_worker(const vector<int> & i_list, vector<double> & err
   }
 }
 
-void CrossVal::impute_HMM(int i, vector<int> & x, const vector<int> &z, const vector<bool> & mask,
+void CrossVal::impute_HMM(unsigned int i, vector<unsigned int> & x, const vector<unsigned int> &z, const vector<bool> & mask,
                           const vector <double> & mut_rates, boost::random::taus88 & rng) const {
   vector<double> weights_hmm(2);
-  for(int j=0; j<num_snps; j++) {
-    int k = z[j];
+  for(unsigned int j=0; j<num_snps; j++) {
+    unsigned int k = z[j];
     if(mask[j]) {
       double theta_j = mutate(H[ref[i][k]][j], mut_rates[j]);
       weights_hmm[0] = 1.0 - theta_j;
@@ -290,46 +290,46 @@ void CrossVal::impute_HMM(int i, vector<int> & x, const vector<int> &z, const ve
   }
 }
 
-void CrossVal::impute_MC(int i, vector<int> & z,
-                         const vector<bool> & mask, const vector< vector<int> > & masked_blocks,
+void CrossVal::impute_MC(unsigned int i, vector<unsigned int> & z,
+                         const vector<bool> & mask, const vector< vector<unsigned int> > & masked_blocks,
                          boost::random::taus88 & rng) const {
 
   // FIXME: assuming extremities not masked
 
-  for(int s=0; s<masked_blocks.size(); s++) {
-    int m = masked_blocks[s].size();
+  for(unsigned int s=0; s<masked_blocks.size(); s++) {
+    unsigned int m = masked_blocks[s].size();
     // cout << "Imputing block " << s << ": ";
-    // for(int l=0; l<m; l++) {
+    // for(unsigned int l=0; l<m; l++) {
     //   cout << masked_blocks[s][l] << " ";
     // }
     // cout << endl;
     vector< vector<double> > a_bar(m, vector<double>(K) );
     vector<double> b_bar(m);
-    int j1 = masked_blocks[s].back()+1;
-    int z1 = z[j1];
+    unsigned int j1 = masked_blocks[s].back()+1;
+    unsigned int z1 = z[j1];
     // Initialize last element of a_bar, b_bar
     b_bar[m-1] = b[j1];
-    for(int k=0; k<K; k++) {
+    for(unsigned int k=0; k<K; k++) {
       a_bar[m-1][k] = (1.0-b[j1])*alpha[i][k];
     }
     // Backward-compute the other elements of a_bar, b_bar
-    for(int l=m-2; l>=0; l--) {
-      int j = masked_blocks[s][l];
+    for(unsigned int l=m-2; l>=0; l--) {
+      unsigned int j = masked_blocks[s][l];
       b_bar[l] = b[j]*b_bar[l+1];
       double a_const = b_bar[l+1] * (1.0-b[j])*alpha[i][z1];
-      for(int k=0; k<K; k++) {
+      for(unsigned int k=0; k<K; k++) {
         a_const += (1.0-b[j])*alpha[i][k] * a_bar[l+1][z1];
       }
-      for(int k=0; k<K; k++) {
+      for(unsigned int k=0; k<K; k++) {
         a_bar[l][k] = a_const + b[j]*a_bar[l+1][k];
       }
     }
 
     // Forward-sample missing elements of Z
     vector<double> weights_mc(K);
-    for(int l=0; l<m; l++) {
-      int j = masked_blocks[s][l];
-      for(int k=0; k<K; k++) {
+    for(unsigned int l=0; l<m; l++) {
+      unsigned int j = masked_blocks[s][l];
+      for(unsigned int k=0; k<K; k++) {
         double w_left = (1.0-b[j])*alpha[i][k] + b[j] * (double)(k==z[j-1]);
         double w_right = a_bar[l][k] + (double)(k==z1);
         weights_mc[k] = w_left * w_right;
@@ -339,7 +339,7 @@ void CrossVal::impute_MC(int i, vector<int> & z,
   }
 }
 
-void CrossVal::sample_posterior_MC(int i, vector<int> & z, const vector<bool> & mask,
+void CrossVal::sample_posterior_MC(unsigned int i, vector<unsigned int> & z, const vector<bool> & mask,
                                    const vector <double> & b_masked, const vector <double> & mut_rates,
                                    boost::random::taus88 & rng) const {
 
@@ -348,14 +348,14 @@ void CrossVal::sample_posterior_MC(int i, vector<int> & z, const vector<bool> & 
 
   // Compute backward weights
   std::fill(backward[num_snps-1].begin(), backward[num_snps-1].end(), 1.0);
-  for(int j=num_snps-2; j>=0; j--) {
+  for(unsigned int j=num_snps-2; j>=0; j--) {
     if(mask[j]) {
-      for(int k=0; k<K; k++) {
+      for(unsigned int k=0; k<K; k++) {
         backward[j][k] = backward[j+1][k];
       }
     } else {
       double backward_const = 0.0;
-      for(int k=0; k<K; k++) {
+      for(unsigned int k=0; k<K; k++) {
         double a_j1_k = (1.0-b_masked[j+1]) * alpha[i][k];                     // a[j+1][k]
         double theta_j1_k = mutate(H[ref[i][k]][j+1], mut_rates[j+1]);         // theta[j+1][k]
         if ( H[i][j+1] == 1) {
@@ -366,7 +366,7 @@ void CrossVal::sample_posterior_MC(int i, vector<int> & z, const vector<bool> & 
         }
       }
       double backwardSum = 0.0;
-      for(int k=0; k<K; k++) {
+      for(unsigned int k=0; k<K; k++) {
         double theta_j1_k = mutate(H[ref[i][k]][j+1], mut_rates[j+1]);        // theta[j+1][k]
         if ( H[i][j+1] == 1) {
           backward[j][k] = backward_const + b_masked[j+1] * theta_j1_k * backward[j+1][k];
@@ -376,7 +376,7 @@ void CrossVal::sample_posterior_MC(int i, vector<int> & z, const vector<bool> & 
         }
         backwardSum += backward[j][k];
       }
-      for(int k=0; k<K; k++) {
+      for(unsigned int k=0; k<K; k++) {
         backward[j][k] /= backwardSum;
       }
     }
@@ -384,9 +384,9 @@ void CrossVal::sample_posterior_MC(int i, vector<int> & z, const vector<bool> & 
 
   // Forward sampling
   if(mask[0]) {
-    z[0] = -1;
+    z[0] = 0;
   } else {
-    for(int k=0; k<K; k++) {
+    for(unsigned int k=0; k<K; k++) {
       double a_0_k = (1.0-b_masked[0]) * alpha[i][k];                         // a[0][k]
       double theta_0_k = mutate(H[ref[i][k]][0], mut_rates[0]);               // theta[0][k]
       if ( H[i][0] == 1) {
@@ -399,11 +399,11 @@ void CrossVal::sample_posterior_MC(int i, vector<int> & z, const vector<bool> & 
     z[0] = weighted_choice(weights_mc, rng);
   }
 
-  for(int j=1; j<num_snps; j++) {
+  for(unsigned int j=1; j<num_snps; j++) {
     if(mask[j]) {
       z[j] = z[j-1];
     } else {
-      for(int k=0; k<K; k++) {
+      for(unsigned int k=0; k<K; k++) {
         double a_j_k = (1.0-b_masked[j]) * alpha[i][k];                       // a[j][k]
         double theta_j_k = mutate(H[ref[i][k]][j], mut_rates[j]);             // theta[j][k]
         if ( H[i][j] == 1) {
@@ -418,21 +418,21 @@ void CrossVal::sample_posterior_MC(int i, vector<int> & z, const vector<bool> & 
   }
 }
 
-void CrossVal::init_mask(vector<bool> & mask, vector< vector<int> > & masked_blocks,
+void CrossVal::init_mask(vector<bool> & mask, vector< vector<unsigned int> > & masked_blocks,
                          double q_start, double q_stop, boost::random::taus88 & rng) const {
 
   //cout << "[DEBUG] in init_mask(" << q_start << ", " << q_stop << ")" << endl;
 
-  int tot_masked = 0;
+  unsigned int tot_masked = 0;
   while(tot_masked==0) {
     bool masking = false;
     mask.clear();
     mask.resize(num_snps);
     masked_blocks.clear();
-    vector<int> block;
-    for(int j=2; j<(num_snps-2); j++) {
+    vector<unsigned int> block;
+    for(unsigned int j=2; j<(num_snps-2); j++) {
       mask[j] = masking;
-      tot_masked += (int)(masking);
+      tot_masked += (unsigned int)(masking);
       if(masking) {
         block.push_back(j);
         if(runif(rng)<q_stop) {
@@ -450,14 +450,14 @@ void CrossVal::init_mask(vector<bool> & mask, vector< vector<int> > & masked_blo
       masked_blocks.push_back(block);
     }
   }
-  // for(int l=0; l<masked_blocks.size(); l++)
+  // for(unsigned int l=0; l<masked_blocks.size(); l++)
   //   cout << "Block " << l <<" has size " << masked_blocks[l].size() << endl;
 }
 
 void CrossVal::apply_mask(const vector<bool> & mask, double rho, double lambda,
                           vector <double> & b_masked, vector <double> & mut_rates) {
   // cout << "Masked SNPs: ";
-  // for(int j=0; j<num_snps; j++) {
+  // for(unsigned int j=0; j<num_snps; j++) {
   //   if(mask[j]) cout << j << " ";
   // }
   // cout << endl;
@@ -492,92 +492,92 @@ void CrossVal::apply_mask(const vector<bool> & mask, double rho, double lambda,
 
   // cout << "ID" << setw(15) << "Masked" << setw(15) << "Rec" << setw(15) << "Rec_m";
   // cout << setw(15) << "b" << setw(15) << "b_m" << endl;
-  // for(int j=0; j<num_snps; j++) {
+  // for(unsigned int j=0; j<num_snps; j++) {
   //   cout << j << "\t" << mask[j] << setw(15) << rec_rates[j] << setw(15) << rec_rates_masked[j] << setw(15) << b[j] << setw(15) << b_masked[j] << endl;
   // }
 
 }
 
-void log_range(vector<double> & values, double min_value, double max_value, int length) {
+void log_range(vector<double> & values, double min_value, double max_value, unsigned int length) {
   values.resize(length);
   const double min_log = std::log(min_value);
   const double max_log = std::log(max_value);
   const double log_increment = ( max_log - min_log ) / length;
   double log_value = min_log;
-  for(int i=0 ; i < length; i++) {
+  for(unsigned int i=0 ; i < length; i++) {
     log_value += log_increment;
     values[i] = std::exp(log_value);
   }
 }
 
 double compute_sd(const vector<double> & data) {
-  int n = data.size();
+  unsigned int n = data.size();
   double mean = compute_mean(data);
   double sd = 0;
-  for(int i=0; i<n; i++) sd += std::pow(data[i] - mean, 2);
+  for(unsigned int i=0; i<n; i++) sd += std::pow(data[i] - mean, 2);
   return std::sqrt(sd / (double)n);
 }
 
 double compute_mean(const vector<double> & data) {
-  int n = data.size();
+  unsigned int n = data.size();
   double sum = 0;
-  for(int i=0; i<n; i++) sum += data[i];
+  for(unsigned int i=0; i<n; i++) sum += data[i];
   return(sum/(double)n);
 }
 
-int min_1sd(const vector<double> & mean, const vector<double> & sd, bool prefer_larger) {
-  int idx_min = std::distance(mean.begin(), std::min_element(mean.begin(), mean.end()));
-  int idx_best = idx_min;
+unsigned int min_1sd(const vector<double> & mean, const vector<double> & sd, bool prefer_larger) {
+  unsigned int idx_min = std::distance(mean.begin(), std::min_element(mean.begin(), mean.end()));
+  unsigned int idx_best = idx_min;
 
   vector<double> mean_plus = mean;
   vector<double> mean_minus = mean;
-  for(int i=0; i<mean.size(); i++) {
+  for(unsigned int i=0; i<mean.size(); i++) {
     mean_plus[i] += sd[i];
     mean_minus[i] -= sd[i];
   }
-  int idx_min_max = std::distance(mean_plus.begin(), std::min_element(mean_plus.begin(), mean_plus.end()));
+  unsigned int idx_min_max = std::distance(mean_plus.begin(), std::min_element(mean_plus.begin(), mean_plus.end()));
   double val_min_max = mean_plus[idx_min_max];
   if(prefer_larger) {
-    for(int i=idx_min; i<mean.size(); i++) {
+    for(unsigned int i=idx_min; i<mean.size(); i++) {
       if((mean_minus[i]<=val_min_max)) idx_best = i;
     }
   } else {
-    for(int i=idx_min; i>=0; i--) {
+    for(unsigned int i=idx_min; i>=0; i--) {
       if((mean_minus[i]<=val_min_max)) idx_best = i;
    }
   }
   return(idx_best);
 }
 
-pair<int,int> range_1sd(const vector<double> & mean, const vector<double> & sd) {
+pair<unsigned int,unsigned int> range_1sd(const vector<double> & mean, const vector<double> & sd) {
   vector<double> mean_plus = mean;
   vector<double> mean_minus = mean;
-  for(int i=0; i<mean.size(); i++) {
+  for(unsigned int i=0; i<mean.size(); i++) {
     mean_plus[i] += sd[i];
     mean_minus[i] -= sd[i];
   }
 
-  int idx_min_max = std::distance(mean_plus.begin(), std::min_element(mean_plus.begin(), mean_plus.end()));
+  unsigned int idx_min_max = std::distance(mean_plus.begin(), std::min_element(mean_plus.begin(), mean_plus.end()));
   double val_min_max = mean_plus[idx_min_max];
 
-  int idx_left = idx_min_max;
-  int idx_right = idx_min_max;
+  unsigned int idx_left = idx_min_max;
+  unsigned int idx_right = idx_min_max;
 
-  for(int i=idx_min_max; i<mean.size(); i++) {
+  for(unsigned int i=idx_min_max; i<mean.size(); i++) {
     if(mean_minus[i]<val_min_max) idx_right = i;
   }
-  for(int i=idx_min_max; i>0; i--) {
+  for(unsigned int i=idx_min_max; i>0; i--) {
     if(mean_minus[i]<val_min_max) idx_left = i;
   }
   return(std::make_pair(idx_left, idx_right));
 }
 
-double CrossVal::mutate(int h, double mut_rate) const {
+double CrossVal::mutate(unsigned int h, double mut_rate) const {
   if(h==1) return(1.0-mut_rate);
   else return(mut_rate);
 }
 
-double init_mut_rate(int K) {
+double init_mut_rate(unsigned int K) {
   double theta_inv = 0.0;
   for(unsigned int k=1; k<K; k++) {
     theta_inv += 1.0/(double)k;

@@ -20,14 +20,14 @@ public:
   BgenReader(const string& filename, const string& sample_filename);
   void summarise();
   void read(const vector<string>& sample_ids, const vector<string>& snp_ids, vector<chaplotype>& H, 
-            bool verbose, int nthreads);
+            bool verbose, unsigned int nthreads);
   void read(const vector<string>& sample_ids, const vector<string>& snp_ids, vector<chaplotype>& H, 
             bool verbose);
   void read_worker(const vector<string>& sample_ids, const vector<string>& abs_snp_ids, 
                    const vector<string>& snp_ids, vector<chaplotype>& H, 
-                   bool verbose, int wid, vector<int> &progress);
+                   bool verbose, unsigned int wid, vector<unsigned int> &progress);
   void read_mt(const vector<string>& sample_ids, const vector<string>& snp_ids, vector<chaplotype>& H, 
-               bool verbose, int nthreads);
+               bool verbose, unsigned int nthreads);
   void print(const vector<chaplotype>& H) const;
 
 private:

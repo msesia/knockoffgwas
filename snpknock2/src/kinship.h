@@ -8,7 +8,7 @@
 #include "metadata.h"
 #include "covariates.h"
 
-typedef vector< vector<int> > ivector2d;
+typedef vector< vector<unsigned int> > ivector2d;
 typedef vector<ivector2d> ivector3d;
 typedef vector<ivector3d> ivector4d;
 
@@ -17,24 +17,24 @@ public:
   // Constructors and destructors
   Kinship();
   Kinship(const vector<Metadata>& metadata, vector<string> output_files,
-          int compression, int _cluster_size_min, int _cluster_size_max, int _K, int _num_threads);
+          unsigned int compression, unsigned int _cluster_size_min, unsigned int _cluster_size_max, unsigned int _K, unsigned int _num_threads);
   Kinship(const vector<Metadata>& metadata, const Covariates & covariates, vector<string> output_files,
-          int compression, int _cluster_size_min, int _cluster_size_max, int _K, int _num_threads);
+          unsigned int compression, unsigned int _cluster_size_min, unsigned int _cluster_size_max, unsigned int _K, unsigned int _num_threads);
   Kinship(const vector<string>& ref_files_local, const vector<string>& ref_files_global);
   ~Kinship();
 
   // Methods
-  const ivector3d & get_references(int chr) const;
-  const ivector2d & get_references_global(int chr) const;
+  const ivector3d & get_references(unsigned int chr) const;
+  const ivector2d & get_references_global(unsigned int chr) const;
 
-  int get_K() const;
+  unsigned int get_K() const;
   void writeReferences(const vector<Metadata>& metadata, const vector<string> & out_file_names) const;
 
 private:
-  int num_haps;
-  int num_chrs;
-  int num_windows;
-  int K;
+  unsigned int num_haps;
+  unsigned int num_chrs;
+  unsigned int num_windows;
+  unsigned int K;
   ivector4d references_local;  // CHR, id, window, K
   ivector3d references_global; // CHR, id, K
 

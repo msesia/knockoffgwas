@@ -13,9 +13,9 @@
 #########
 
 # Print header
-printf "KnockoffGWAS (21 July 2020) \n"
+printf "KnockoffGWAS (9 July 2021) \n"
 printf "https://bitbucket.org/msesia/knockoffgwas \n"
-printf "(C) 2020 Matteo Sesia (Stanford University)   GNU General Public License v3 \n\n"
+printf "(C) 2020,2021 Matteo Sesia (University of Southern California)   GNU General Public License v3 \n\n"
 
 # Setup spinner for long jobs
 source "misc/spinner.sh"

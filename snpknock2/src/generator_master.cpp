@@ -7,7 +7,7 @@
 
 KnockoffGenerator::KnockoffGenerator(const vector<Metadata>& _metadata, 
                                      const ivector3d& references_local, const ivector2d& references_global,
-                                     int _num_threads, int _debug, int _seed, const string& _logfile) {
+                                     unsigned int _num_threads, unsigned int _debug, unsigned int _seed, const string& _logfile) {
 
   metadata = _metadata;
   num_chrs = metadata.size();
@@ -20,12 +20,12 @@ KnockoffGenerator::KnockoffGenerator(const vector<Metadata>& _metadata,
   num_haps = metadata[0].num_samples() * 2;
 
   // Initialize each chromosome
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     // Make sure the number of haplotypes is consistent
     assert(num_haps == metadata[chr].num_samples() * 2);
 
     // Make sure the number of windows is consistent
-    const int num_windows = references_local[chr].size();
+    const unsigned int num_windows = references_local[chr].size();
     assert(num_windows == metadata[chr].windows.num_windows);
 
     cout << "Chromosome " << metadata[chr].get_chr_id() << " will be loaded from:" << endl;
@@ -53,7 +53,7 @@ KnockoffGenerator::KnockoffGenerator(const vector<Metadata>& _metadata,
   check_sanity();
 
   // Assign references
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].set_references(references_local);
     chromosomes[chr].set_references_global(references_global);
   }
@@ -61,8 +61,8 @@ KnockoffGenerator::KnockoffGenerator(const vector<Metadata>& _metadata,
   cout << endl;
 }
 
-void KnockoffGenerator::set_partition(int r) {
-  for(int chr=0; chr<num_chrs; chr++) {
+void KnockoffGenerator::set_partition(unsigned int r) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].set_partition(r);
   }
 }
@@ -73,7 +73,7 @@ void KnockoffGenerator::check_sanity() {
   // Make sure that at least one chromosome has been loaded
   assert(chromosomes.size() > 0);
   // Make sure that each chromosome has the same number of samples
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     assert(chromosomes[chr].get_num_haps()==num_haps);
   }
   // Make sure that K is not too big
@@ -81,26 +81,26 @@ void KnockoffGenerator::check_sanity() {
 }
 
 void KnockoffGenerator::tune_hmm() {
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].CV(num_threads);
   }
 }
 
 void KnockoffGenerator::load_hmm(vector<string> hmm_files) {
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].load_hmm(hmm_files[chr]);
   }
 }
 
 void KnockoffGenerator::init_hmm(double hmm_rho, double hmm_lambda) {
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].init_hmm(K, hmm_rho, hmm_lambda);
   }
 }
 
 void KnockoffGenerator::fit_HMM(const double hmm_rho) {
   // Run EM chromosome by chromosome
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].init_hmm(K, hmm_rho);
     chromosomes[chr].EM(num_threads);
   }  
@@ -108,14 +108,14 @@ void KnockoffGenerator::fit_HMM(const double hmm_rho) {
 
 void KnockoffGenerator::generate() {
   // Generate knockoffs chromosome by chromosome
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].generate(num_threads);
   }
   cout << endl;
 }
 
 void KnockoffGenerator::writeKnockoffs(const vector<string> & out_file_name) const {
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].write(out_file_name[chr], "BED", true);
     //chromosomes[chr].write(out_file_name[chr], "BED", false);
     //if(chromosomes[chr].get_num_snps() < 1000) {
@@ -126,38 +126,38 @@ void KnockoffGenerator::writeKnockoffs(const vector<string> & out_file_name) con
 }
 
 void KnockoffGenerator::writeAncestries(const vector<string> & out_file_name) const {
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].writeAncestries(out_file_name[chr]);
   }
 }
 
 // void KnockoffGenerator::writeZ(const vector<string> & out_file_name) const {
-//   for(int chr=0; chr<num_chrs; chr++) {
+//   for(unsigned int chr=0; chr<num_chrs; chr++) {
 //     chromosomes[chr].writeZ(out_file_name[chr]);
 //     chromosomes[chr].writeZk(out_file_name[chr]);
 //   }
 // }
 
 void KnockoffGenerator::writeGroups(const vector<string> & out_file_name) const {
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].writeGroups(out_file_name[chr]);
   }
 }
 
 void KnockoffGenerator::writeWindows(const vector<string> & out_file_name) const {
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].writeWindows(out_file_name[chr]);
   }
 }
 
 void KnockoffGenerator::writeHMM(const vector<string> & out_file_name) const {
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes[chr].writeHMM(out_file_name[chr]);
   }
   cout << endl;
 }
 
-int KnockoffGenerator::num_partitions() const {
+unsigned int KnockoffGenerator::num_partitions() const {
   return chromosomes.back().num_partitions();
 }
 

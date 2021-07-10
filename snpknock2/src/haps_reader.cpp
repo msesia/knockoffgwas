@@ -8,12 +8,12 @@ HapsReader::HapsReader(const string& _filename, const string& sample_filename, c
 
   string buffer;
   vector<string> tokens;
-  int line = -2;
+  unsigned int line = 0;
 
   // Read sample IDs from ".sample" file
   ifile fd_sample(sample_filename);
   while (getline(fd_sample, buffer, '\n')) {
-    if(line>=0) {
+    if(line>=2) {
       sutils::tokenize(buffer, tokens);
       sample.push_back(tokens);
     }
@@ -22,10 +22,10 @@ HapsReader::HapsReader(const string& _filename, const string& sample_filename, c
   fd_sample.close();
 
   // Read variant legend ".legend" file
-  line = -1;
+  line = 0;
   ifile fd_legend(legend_filename);
   while (getline(fd_legend, buffer, '\n')) {
-    if(line>=0) {
+    if(line>=1) {
       sutils::tokenize(buffer, tokens);
       legend.push_back(tokens);
     }
@@ -46,12 +46,12 @@ void HapsReader::read(const vector<string>& sample_ids, const vector<string>& sn
   // cout << endl;
 
   // Initialize data container
-  int num_samples = sample_ids.size();
-  int num_snps = snp_ids.size();
-  int num_haps = 2 * num_samples;
+  unsigned int num_samples = sample_ids.size();
+  unsigned int num_snps = snp_ids.size();
+  unsigned int num_haps = 2 * num_samples;
 
   // // Find HAPS row indices of requested samples
-  // vector<int> rows_idx(num_snps,-1);
+  // vector<int> rows_idx(num_snps,0);
   // for(int j=0; j<num_snps; j++) {
   //   auto it = std::find(legend.ID.begin(), legend.ID.end(), snp_ids[j]);
   //   if(it != legend.ID.end()) {
@@ -69,11 +69,11 @@ void HapsReader::read(const vector<string>& sample_ids, const vector<string>& sn
   // }
 
   // Find HAPS col indices of requested samples
-  vector<int> hap_idx(num_haps, -1);
-  for(int i=0; i<num_samples; i++) {
+  vector<unsigned int> hap_idx(num_haps, 0);
+  for(unsigned int i=0; i<num_samples; i++) {
     auto it = std::find(sample.ID.begin(), sample.ID.end(), sample_ids[i]);
     if(it != sample.ID.end()) {
-      int i_haps = std::distance(sample.ID.begin(), it);
+      unsigned int i_haps = std::distance(sample.ID.begin(), it);
       hap_idx[2*i] = 2*i_haps;
       hap_idx[2*i+1] = 2*i_haps+1;
     } else {
@@ -90,7 +90,7 @@ void HapsReader::read(const vector<string>& sample_ids, const vector<string>& sn
   string buffer;
   vector <string> tokens;
   vector < vector<bool> > haps(num_haps, vector<bool>(num_snps, false));
-  int row = 0;
+  unsigned int row = 0;
   ifile fd_hap(filename);
   while (getline(fd_hap, buffer, '\n')) {
     // Skip this row if the variant was not requested
@@ -101,11 +101,11 @@ void HapsReader::read(const vector<string>& sample_ids, const vector<string>& sn
       continue;
     }
     // Find output index of variant, if requested
-    int j = std::distance(snp_ids.begin(), it);
+    unsigned int j = std::distance(snp_ids.begin(), it);
     // Process row
     sutils::tokenize(buffer, tokens);
-    for(int i=0; i<num_haps; i++) {
-      int i_haps = hap_idx[i];      
+    for(unsigned int i=0; i<num_haps; i++) {
+      unsigned int i_haps = hap_idx[i];      
       haps[i][j] = (tokens[i_haps] == "1");
     }
     row++;
@@ -113,7 +113,7 @@ void HapsReader::read(const vector<string>& sample_ids, const vector<string>& sn
   fd_hap.close();
   // Store transposed haplotypes
   H.clear();
-  for (int r = 0 ; r < haps.size() ; r ++){
+  for (unsigned int r = 0 ; r < haps.size() ; r ++){
     H.push_back(chaplotype(haps[r]));
   }
 

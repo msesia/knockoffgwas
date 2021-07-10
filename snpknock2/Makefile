@@ -73,7 +73,7 @@ build/filter_reader.o : src/filter_reader.h src/filter_reader.cpp src/utils.h
 build/arguments.o : src/arguments.h src/arguments.cpp src/utils.h src/metadata.h
 	${CXX} ${FLAGS} -o build/arguments.o -c src/arguments.cpp
 
-build/metadata.o : src/metadata.h src/metadata.cpp src/utils.h src/utils_graph.h src/windows.h
+build/metadata.o : src/metadata.h src/metadata.cpp src/utils.h src/utils_graph.h src/windows.h src/ibd.h
 	${CXX} ${FLAGS} -o build/metadata.o -c src/metadata.cpp
 
 build/windows.o : src/windows.h src/windows.cpp src/utils.h src/utils_graph.h
@@ -100,7 +100,7 @@ build/bgen_utils.o : src/bgen_utils.h src/bgen_utils.cpp src/utils.h
 build/haps_reader.o : src/haps_reader.h src/haps_reader.cpp src/chaplotype.h
 	${CXX} ${FLAGS} -o build/haps_reader.o -c src/haps_reader.cpp
 
-build/bgen_reader.o : src/bgen_reader.h src/bgen_reader.cpp src/chaplotype.h src/metadata.h
+build/bgen_reader.o : src/bgen_reader.h src/bgen_reader.cpp src/chaplotype.h src/metadata.h src/utils.h
 	${CXX} ${FLAGS} -o build/bgen_reader.o -c src/bgen_reader.cpp
 
 

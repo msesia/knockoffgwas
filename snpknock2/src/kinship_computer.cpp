@@ -9,8 +9,8 @@
 KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata) : metadata(_metadata){
 }
 
-KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata, int compression,
-                                 int _cluster_size_min, int _cluster_size_max, int _num_threads):
+KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata, unsigned int compression,
+                                 unsigned int _cluster_size_min, unsigned int _cluster_size_max, unsigned int _num_threads):
   metadata(_metadata) {
 
   covariates_available = false;
@@ -18,7 +18,7 @@ KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata, int compress
   // Load data
   genomes = Dataset(metadata, _num_threads, compression);
   num_chrs = genomes.num_chrs();
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes.push_back(&(genomes.chromosomes[chr]));
   }
 
@@ -34,9 +34,9 @@ KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata, int compress
 
 }
 
-KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata, int compression,
+KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata, unsigned int compression,
                                  const Covariates & covariates_,
-                                 int _cluster_size_min, int _cluster_size_max, int _num_threads) :
+                                 unsigned int _cluster_size_min, unsigned int _cluster_size_max, unsigned int _num_threads) :
   metadata(_metadata) {
 
   //cout << "[DEBUG] in KinshipComputer::KinshipComputer()" << endl;
@@ -45,7 +45,7 @@ KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata, int compress
   genomes = Dataset(metadata, _num_threads, compression);
   num_chrs = genomes.num_chrs();
 
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     chromosomes.push_back(&(genomes.chromosomes[chr]));
   }
 
@@ -71,50 +71,50 @@ KinshipComputer::KinshipComputer(const vector<Metadata>& _metadata, int compress
 KinshipComputer::~KinshipComputer() {
 }
 
-double KinshipComputer::distance(int i, int j) const {
-  return(distance_leaveout(i, j, -1));
+double KinshipComputer::distance(unsigned int i, unsigned int j) const {
+  return(distance_leaveout(i, j, 0));
 }
 
-double KinshipComputer::distance_hap_window(const int i1, const int i2, const int chr,
-                                            const Windows& windows, const int w) const {
+double KinshipComputer::distance_hap_window(const unsigned int i1, const unsigned int i2, const unsigned int chr,
+                                            const Windows& windows, const unsigned int w) const {
   // cout << "[DEBUG] in distance_hap_window(" << i1   << ", " << i2  << ", "  << chr << ", w=" << w << flush;
   //cout << ", j_start = " << windows.start[w] << ", j_end = " << windows.end[w] << ")" << endl;
   // Compute distance using genetic data around a window
-  int result = 0;
+  unsigned int result = 0;
 
-  const int num_windows = windows.num_windows;
+  const unsigned int num_windows = windows.num_windows;
 
   if(num_windows==1) {
     result = chromosomes[chr]->distance(i1, i2);
   } else {
     if(w>0) {
       // Compute distance using windows on the left
-      const int j_start = windows.start[0];
-      const int j_end = windows.end[w-1];
+      const unsigned int j_start = windows.start[0];
+      const unsigned int j_end = windows.end[w-1];
       result += chromosomes[chr]->distance(i1, i2, j_start, j_end);
     }
     if(w<(num_windows-1)) {
       // Compute distance using windows on the right
-      const int j_start = windows.start[w+1];
-      const int j_end = windows.end.back();
+      const unsigned int j_start = windows.start[w+1];
+      const unsigned int j_end = windows.end.back();
       result += chromosomes[chr]->distance(i1, i2, j_start, j_end);
     }
   }
   return(result);
 }
 
-double KinshipComputer::distance_leaveout(int i, int j, int chr_out) const {
-  int result = 0;
+double KinshipComputer::distance_leaveout(unsigned int i, unsigned int j, int chr_out) const {
+  unsigned int result = 0;
   if(covariates_available) {
     // Compute distance using covariates
     result = distance(covariates.Z[i/2], covariates.Z[j/2]);
   } else {
     // Compute distance using genetic data
-    const int i1a = 2*(i/2);
-    const int i1b = 2*(i/2)+1;
-    const int i2a = 2*(j/2);
-    const int i2b = 2*(j/2)+1;
-    for(int chr=0; chr<num_chrs; chr++) {
+    const unsigned int i1a = 2*(i/2);
+    const unsigned int i1b = 2*(i/2)+1;
+    const unsigned int i2a = 2*(j/2);
+    const unsigned int i2b = 2*(j/2)+1;
+    for(unsigned int chr=0; chr<num_chrs; chr++) {
       if(chr!=chr_out) {
         result += chromosomes[chr]->distance(i1a, i2a) + chromosomes[chr]->distance(i1b, i2b);
       }
@@ -123,8 +123,8 @@ double KinshipComputer::distance_leaveout(int i, int j, int chr_out) const {
   return(result);
 }
 
-double KinshipComputer::distance(int i, int j, int chr) const {
-  int result = 0;
+double KinshipComputer::distance(unsigned int i, unsigned int j, unsigned int chr) const {
+  unsigned int result = 0;
   if(covariates_available) {
     // Compute distance using covariates
     result = distance(covariates.Z[i/2], covariates.Z[j/2]);
@@ -134,20 +134,20 @@ double KinshipComputer::distance(int i, int j, int chr) const {
   return(result);
 }
 
-void KinshipComputer::distance(int i, int j, vector<int> & output) const {
-  int i0 = 2*(i/2);
-  int i1 = 2*(i/2)+1;
-  int j0 = 2*(j/2);
-  int j1 = 2*(j/2)+1;
+void KinshipComputer::distance(unsigned int i, unsigned int j, vector<unsigned int> & output) const {
+  unsigned int i0 = 2*(i/2);
+  unsigned int i1 = 2*(i/2)+1;
+  unsigned int j0 = 2*(j/2);
+  unsigned int j1 = 2*(j/2)+1;
   // Compute distances on each chromosome
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     output[chr] = chromosomes[chr]->distance(i0, j0) + chromosomes[chr]->distance(i1, j1);
   }
   // Compute total distance
-  int dist_total = std::accumulate(output.begin(), output.end(), 0);
+  unsigned int dist_total = std::accumulate(output.begin(), output.end(), 0);
   // Compute hold-one-out distances
   // If only one chromosome is present, do not hold out
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     if(num_chrs>1) output[chr] = dist_total-output[chr];
     else output[chr] = dist_total;
   }
@@ -156,7 +156,7 @@ void KinshipComputer::distance(int i, int j, vector<int> & output) const {
 double KinshipComputer::distance(const vector2d & mu0, const vector2d & mu1) const {
   assert(mu0.size()==mu1.size());
   double dist = 0.0;
-  for(int chr=0; chr<mu0.size(); chr++) {
+  for(unsigned int chr=0; chr<mu0.size(); chr++) {
     dist += distance(mu0[chr], mu1[chr]);
   }
   return(dist);
@@ -165,29 +165,29 @@ double KinshipComputer::distance(const vector2d & mu0, const vector2d & mu1) con
 double KinshipComputer::distance(const vector<double> & mu0, const vector<double> & mu1) const {
   assert(mu0.size()==mu1.size());
   double dist = 0.0;
-  for(int j=0; j<mu0.size(); j++) {
+  for(unsigned int j=0; j<mu0.size(); j++) {
     dist += std::pow(mu0[j]-mu1[j], 2);
   }
   return(dist);
 }
 
-void KinshipComputer::findNeighbors(const int i, const int K, const int chr, const Windows& windows,
+void KinshipComputer::findNeighbors(const unsigned int i, const unsigned int K, const unsigned int chr, const Windows& windows,
                                     ivector2d& output) const {
   //cout << "[DEBUG] in findNeighbors(" << i <<", " << K << ")" << endl;
 
   // Find IBD-sharing family for this sample
-  const vector<int>& ibd_family = metadata[chr].related_families[i];
+  const vector<unsigned int>& ibd_family = metadata[chr].related_families[i];
 
   // Compute distance leaving out one window
-  const int num_windows = windows.num_windows;
+  const unsigned int num_windows = windows.num_windows;
 
-  for(int w=0; w<num_windows; w++) {
+  for(unsigned int w=0; w<num_windows; w++) {
     distmap D;
 
-    int ci = assignments[chr][i];
+    unsigned int ci = assignments[chr][i];
 
-    for(int l=0; l<clusters[chr][ci].size(); l++) {
-      const int j = clusters[chr][ci][l];
+    for(unsigned int l=0; l<clusters[chr][ci].size(); l++) {
+      const unsigned int j = clusters[chr][ci][l];
       if(i==j) continue;
 
       // Check whether the individuals are in the same IBD-sharing family
@@ -209,7 +209,7 @@ void KinshipComputer::findNeighbors(const int i, const int K, const int chr, con
       // Only add new measurement if within top K
       if(D.size() >= K) {
         // Find largest distance
-        int top_key = D.rbegin()->first;
+        unsigned int top_key = D.rbegin()->first;
         // Check whether the new distance should be in the top K
         if(dij < top_key) {
           // Insert new distance
@@ -223,7 +223,7 @@ void KinshipComputer::findNeighbors(const int i, const int K, const int chr, con
     }
 
     // Copy list of neighbors to output
-    int k = 0;
+    unsigned int k = 0;
     for (auto it=D.begin(); it!=D.end(); ++it) {
       output[w][k] = it->second;
       k++;
@@ -232,16 +232,16 @@ void KinshipComputer::findNeighbors(const int i, const int K, const int chr, con
   }
 }
 
-double KinshipComputer::distance(int i, const vector2d & mu) const {
+double KinshipComputer::distance(unsigned int i, const vector2d & mu) const {
   return(distance(i, -1, mu));
 }
 
-double KinshipComputer::distance(int i, int chr_out, const vector2d & mu) const {
+double KinshipComputer::distance(unsigned int i, int chr_out, const vector2d & mu) const {
   double tot_dist = 0.0;
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     if(chr==chr_out) continue;
-    int num_snps = chromosomes[chr]->get_num_snps();
-    for(int j=0; j<num_snps; j++) {
+    unsigned int num_snps = chromosomes[chr]->get_num_snps();
+    for(unsigned int j=0; j<num_snps; j++) {
       double hj = (double)(chromosomes[chr]->H[i][j]);
       tot_dist += std::pow(hj-mu[chr][j],2);
     }
@@ -249,24 +249,24 @@ double KinshipComputer::distance(int i, int chr_out, const vector2d & mu) const 
   return(tot_dist);
 }
 
-void KinshipComputer::init_centroids(int c, int chr_out, const vector< vector<int> > & clust_chr,
+void KinshipComputer::init_centroids(unsigned int c, int chr_out, const vector< vector<unsigned int> > & clust_chr,
                                      vector2d & mu0, vector2d & mu1) const {
   // Choose haplotypes for new centroids
   // Draw 100 pairs, take the pair with the greatest distance from each other.
-  int clust_size = clust_chr[c].size();
-  int dil_max = 0;
-  int i_best = 0;
-  int l_best = 0;
-  int num_pairs = 100;
-  for(int p=0; p<num_pairs; p++) {
-    int i = clust_chr[c][putils::getRandom(clust_size)];
-    int i0 = 2*(i/2);
-    int i1 = 2*(i/2)+1;
-    int l = i;
+  unsigned int clust_size = clust_chr[c].size();
+  unsigned int dil_max = 0;
+  unsigned int i_best = 0;
+  unsigned int l_best = 0;
+  unsigned int num_pairs = 100;
+  for(unsigned int p=0; p<num_pairs; p++) {
+    unsigned int i = clust_chr[c][putils::getRandom(clust_size)];
+    unsigned int i0 = 2*(i/2);
+    unsigned int i1 = 2*(i/2)+1;
+    unsigned int l = i;
     while( (l==i0) || (l==i1) ) {
       l = clust_chr[c][putils::getRandom(clust_size)];
     }
-    int dil = distance_leaveout(i, l, chr_out);
+    unsigned int dil = distance_leaveout(i, l, chr_out);
     if(dil>dil_max) {
       i_best = i;
       l_best = l;
@@ -278,24 +278,24 @@ void KinshipComputer::init_centroids(int c, int chr_out, const vector< vector<in
   // Compute centroids
   mu0.resize(num_chrs);
   mu1.resize(num_chrs);
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     if(covariates_available) {
-      int dim = covariates.K;
+      unsigned int dim = covariates.K;
       mu0[chr].resize(dim, 0);
       mu1[chr].resize(dim, 0);
-      for(int j=0; j<dim; j++) {
+      for(unsigned int j=0; j<dim; j++) {
         mu0[chr][j] = (double) covariates.Z[i_best/2][j];
         mu1[chr][j] = (double) covariates.Z[l_best/2][j];
       }
     } else {
-      int num_snps = chromosomes[chr]->get_num_snps();
+      unsigned int num_snps = chromosomes[chr]->get_num_snps();
       if(chr==chr_out) {
         mu0[chr].resize(num_snps, 0);
         mu1[chr].resize(num_snps, 0);
       } else {
         mu0[chr].resize(num_snps);
         mu1[chr].resize(num_snps);
-        for(int j=0; j<num_snps; j++) {
+        for(unsigned int j=0; j<num_snps; j++) {
           mu0[chr][j] = (double)(chromosomes[chr]->H[i_best][j]);
           mu1[chr][j] = (double)(chromosomes[chr]->H[l_best][j]);
         }
@@ -311,22 +311,22 @@ void print_multimap(const std::multimap<int,int> & pairs) {
     cout << iter->first << '\t' << iter->second << '\n';
 }
 
-void KinshipComputer::update_assignments(int c, int chr_out, const vector< vector<int> > & clust_chr,
+void KinshipComputer::update_assignments(unsigned int c, int chr_out, const vector< vector<unsigned int> > & clust_chr,
                                          const vector2d & mu0, const vector2d & mu1,
-                                         vector<int> & new_assignments) const {
+                                         vector<unsigned int> & new_assignments) const {
 
   std::multimap<double,int> distances0, distances1;
-  int csize0 = 0, csize1 = 0;
+  unsigned int csize0 = 0, csize1 = 0;
   // Update assignments based on centroids (old code)
-  for(int idx=0; idx<clust_chr[c].size(); idx++) {
-    int i = clust_chr[c][idx];
+  for(unsigned int idx=0; idx<clust_chr[c].size(); idx++) {
+    unsigned int i = clust_chr[c][idx];
     double dist_0, dist_1;
     if(covariates_available) {
       dist_0 = distance(covariates.Z[i/2], mu0[0]);
       dist_1 = distance(covariates.Z[i/2], mu1[0]);
     } else {
-      int i0 = 2*(i/2);
-      int i1 = 2*(i/2)+1;
+      unsigned int i0 = 2*(i/2);
+      unsigned int i1 = 2*(i/2)+1;
       dist_0 = distance(i0, chr_out, mu0) + distance(i1, chr_out, mu0);
       dist_1 = distance(i0, chr_out, mu1) + distance(i1, chr_out, mu1);
     }
@@ -347,7 +347,7 @@ void KinshipComputer::update_assignments(int c, int chr_out, const vector< vecto
 
   // Make sure that cluster size >= cluster_size_min (this is optional, but recommended)
   if(csize0 < cluster_size_min) {
-    int n_missing = cluster_size_min - csize0;
+    unsigned int n_missing = cluster_size_min - csize0;
     // cout << endl << "Sub-cluster 0 is too small, missing " << n_missing << endl;
     for (auto it=distances1.rbegin(); it!=std::next(distances1.rbegin(),n_missing); ++it) {
       // std::cout << " (" << (*it).first << ", " << (*it).second << ") ";
@@ -356,7 +356,7 @@ void KinshipComputer::update_assignments(int c, int chr_out, const vector< vecto
     // cout << endl;
   }
   if(csize1 < cluster_size_min) {
-    int n_missing = cluster_size_min - csize1;
+    unsigned int n_missing = cluster_size_min - csize1;
     // cout << endl << "Sub-cluster 1 is too small, missing" << n_missing << endl;
     for (auto it=distances0.rbegin(); it!=std::next(distances0.rbegin(),n_missing); ++it) {
       // std::cout << " (" << (*it).first << ", " << (*it).second << ")";
@@ -369,37 +369,37 @@ void KinshipComputer::update_assignments(int c, int chr_out, const vector< vecto
 
 }
 
-void KinshipComputer::update_centroids(int c, int chr_out, const vector< vector<int> > & clust_chr,
-                                       const vector<int> & assign_chr, vector2d & mu0, vector2d & mu1) const {
+void KinshipComputer::update_centroids(unsigned int c, int chr_out, const vector< vector<unsigned int> > & clust_chr,
+                                       const vector<unsigned int> & assign_chr, vector2d & mu0, vector2d & mu1) const {
   // Compute centroids based on assignments
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     // Reset centroids
     std::fill(mu0[chr].begin(),mu0[chr].end(),0.0);
     std::fill(mu1[chr].begin(),mu1[chr].end(),0.0);
     // Skip left-out chromosome
     if(chr==chr_out) continue;
     // Update means
-    int num_haps_0 = 0, num_haps_1 = 0;
-    for(int idx=0; idx<clust_chr[c].size(); idx++) {
-      int i = clust_chr[c][idx];
-      int ci = assign_chr[idx];
+    unsigned int num_haps_0 = 0, num_haps_1 = 0;
+    for(unsigned int idx=0; idx<clust_chr[c].size(); idx++) {
+      unsigned int i = clust_chr[c][idx];
+      unsigned int ci = assign_chr[idx];
       if(ci==0) num_haps_0++;
       if(ci==1) num_haps_1++;
       if(covariates_available) {
-        for(int j=0; j<mu0[chr].size(); j++) {
+        for(unsigned int j=0; j<mu0[chr].size(); j++) {
           if(ci==0) mu0[chr][j] += (double) covariates.Z[i/2][j];
           if(ci==1) mu1[chr][j] += (double) covariates.Z[i/2][j];
         }
 
       } else {
-        for(int j=0; j<mu0[chr].size(); j++) {
+        for(unsigned int j=0; j<mu0[chr].size(); j++) {
           if(ci==0) mu0[chr][j] += (double)(chromosomes[chr]->H[i][j]);
           if(ci==1) mu1[chr][j] += (double)(chromosomes[chr]->H[i][j]);
         }
       }
     }
     // Normalize centroids
-    for(int j=0; j<mu0[chr].size(); j++) {
+    for(unsigned int j=0; j<mu0[chr].size(); j++) {
       mu0[chr][j] /= num_haps_0;
       mu1[chr][j] /= num_haps_1;
     }
@@ -411,15 +411,15 @@ void KinshipComputer::cluster(bool separate_chrs) {
   if(separate_chrs) {
 
     // Do not use more threads than chromosomes to load the data
-    int num_threads_chr = std::min(num_threads, num_chrs);
+    unsigned int num_threads_chr = std::min(num_threads, num_chrs);
 
     // Assign chromosomes to workers
-    vector< vector<int> > worker_assignments(num_threads_chr);
-    int nchrs_remaining = num_chrs;
-    int nthreads_remaining = num_threads_chr;
-    int share = 1 + (nchrs_remaining-1) / nthreads_remaining;
-    int wid = 0;
-    for(int chr=0; chr<num_chrs; chr++) {
+    vector< vector<unsigned int> > worker_assignments(num_threads_chr);
+    unsigned int nchrs_remaining = num_chrs;
+    unsigned int nthreads_remaining = num_threads_chr;
+    unsigned int share = 1 + (nchrs_remaining-1) / nthreads_remaining;
+    unsigned int wid = 0;
+    for(unsigned int chr=0; chr<num_chrs; chr++) {
       worker_assignments[wid].push_back(chr);
       nchrs_remaining--;
       if((worker_assignments[wid].size() >= share) && (nthreads_remaining>1)) {
@@ -430,9 +430,9 @@ void KinshipComputer::cluster(bool separate_chrs) {
     }
 
     // // DEBUG: check whether this is correct
-    // for(int w=0; w<num_threads_chr; w++) {
+    // for(unsigned int w=0; w<num_threads_chr; w++) {
     //   cerr << "[DEBUG] w " << w << " : ";
-    //   for(int i=0; i<worker_assignments[w].size(); i++) {
+    //   for(unsigned int i=0; i<worker_assignments[w].size(); i++) {
     //     cerr << worker_assignments[w][i] + 1 << " ";
     //   }
     //   cerr << endl;
@@ -444,21 +444,21 @@ void KinshipComputer::cluster(bool separate_chrs) {
     // Bifurcating K-means clustering (leaving out one chromosome at a time)
     assignments.resize(num_chrs);
     clusters.resize(num_chrs);
-    vector<int> progress(num_threads_chr,0);
+    vector<unsigned int> progress(num_threads_chr,0);
     if(num_chrs>1) {
       // If multiple chrs
       if(num_threads_chr>1) {
         vector<boost::thread> workers;
-        for(int w=0; w<num_threads_chr; w++ ) {
+        for(unsigned int w=0; w<num_threads_chr; w++ ) {
           // Divide task
-          int chr_start = worker_assignments[w].front();
-          int chr_end = worker_assignments[w].back();
+          unsigned int chr_start = worker_assignments[w].front();
+          unsigned int chr_end = worker_assignments[w].back();
           // Create worker
           workers.push_back(boost::thread(&KinshipComputer::cluster_worker, this, chr_start, chr_end,
                                           w, boost::ref(progress)));
         }
         // Launch workers
-        for(int w=0; w<num_threads_chr; w++ ) {
+        for(unsigned int w=0; w<num_threads_chr; w++ ) {
           workers[w].join();
         }
       } else {
@@ -474,29 +474,29 @@ void KinshipComputer::cluster(bool separate_chrs) {
     assignments.resize(num_chrs);
     clusters.resize(num_chrs);
     bifurcating_kmeans(-1, assignments[0], clusters[0], true);
-    for(int chr=1; chr<num_chrs; chr++) {
+    for(unsigned int chr=1; chr<num_chrs; chr++) {
       assignments[chr] = assignments[0];
       clusters[chr] = clusters[0];
     }
   }
 }
 
-void KinshipComputer::cluster_worker(int chr_min, int chr_max, int wid, vector<int> &progress) {
-  int n_steps = num_chrs;
+void KinshipComputer::cluster_worker(unsigned int chr_min, unsigned int chr_max, unsigned int wid, vector<unsigned int> &progress) {
+  unsigned int n_steps = num_chrs;
 
   //cout << "[DEBUG] in cluster_worker(" << chr_min << "," << chr_max << "," << wid << ")" << endl;
 
   // Initialize progress bar (worker 0)
   if(wid==0) {
     cout << "|" << flush;
-    for(int s=0; s<n_steps; s++) cout << ".";
+    for(unsigned int s=0; s<n_steps; s++) cout << ".";
     cout << "|" << endl;
     cout << "|" << flush;
   }
 
   bool verbose = wid==0;
 
-  for(int chr=chr_min; chr<=chr_max; chr++) {
+  for(unsigned int chr=chr_min; chr<=chr_max; chr++) {
     bifurcating_kmeans(chr, assignments[chr], clusters[chr], verbose);
     // Keep track of progress (all workers)
     progress[wid]++;
@@ -508,18 +508,18 @@ void KinshipComputer::cluster_worker(int chr_min, int chr_max, int wid, vector<i
   }
 }
 
-void KinshipComputer::bifurcating_kmeans(int chr_out, vector<int> & assign_chr,
-                                         vector< vector<int> > & clust_chr, bool verbose) const {
+void KinshipComputer::bifurcating_kmeans(int chr_out, vector<unsigned int> & assign_chr,
+                                         vector< vector<unsigned int> > & clust_chr, bool verbose) const {
   assert(num_haps%2==0);
 
   // Initialize clustering
   assign_chr.resize(num_haps);
   std::fill(assign_chr.begin(),assign_chr.end(),0);
-  vector<int> clust_chr_tmp(num_haps);
+  vector<unsigned int> clust_chr_tmp(num_haps);
   std::iota(clust_chr_tmp.begin(), clust_chr_tmp.end(), 0);
   clust_chr.clear();
   clust_chr.push_back(clust_chr_tmp);
-  vector<int> unfinished_clusters;
+  vector<unsigned int> unfinished_clusters;
   unfinished_clusters.push_back(0);
 
   if(verbose) {
@@ -537,10 +537,10 @@ void KinshipComputer::bifurcating_kmeans(int chr_out, vector<int> & assign_chr,
   }
 
   // Bifurcating k-means
-  int step = 0;
-  int max_steps = 10000;
+  unsigned int step = 0;
+  unsigned int max_steps = 10000;
   while((unfinished_clusters.size()>0) && (step++<max_steps)) {
-    int c = unfinished_clusters[0];
+    unsigned int c = unfinished_clusters[0];
 
     // If the cluster is small enough, no further splitting
     if(clust_chr[c].size() <= cluster_size_max) {
@@ -588,16 +588,16 @@ void KinshipComputer::bifurcating_kmeans(int chr_out, vector<int> & assign_chr,
  
   // // Return list of cluster assignments in terms of single haplotypes
   // assign_chr_.resize(num_haps);
-  // for(int i=0; i<num_haps/2; i++) {
+  // for(unsigned int i=0; i<num_haps/2; i++) {
   //   assign_chr_[2*i] = assign_chr[i];
   //   assign_chr_[2*i+1] = assign_chr[i];
   // }
 
   // // Return list of clusters in terms of single haplotypes
   // clust_chr_.clear();
-  // for(int c=0; c<clust_chr.size(); c++) {
-  //   vector<int> tmp(2*clust_chr[c].size());
-  //   for(int i=0; i<clust_chr[c].size(); i++) {
+  // for(unsigned int c=0; c<clust_chr.size(); c++) {
+  //   vector<unsigned int> tmp(2*clust_chr[c].size());
+  //   for(unsigned int i=0; i<clust_chr[c].size(); i++) {
   //     tmp[2*i] = 2*clust_chr[c][i];
   //     tmp[2*i+1] = 2*clust_chr[c][i]+1;
   //   }
@@ -605,8 +605,8 @@ void KinshipComputer::bifurcating_kmeans(int chr_out, vector<int> & assign_chr,
   // }
 }
 
-void KinshipComputer::kmeans_core(int c, int chr_out, vector< vector<int> > & clust_chr,
-                                  vector<int> & new_assign_chr) const {
+void KinshipComputer::kmeans_core(unsigned int c, int chr_out, vector< vector<unsigned int> > & clust_chr,
+                                  vector<unsigned int> & new_assign_chr) const {
   // Initialize centroids
   vector2d mu0, mu1;
   init_centroids(c, chr_out, clust_chr, mu0, mu1);
@@ -616,8 +616,8 @@ void KinshipComputer::kmeans_core(int c, int chr_out, vector< vector<int> > & cl
   // Update assignments and centroids until convergence
   double delta_mu0=1, delta_mu1=1;
   double mu_eps = 1e-3;
-  int it_max = 50;
-  for(int it=0; it<it_max; it++) {
+  unsigned int it_max = 50;
+  for(unsigned int it=0; it<it_max; it++) {
     // Update assignments and centroids
     update_assignments(c, chr_out, clust_chr, mu0, mu1, new_assign_chr);
     update_centroids(c, chr_out, clust_chr, new_assign_chr, mu0, mu1);
@@ -633,17 +633,17 @@ void KinshipComputer::kmeans_core(int c, int chr_out, vector< vector<int> > & cl
 }
 
 
-tuple<bool,int,int> KinshipComputer::kmeans(int c, int chr_out, vector< vector<int> > & clust_chr,
-                                            vector<int> & assign_chr, vector<int> & unfinished_clusters) const {
+tuple<bool,int,int> KinshipComputer::kmeans(unsigned int c, int chr_out, vector< vector<unsigned int> > & clust_chr,
+                                            vector<unsigned int> & assign_chr, vector<unsigned int> & unfinished_clusters) const {
 
-  int clust_size = clust_chr[c].size();
+  unsigned int clust_size = clust_chr[c].size();
 
-  vector<int> new_assign_chr(clust_size, 0);
+  vector<unsigned int> new_assign_chr(clust_size, 0);
   kmeans_core(c, chr_out, clust_chr, new_assign_chr);
 
   // Compute sizes of candidate clusters to decide whether to accept them
-  int clust_size_0 = 0, clust_size_1 = 0;
-  for(int idx=0; idx<clust_size; idx++) {
+  unsigned int clust_size_0 = 0, clust_size_1 = 0;
+  for(unsigned int idx=0; idx<clust_size; idx++) {
     if(new_assign_chr[idx]==0) {
       clust_size_0++;
     } else {
@@ -653,12 +653,12 @@ tuple<bool,int,int> KinshipComputer::kmeans(int c, int chr_out, vector< vector<i
 
   // Define new clusters and assignments, if accepted
   if(std::min(clust_size_0,clust_size_1) >= cluster_size_min) {
-    int num_clust = clust_chr.size();
+    unsigned int num_clust = clust_chr.size();
 
     // Define new assignments and clusters
-    vector<int> new_cluster_0, new_cluster_1;
-    for(int idx=0; idx<clust_size; idx++) {
-      int i = clust_chr[c][idx];
+    vector<unsigned int> new_cluster_0, new_cluster_1;
+    for(unsigned int idx=0; idx<clust_size; idx++) {
+      unsigned int i = clust_chr[c][idx];
       if(new_assign_chr[idx]==0) {
         new_assign_chr[idx] = c;
         new_cluster_0.push_back(i);
@@ -691,15 +691,15 @@ tuple<bool,int,int> KinshipComputer::kmeans(int c, int chr_out, vector< vector<i
 }
 
 void KinshipComputer::writeClusters(const vector<string> & out_file_names) const {
-  for(int chr=0; chr<num_chrs; chr++) {
+  for(unsigned int chr=0; chr<num_chrs; chr++) {
     string out_file_name = out_file_names[chr] + "_clust.txt";
     ofstream outfile(out_file_name.c_str());
     if (!outfile.is_open()){
       cout << "Problem creating the output file: " << out_file_name;
       cout <<"Either the directory does not exist or you do not have write permissions." << endl;
     }
-    for(int c=0; c<clusters[chr].size(); c++) {
-      for(int i=0; i<clusters[chr][c].size(); i++) {
+    for(unsigned int c=0; c<clusters[chr].size(); c++) {
+      for(unsigned int i=0; i<clusters[chr][c].size(); i++) {
         outfile << clusters[chr][c][i];
         if(i+1<clusters[chr][c].size()) outfile <<" ";
       }
@@ -719,32 +719,32 @@ void KinshipComputer::writeClusters(const vector<string> & out_file_names) const
   cout << endl;
 }
 
-void KinshipComputer::assign_references_worker(int i_min, int i_max, int K, int chr, ivector3d & output,
-                                               const Windows& windows, int wid, vector<int> & progress) const {
+void KinshipComputer::assign_references_worker(unsigned int i_min, unsigned int i_max, unsigned int K, unsigned int chr, ivector3d & output,
+                                               const Windows& windows, unsigned int wid, vector<unsigned int> & progress) const {
 
-  int step = 0;
-  const int n_steps = 100;
-  const int progress_period = std::max(1, (i_max-i_min+1)/n_steps);
-  const int progress_total = std::accumulate(progress.begin(), progress.end(), 0);
+  unsigned int step = 0;
+  const unsigned int n_steps = 100;
+  const unsigned int progress_period = std::max((unsigned int)1, (i_max-i_min+1)/n_steps);
+  const unsigned int progress_total = std::accumulate(progress.begin(), progress.end(), 0);
 
   // Initialize progress bar (worker 0)
   if(wid==0) {
     cout << "|" << flush;
-    for(int s=0; s<n_steps; s++) cout << ".";
+    for(unsigned int s=0; s<n_steps; s++) cout << ".";
     cout << "|" << endl;
     cout << "|" << flush;
   }
 
-  for(int i=i_min; i<i_max; i++) {
+  for(unsigned int i=i_min; i<i_max; i++) {
     findNeighbors(i, K, chr, windows, output[i]);
     // Keep track of progress (all workers)
     progress[wid]--;
     // Update progress bar (worker 0)
     if(wid==0) {
       if(i % progress_period == 0) {
-        const int progress_remaining = std::accumulate(progress.begin(),progress.end(),0);
-        int new_step = (n_steps * (progress_total-progress_remaining)) / progress_total;
-        for(int s=step; s<new_step; s++) {
+        const unsigned int progress_remaining = std::accumulate(progress.begin(),progress.end(),0);
+        unsigned int new_step = (n_steps * (progress_total-progress_remaining)) / progress_total;
+        for(unsigned int s=step; s<new_step; s++) {
           cout << "=" << flush;
           step = new_step;
         }
@@ -754,7 +754,7 @@ void KinshipComputer::assign_references_worker(int i_min, int i_max, int K, int 
 
   // Finalize progress bar (worker 0)
   if(wid==0) {
-    for(int s=step; s<n_steps; s++) {
+    for(unsigned int s=step; s<n_steps; s++) {
       cout << "=" << flush;
     }
     cout << "|" << endl;
@@ -762,36 +762,36 @@ void KinshipComputer::assign_references_worker(int i_min, int i_max, int K, int 
 }
 
 
-ivector3d KinshipComputer::combine_references_families(const int chr, const ivector3d& _ref) const {
+ivector3d KinshipComputer::combine_references_families(const unsigned int chr, const ivector3d& _ref) const {
   ivector3d ref = _ref;
-  const int num_windows = ref[0].size();
-  for(int w=0; w<num_windows; w++) {
-    for(int i=0; i<num_haps; i++) {
+  const unsigned int num_windows = ref[0].size();
+  for(unsigned int w=0; w<num_windows; w++) {
+    for(unsigned int i=0; i<num_haps; i++) {
       std::sort(ref[i][w].begin(), ref[i][w].end());
     }
   }
 
-  for(int w=0; w<num_windows; w++) {
-    const int K = ref[0][w].size();
+  for(unsigned int w=0; w<num_windows; w++) {
+    const unsigned int K = ref[0][w].size();
     vector<bool> already_processed(num_haps, false);
-    for(int i1=0; i1<num_haps; i1++) {
+    for(unsigned int i1=0; i1<num_haps; i1++) {
       // Check whether this haplotype has already been processed
       if(already_processed[i1]) continue;
 
       // If not, add it and its family to the list
-      const vector<int>& ibd_family = metadata[chr].related_families[i1];
+      const vector<unsigned int>& ibd_family = metadata[chr].related_families[i1];
       already_processed[i1] = true;
-      for(int i2 : ibd_family) already_processed[i2] = true;
+      for(unsigned int i2 : ibd_family) already_processed[i2] = true;
 
       // Skip family if it only contains one haplotype
-      const int fam_size = ibd_family.size();
+      const unsigned int fam_size = ibd_family.size();
       if(fam_size<=1) continue;
 
       // Find intersection of all references within family
-      vector<int> v_intersection = ref[i1][w];
-      for(int i2 : ibd_family) {
+      vector<unsigned int> v_intersection = ref[i1][w];
+      for(unsigned int i2 : ibd_family) {
         if(i2==i1) continue;
-        vector<int> v_tmp;
+        vector<unsigned int> v_tmp;
         std::set_intersection(v_intersection.begin(), v_intersection.end(),
                               ref[i2][w].begin(), ref[i2][w].end(),
                               back_inserter(v_tmp));
@@ -799,15 +799,15 @@ ivector3d KinshipComputer::combine_references_families(const int chr, const ivec
       }
 
       // cout << "Family of haplotype " << i1 << ":";
-      // for(int i : ibd_family) cout << " " << i;
+      // for(unsigned int i : ibd_family) cout << " " << i;
       // cout << endl;
       // cout << "Intersection has size " << v_intersection.size() << endl;
 
       // Add top references for each family element until full
-      int i = 0;
-      int k = 0;
+      unsigned int i = 0;
+      unsigned int k = 0;
       while(v_intersection.size()<K) {
-        int id = _ref[ibd_family[i]][w][k];
+        unsigned int id = _ref[ibd_family[i]][w][k];
         if(!std::binary_search(v_intersection.begin(), v_intersection.end(), id)) {
           v_intersection.push_back(id);
           sort(v_intersection.begin(), v_intersection.end());
@@ -821,11 +821,11 @@ ivector3d KinshipComputer::combine_references_families(const int chr, const ivec
       }
 
       // cout << "New reference set:" << endl;
-      // for(int i : v_intersection) cout << " " << i;
+      // for(unsigned int i : v_intersection) cout << " " << i;
       // cout << endl;
 
       // Store new set of references
-      for(int i : ibd_family) {
+      for(unsigned int i : ibd_family) {
         ref[i][w] = v_intersection;
       }
     }
@@ -834,13 +834,13 @@ ivector3d KinshipComputer::combine_references_families(const int chr, const ivec
   return(ref);
 }
 
-ivector3d KinshipComputer::assign_references(const int K, const int chr, const Windows& windows) const {
+ivector3d KinshipComputer::assign_references(const unsigned int K, const unsigned int chr, const Windows& windows) const {
 
   // Find number of windows
-  int num_windows = windows.num_windows;
+  unsigned int num_windows = windows.num_windows;
 
   // Initialize references
-  ivector3d ref(num_haps, ivector2d(num_windows, vector<int>(K,-1)));
+  ivector3d ref(num_haps, ivector2d(num_windows, vector<unsigned int>(K,-1)));
 
   if(num_windows>1) {
     cout<<"Assigning references within "<<num_windows<<" windows using "<<num_threads<<" threads: "<<endl;
@@ -848,27 +848,27 @@ ivector3d KinshipComputer::assign_references(const int K, const int chr, const W
     cout<<"Assigning references for the whole chromosome using "<<num_threads<<" threads: "<<endl;
   }
 
-  vector<int> progress(num_threads);
-  for(int wid=0; wid<num_threads; wid++ ) {
-    int i_start = wid*num_haps/num_threads;
-    int i_end = (wid+1)*num_haps/num_threads;
+  vector<unsigned int> progress(num_threads);
+  for(unsigned int wid=0; wid<num_threads; wid++ ) {
+    unsigned int i_start = wid*num_haps/num_threads;
+    unsigned int i_end = (wid+1)*num_haps/num_threads;
     progress[wid] = i_end - i_start + 1;
   }
 
   if(num_threads>1) {
     // Compute distances for blocks of individuals in parallel
     vector<boost::thread> workers;
-    for(int wid=0; wid<num_threads; wid++ ) {
+    for(unsigned int wid=0; wid<num_threads; wid++ ) {
       // Divide task
-      int i_start = wid*num_haps/num_threads;
-      int i_end = (wid+1)*num_haps/num_threads;
+      unsigned int i_start = wid*num_haps/num_threads;
+      unsigned int i_end = (wid+1)*num_haps/num_threads;
       if(wid==(num_threads-1)) i_end = num_haps;
       // Create worker
       workers.push_back(boost::thread(&KinshipComputer::assign_references_worker, this, i_start, i_end, K, chr,
                                       boost::ref(ref), boost::ref(windows), wid, boost::ref(progress)));
     }
     // Launch workers
-    for(int wid=0; wid<num_threads; wid++ ) {
+    for(unsigned int wid=0; wid<num_threads; wid++ ) {
       workers[wid].join();
     }
   } else {
@@ -881,19 +881,19 @@ ivector3d KinshipComputer::assign_references(const int K, const int chr, const W
   ref = combine_references_families(chr, ref);
 
   // Sanity check: make sure references are constant within families
-  for(int w=0; w<num_windows; w++) {
-    for(int i1=0; i1<num_haps; i1++) {
-      const vector<int>& ibd_family = metadata[chr].related_families[i1];
+  for(unsigned int w=0; w<num_windows; w++) {
+    for(unsigned int i1=0; i1<num_haps; i1++) {
+      const vector<unsigned int>& ibd_family = metadata[chr].related_families[i1];
       if(ibd_family.size()>1) {
-        for(int i2 : ibd_family) {
+        for(unsigned int i2 : ibd_family) {
           if(ref[i1][w] != ref[i2][w]) {
             cerr << "Error: references for haplotypes " << i1 << " and " << i2 << " do not match!" << endl;
             cout << "Family:";
-            for(int i : ibd_family) cout << " " << i;
+            for(unsigned int i : ibd_family) cout << " " << i;
             cout << endl;
-            for(int k : ref[i1][w]) cout << " " << k;
+            for(unsigned int k : ref[i1][w]) cout << " " << k;
             cout << endl;
-            for(int k : ref[i2][w]) cout << " " << k;
+            for(unsigned int k : ref[i2][w]) cout << " " << k;
             cout << endl;
             exit(-1);
           }
@@ -903,11 +903,11 @@ ivector3d KinshipComputer::assign_references(const int K, const int chr, const W
   }
 
   // Sanity check: make sure all references have been correctly assigned
-  for(int w=0; w<num_windows; w++) {
-    for(int i=0; i<num_haps; i++) {
-      const vector<int>& ibd_family = metadata[chr].related_families[i];
-      for(int k=0; k<K; k++) {
-        int j = ref[i][w][k];
+  for(unsigned int w=0; w<num_windows; w++) {
+    for(unsigned int i=0; i<num_haps; i++) {
+      const vector<unsigned int>& ibd_family = metadata[chr].related_families[i];
+      for(unsigned int k=0; k<K; k++) {
+        unsigned int j = ref[i][w][k];
         if(j < 0) {
           cerr << "Error: could not assign all references for lack of sufficient samples. ";
           cerr << "Try decreasing K." << endl;

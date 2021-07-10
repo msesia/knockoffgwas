@@ -10,6 +10,6 @@
 
 using namespace std;
 
-void connected_components(const vector< vector<int> > & input, vector< vector<int> > & output);
+void connected_components(const vector< vector<unsigned int> > & input, vector< vector<unsigned int> > & output);
 
 #endif

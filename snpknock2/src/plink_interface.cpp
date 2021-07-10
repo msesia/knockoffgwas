@@ -7,16 +7,16 @@ typedef std::uint8_t byte;
 
 using namespace std;
 
-void writeBED_variant(ofstream& file, int j, const vector<chaplotype>& H) {
+void writeBED_variant(ofstream& file, unsigned int j, const vector<chaplotype>& H) {
   // Dimensions
-  int num_haps = H.size();
-  int num_samples = num_haps/2;
-  int num_blocks = ceil((double)num_samples/4.0);
+  unsigned int num_haps = H.size();
+  unsigned int num_samples = num_haps/2;
+  unsigned int num_blocks = ceil((double)num_samples/4.0);
 
-  int sample = 0;
-  for(int k=0; k<num_blocks; k++) {
+  unsigned int sample = 0;
+  for(unsigned int k=0; k<num_blocks; k++) {
     byte block = 0b00000000;
-    for(int i=0; i<4; i++) {
+    for(unsigned int i=0; i<4; i++) {
       if(sample<num_samples) {
         bool b0 = H[2*sample][j];
         bool b1 = H[2*sample+1][j];
@@ -36,8 +36,8 @@ void writeBED_variant(ofstream& file, int j, const vector<chaplotype>& H) {
 
 void writeBED(const string& basename, const vector<chaplotype>& H) {
   // Dimensions
-  int num_haps = H.size();
-  int num_snps = H[0].size();
+  unsigned int num_haps = H.size();
+  unsigned int num_snps = H[0].size();
 
   // Create BED file
   string out_filename = basename;
@@ -55,9 +55,9 @@ void writeBED(const string& basename, const vector<chaplotype>& H) {
   file.write((char*)(header), sizeof(header));
 
   // Write BED data blocks
-  int num_samples = num_haps/2;
-  int num_blocks = ceil((double)num_samples/4.0);
-  for(int j=0; j<num_snps; j++) {
+  unsigned int num_samples = num_haps/2;
+  unsigned int num_blocks = ceil((double)num_samples/4.0);
+  for(unsigned int j=0; j<num_snps; j++) {
     writeBED_variant(file, j, H);
   }
   // Close BED file
@@ -67,8 +67,8 @@ void writeBED(const string& basename, const vector<chaplotype>& H) {
 void writeBED(const string& basename, const vector<chaplotype>& H, const vector<chaplotype>& Hk,
               const vector<bool>& swap) {
   // Dimensions
-  int num_haps = H.size();
-  int num_snps = H[0].size();
+  unsigned int num_haps = H.size();
+  unsigned int num_snps = H[0].size();
 
   // Create BED file
   string out_filename = basename;
@@ -86,9 +86,9 @@ void writeBED(const string& basename, const vector<chaplotype>& H, const vector<
   file.write((char*)(header), sizeof(header));
 
   // Write BED data blocks
-  int num_samples = num_haps/2;
-  int num_blocks = ceil((double)num_samples/4.0);
-  for(int j=0; j<num_snps; j++) {
+  unsigned int num_samples = num_haps/2;
+  unsigned int num_blocks = ceil((double)num_samples/4.0);
+  for(unsigned int j=0; j<num_snps; j++) {
     // Write original genotypes and knockoffs, possibly swapped
     if(swap[j]) {
       writeBED_variant(file, j, Hk);
@@ -114,7 +114,7 @@ void writeBIM(const string& basename, const Metadata& metadata,
     exit(1);
   }
 
-  for(int j=0; j<metadata.num_snps(); j++) {
+  for(unsigned int j=0; j<metadata.num_snps(); j++) {
     if(include_genotypes) {
       if(swap[j]) {
         file << metadata.legend_filter.chr[j] << "\t";
@@ -170,7 +170,7 @@ void writeFAM(const string& basename, const Metadata& metadata) {
     exit(1);
   }
 
-  for(int i=0; i<metadata.num_samples(); i++) {
+  for(unsigned int i=0; i<metadata.num_samples(); i++) {
     file << metadata.sample_filter.ID[i] << "\t";
     file << metadata.sample_filter.famID[i] << "\t";
     file << 0 << "\t";
@@ -184,8 +184,8 @@ void writeFAM(const string& basename, const Metadata& metadata) {
 }
 
 void writeHAPS(const string& basename, const vector<chaplotype>& Hk, const Metadata& metadata) {
-  int num_haps = Hk.size();
-  int num_snps = Hk[0].size();
+  unsigned int num_haps = Hk.size();
+  unsigned int num_snps = Hk[0].size();
 
   string filename = basename;
   filename.append(".haps");
@@ -194,7 +194,7 @@ void writeHAPS(const string& basename, const vector<chaplotype>& Hk, const Metad
     cerr << "Problem creating the output file: " << filename;
     cerr << "Either the directory does not exist or you do not have write permissions." << endl;
   }
-  for(int j=0; j<num_snps; j++) {
+  for(unsigned int j=0; j<num_snps; j++) {
     // Print variant info
     file << metadata.legend_filter.chr[j] << " ";
     file << metadata.legend_filter.ID[j] << " ";
@@ -202,7 +202,7 @@ void writeHAPS(const string& basename, const vector<chaplotype>& Hk, const Metad
     file << metadata.legend_filter.A0[j] << " ";
     file << metadata.legend_filter.A1[j] << " ";
     // Print variant values for each haplotype
-    for(int i=0; i<num_haps; i++) {
+    for(unsigned int i=0; i<num_haps; i++) {
       file << Hk[i].get(j);
       if(i+1<num_haps) file <<" ";
     }
@@ -227,7 +227,7 @@ void plink::writeSAMPLE(const string& basename, const Metadata& metadata) {
   file << "0 0 0 D" << endl;
 
   // Write body
-  for(int i=0; i<metadata.num_samples(); i++) {
+  for(unsigned int i=0; i<metadata.num_samples(); i++) {
     file << metadata.sample_filter.ID[i] << " ";
     file << metadata.sample_filter.famID[i] << " ";
     file << metadata.sample_filter.missing[i] << " ";
@@ -240,7 +240,7 @@ void plink::writeSAMPLE(const string& basename, const Metadata& metadata) {
 
 void plink::write_binary(const string& basename, const Metadata& metadata, const vector<chaplotype>& Hk) {
   assert(Hk.size()>0);  
-  int num_snps = Hk[0].size();
+  unsigned int num_snps = Hk[0].size();
   vector<bool> swap_dummy(num_snps,0);
   writeBED(basename, Hk);
   writeBIM(basename, metadata, false, swap_dummy);
@@ -259,17 +259,17 @@ void plink::write_binary(const string& basename, const Metadata& metadata,
   assert(H.size()>0);
   assert(H.size()%2==0);
   assert(H.size()==Hk.size());
-  for(int i=0; i<H.size(); i++) {
+  for(unsigned int i=0; i<H.size(); i++) {
     assert(H[i].size()==Hk[i].size());
   }
 
   // Determine ramdom swaps
-  int seed = 2019;
+  unsigned int seed = 2019;
   mt19937_64 rng(seed);
-  std::uniform_int_distribution<int> coin_flip(0, 1);
-  int num_snps = H[0].size();
+  std::uniform_int_distribution<unsigned int> coin_flip(0, 1);
+  unsigned int num_snps = H[0].size();
   vector<bool> swap(num_snps,0);
-  for(int j=0; j<num_snps; j++) {
+  for(unsigned int j=0; j<num_snps; j++) {
     swap[j] = coin_flip(rng);
   }
 

@@ -24,7 +24,7 @@ public:
   // Data
   vector< vector<double> > Z;
   Sample sample;
-  int K, K_max;
+  unsigned int K, K_max;
 
   void print() const;
 
@@ -36,6 +36,6 @@ private:
 
 };
 
-void load_data(const string & filename, int K_max, Sample & sample_raw, vector< vector<double> > & Z_raw);
+void load_data(const string & filename, unsigned int K_max, Sample & sample_raw, vector< vector<double> > & Z_raw);
 
 #endif
