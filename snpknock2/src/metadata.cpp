@@ -192,11 +192,11 @@ unsigned int Metadata::load_ibd_segments() {
     // Parse segment information
     string chr = tokens[0];
     string ID1 = tokens[1];
-    unsigned int HID1 = stoi(tokens[2]);
+    unsigned int HID1 = stoul(tokens[2]);
     string ID2 = tokens[3];
-    unsigned int HID2 = stoi(tokens[4]);
-    unsigned int bp_min = stoi(tokens[5]);
-    unsigned int bp_max = stoi(tokens[6]);
+    unsigned int HID2 = stoul(tokens[4]);
+    unsigned int bp_min = stoul(tokens[5]);
+    unsigned int bp_max = stoul(tokens[6]);
 
     // Sanity checks
     if(ID1!=ID2) {
@@ -517,7 +517,7 @@ void Metadata::load_partitions() {
     assert(tokens[0] == legend_filter.ID.at(line));
     // Store group assignments for each partition
     for(unsigned int r=0; r<num_partitions; r++) {
-      partitions[r][line] = std::stoi(tokens[1+r]);
+      partitions[r][line] = std::stoul(tokens[1+r]);
     }
     line++;
   }
@@ -674,7 +674,7 @@ void Legend::push_back(vector<string> row_) {
     // legend format, without cM
     chr.push_back("?");
     ID.push_back(row_[0]);
-    bp.push_back(std::stoi(row_[1]));
+    bp.push_back(std::stoul(row_[1]));
     cm.push_back(-1);
     A0.push_back(row_[2]);
     A1.push_back(row_[3]);
@@ -683,7 +683,7 @@ void Legend::push_back(vector<string> row_) {
     // legend format, with cM
     chr.push_back("?");
     ID.push_back(row_[0]);
-    bp.push_back(std::stoi(row_[1]));
+    bp.push_back(std::stoul(row_[1]));
     cm.push_back(std::stod(row_[2]));
     A0.push_back(row_[3]);
     A1.push_back(row_[4]);
@@ -692,7 +692,7 @@ void Legend::push_back(vector<string> row_) {
     // BIM format
     chr.push_back(row_[0]);
     ID.push_back(row_[1]);
-    bp.push_back(std::stoi(row_[3]));
+    bp.push_back(std::stoul(row_[3]));
     cm.push_back(std::stod(row_[2]));
     A0.push_back(row_[4]);
     A1.push_back(row_[5]);

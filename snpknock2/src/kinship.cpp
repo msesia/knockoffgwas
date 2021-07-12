@@ -45,7 +45,7 @@ void Kinship::load_references_local(const vector<string>& ref_files) {
     getline(fd_ref, buffer, '\n');
     sutils::tokenize(buffer, tokens);
     if(tokens.size() == 2) {
-      const unsigned int _num_haps = std::stoi(tokens[1]);
+      const unsigned int _num_haps = std::stoul(tokens[1]);
       if(tokens[0] != "#") throw_error_input("reading reference file, incorrect header");
       if(_num_haps > 0) {
         num_haps = _num_haps;
@@ -61,7 +61,7 @@ void Kinship::load_references_local(const vector<string>& ref_files) {
     sutils::tokenize(buffer, tokens);
     if(tokens.size() == 2) {
       if(tokens[0] != "#") throw_error_input("reading reference file, incorrect header");
-      const unsigned int _num_windows = std::stoi(tokens[1]);
+      const unsigned int _num_windows = std::stoul(tokens[1]);
       if(_num_windows > 0) {
         num_windows = _num_windows;
       } else {
@@ -116,7 +116,7 @@ void Kinship::load_references_local(const vector<string>& ref_files) {
           }
           assert(K==tokens.size());
           for(unsigned int k=0; k<K; k++) {
-            references_local[chr][i][w][k] = std::stoi(tokens[k]);
+            references_local[chr][i][w][k] = std::stoul(tokens[k]);
           }
           w++;
         }
@@ -147,7 +147,7 @@ void Kinship::load_references_global(const vector<string>& ref_files) {
     getline(fd_ref, buffer, '\n');
     sutils::tokenize(buffer, tokens);
     if(tokens.size() == 2) {
-      const unsigned int _num_haps = std::stoi(tokens[1]);
+      const unsigned int _num_haps = std::stoul(tokens[1]);
       if(tokens[0] != "#") throw_error_input("reading reference file, incorrect header");
       if(_num_haps > 0) {
         num_haps = _num_haps;
@@ -163,7 +163,7 @@ void Kinship::load_references_global(const vector<string>& ref_files) {
     sutils::tokenize(buffer, tokens);
     if(tokens.size() == 2) {
       if(tokens[0] != "#") throw_error_input("reading reference file, incorrect header");
-      const unsigned int _num_windows = std::stoi(tokens[1]);
+      const unsigned int _num_windows = std::stoul(tokens[1]);
       if(_num_windows > 0) {
         num_windows = _num_windows;
       } else {
@@ -212,7 +212,7 @@ void Kinship::load_references_global(const vector<string>& ref_files) {
           }
           assert(K==tokens.size());
           for(unsigned int k=0; k<K; k++) {
-            references_global[chr][i][k] = std::stoi(tokens[k]);
+            references_global[chr][i][k] = std::stoul(tokens[k]);
           }
           i++;
         }
@@ -359,7 +359,7 @@ void Kinship::writeReferencesLocal(const vector<Metadata>& metadata, const vecto
     out_file_name.append("_lref.txt");
     ofstream outfile(out_file_name.c_str());
     if (!outfile.is_open()){
-      cout << "Problem creating the output file: " << out_file_name;
+      cout << "Problem creating the output file: " << out_file_name << endl;
       cout <<"Either the directory does not exist or you do not have write permissions." << endl;
     }
     const unsigned int num_windows = metadata[chr].windows.num_windows;
@@ -391,7 +391,7 @@ void Kinship::writeReferencesGlobal(const vector<Metadata>& metadata,
     out_file_name.append("_ref.txt");
     ofstream outfile(out_file_name.c_str());
     if (!outfile.is_open()){
-      cout << "Problem creating the output file: " << out_file_name;
+      cout << "Problem creating the output file: " << out_file_name << endl;
       cout <<"Either the directory does not exist or you do not have write permissions." << endl;
     }
     const unsigned int num_windows = 1;

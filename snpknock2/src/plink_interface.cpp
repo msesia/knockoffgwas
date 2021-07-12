@@ -45,7 +45,7 @@ void writeBED(const string& basename, const vector<chaplotype>& H) {
   ofstream file;
   file.open(out_filename, std::ios_base::binary);
   if (!file.is_open()){
-    cerr << "Problem creating the output file: " << out_filename;
+    cerr << "Problem creating the output file: " << out_filename << endl;
     cerr << "Either the directory does not exist or you do not have write permissions." << endl;
     exit(1);
   }
@@ -76,7 +76,7 @@ void writeBED(const string& basename, const vector<chaplotype>& H, const vector<
   ofstream file;
   file.open(out_filename, std::ios_base::binary);
   if (!file.is_open()){
-    cerr << "Problem creating the output file: " << out_filename;
+    cerr << "Problem creating the output file: " << out_filename << endl;
     cerr << "Either the directory does not exist or you do not have write permissions." << endl;
     exit(1);
   }
@@ -109,7 +109,7 @@ void writeBIM(const string& basename, const Metadata& metadata,
   out_filename.append(".bim");
   ofstream file(out_filename);
   if (!file.is_open()){
-    cerr << "Problem creating the output file: " << out_filename;
+    cerr << "Problem creating the output file: " << out_filename << endl;
     cerr << "Either the directory does not exist or you do not have write permissions." << endl;
     exit(1);
   }
@@ -165,7 +165,7 @@ void writeFAM(const string& basename, const Metadata& metadata) {
   out_filename.append(".fam");
   ofstream file(out_filename);
   if (!file.is_open()){
-    cerr << "Problem creating the output file: " << out_filename;
+    cerr << "Problem creating the output file: " << out_filename << endl;
     cerr << "Either the directory does not exist or you do not have write permissions." << endl;
     exit(1);
   }
@@ -191,7 +191,7 @@ void writeHAPS(const string& basename, const vector<chaplotype>& Hk, const Metad
   filename.append(".haps");
   ofstream file(filename);
   if (!file.is_open()){
-    cerr << "Problem creating the output file: " << filename;
+    cerr << "Problem creating the output file: " << filename << endl;
     cerr << "Either the directory does not exist or you do not have write permissions." << endl;
   }
   for(unsigned int j=0; j<num_snps; j++) {
@@ -217,7 +217,7 @@ void plink::writeSAMPLE(const string& basename, const Metadata& metadata) {
   out_filename.append(".sample");
   ofstream file(out_filename);
   if (!file.is_open()){
-    cerr << "Problem creating the output file: " << out_filename;
+    cerr << "Problem creating the output file: " << out_filename << endl;
     cerr << "Either the directory does not exist or you do not have write permissions." << endl;
     exit(1);
   }

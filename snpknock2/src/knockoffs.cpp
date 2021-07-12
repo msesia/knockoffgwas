@@ -200,7 +200,7 @@ void Knockoffs::writeAncestries(const string _out_file_name) const {
   out_file_name.append("_anc.txt");
   ofstream outfile(out_file_name.c_str());
   if (!outfile.is_open()) {
-    cout << "Problem creating the output file: " << out_file_name;
+    cout << "Problem creating the output file: " << out_file_name << endl;
     cout <<"Either the directory does not exist or you do not have write permissions." << endl;
   }
   const unsigned int num_windows = metadata.windows.num_windows;
@@ -265,7 +265,7 @@ void Knockoffs::writeGroups(const string _out_file_name) const {
   out_file_name.append("_grp.txt");
   ofstream outfile(out_file_name.c_str());
   if (!outfile.is_open()){
-    cout << "Problem creating the output file: " << out_file_name;
+    cout << "Problem creating the output file: " << out_file_name << endl;
     cout <<"Either the directory does not exist or you do not have write permissions." << endl;
   }
   outfile << "SNP Group" << endl;
@@ -281,7 +281,7 @@ void Knockoffs::writeWindows(const string _out_file_name) const {
   out_file_name.append("_windows.txt");
   ofstream outfile(out_file_name.c_str());
   if (!outfile.is_open()){
-    cout << "Problem creating the output file: " << out_file_name;
+    cout << "Problem creating the output file: " << out_file_name << endl;
     cout <<"Either the directory does not exist or you do not have write permissions." << endl;
   }
   outfile << "SNP Window" << endl;
@@ -1582,7 +1582,7 @@ void Knockoffs::writeHMM(const string _out_file_name) const {
   out_file_name.append("_hmm.txt");
   ofstream outfile(out_file_name.c_str());
   if (!outfile.is_open()){
-    cout << "Problem creating the output file: " << out_file_name;
+    cout << "Problem creating the output file: " << out_file_name << endl;
     cout <<"Either the directory does not exist or you do not have write permissions." << endl;
   }
   outfile << "Recombination Mutation" << endl;

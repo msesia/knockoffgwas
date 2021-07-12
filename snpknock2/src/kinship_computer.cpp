@@ -695,7 +695,7 @@ void KinshipComputer::writeClusters(const vector<string> & out_file_names) const
     string out_file_name = out_file_names[chr] + "_clust.txt";
     ofstream outfile(out_file_name.c_str());
     if (!outfile.is_open()){
-      cout << "Problem creating the output file: " << out_file_name;
+      cout << "Problem creating the output file: " << out_file_name << endl;
       cout <<"Either the directory does not exist or you do not have write permissions." << endl;
     }
     for(unsigned int c=0; c<clusters[chr].size(); c++) {

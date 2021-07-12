@@ -8,6 +8,7 @@
 #include "covariates.h"
 
 #define DELIMITER "--------------------------------------------------------------------------------"
+#define DEBUG 1
 
 using namespace std;
 
@@ -45,6 +46,10 @@ int main(int argc, const char * argv[]) {
   // }
 
   // Process input arguments
+  if(DEBUG) {
+    cout << "Processing input arguments..." << endl;
+  }
+
   Arguments args(argc,argv);
   args.check();
 
@@ -58,6 +63,10 @@ int main(int argc, const char * argv[]) {
   const unsigned int requested_resolution = args.get_resolution();
   const unsigned int seed = args.get_seed();
   const unsigned int window_size = args.get_window_size();
+
+  if(DEBUG) {
+    cout << "Done processing input arguments." << endl;
+  }
 
   // Process metadata
   cout << endl << DELIMITER << endl;

@@ -1,9 +1,11 @@
 #include "arguments.h"
 
+#define DEBUG 1
+
 using namespace std;
 
 //constructor definition
-Arguments::Arguments(int arg_num, const char* argslist[]) {
+Arguments::Arguments(unsigned int arg_num, const char* argslist[]) {
   n_threads = 1;
   K = K_default;
   cluster_size_min = cluster_size_min_default;
@@ -29,7 +31,7 @@ Arguments::Arguments() {
   //cout << "Default constructor called" << endl;
 }
 
-int Arguments::num_chrs() const {
+unsigned int Arguments::num_chrs() const {
   return(num_chrs_);
 }
 
@@ -85,13 +87,13 @@ void Arguments::print_help() const {
   cout << endl << endl;
 }
 
-void Arguments::parse_args(int arg_num, const char* argslist[]) {
+void Arguments::parse_args(unsigned int arg_num, const char* argslist[]) {
   vector<string> args;
   if(arg_num==1){
     exit(1);
   }
   else {
-    for(int i=1;i<arg_num;i++){
+    for(unsigned int i=1; i<arg_num; i++){
       args.push_back(string(argslist[i]));
     }
     cout << "Command line arguments:" << endl;
@@ -351,14 +353,14 @@ void Arguments::check() const {
 
   // HAPS or BGEN files
   if (data_format=="bgen") {
-    for(int i=0; i<data_files.size(); i++) {
+    for(unsigned int i=0; i<data_files.size(); i++) {
       string prefix = data_files[i];
       check_file(prefix + ".bgen");
       check_file(prefix + ".bim");
       check_file(prefix + ".sample");
     }
   } else if (data_format=="haps"){
-    for(int i=0; i<data_files.size(); i++) {
+    for(unsigned int i=0; i<data_files.size(); i++) {
       string prefix = data_files[i];
       check_file(prefix + ".haps");
       check_file(prefix + ".legend");
@@ -371,34 +373,34 @@ void Arguments::check() const {
 
   // Partition files (optional)
   if(part_files.size()>0) {
-    for(int i=0; i<part_files.size(); i++) check_file(part_files[i]);
+    for(unsigned int i=0; i<part_files.size(); i++) check_file(part_files[i]);
   }
   // Map files (optional)
   if(map_files.size()>0) {
-    for(int i=0; i<map_files.size(); i++) check_file(map_files[i]);
+    for(unsigned int i=0; i<map_files.size(); i++) check_file(map_files[i]);
   }
   // HMM files (optional)
   if(hmm_files.size()>0) {
-    for(int i=0; i<hmm_files.size(); i++) check_file(hmm_files[i]);
+    for(unsigned int i=0; i<hmm_files.size(); i++) check_file(hmm_files[i]);
   }
   // Reference files (optional)
   if(!compute_kinship && ref_files.size()>0) {
-    for(int i=0; i<ref_files.size(); i++) check_file(ref_files[i]);
+    for(unsigned int i=0; i<ref_files.size(); i++) check_file(ref_files[i]);
   }
   if(!compute_kinship && lref_files.size()>0) {
-    for(int i=0; i<lref_files.size(); i++) check_file(lref_files[i]);
+    for(unsigned int i=0; i<lref_files.size(); i++) check_file(lref_files[i]);
   }
   // Keep file (optional)
   if(keep_file!="") check_file(keep_file);
   // Extract files (optional)
   if(extract_files.size()>0) {
-    for(int i=0; i<extract_files.size(); i++) check_file(extract_files[i]);
+    for(unsigned int i=0; i<extract_files.size(); i++) check_file(extract_files[i]);
   }
   // PC file (optional)
   if(pc_file!="") check_file(pc_file);
   // IBD files (optional)
   if(ibd_files.size()>0) {
-    for(int i=0; i<ibd_files.size(); i++) check_file(ibd_files[i]);
+    for(unsigned int i=0; i<ibd_files.size(); i++) check_file(ibd_files[i]);
   }
 
   // Print errors (if any) and exit
@@ -488,13 +490,14 @@ void Arguments::parse_wildcard_str(string input, string state) {
   if(parse_expression) {
     string left_str = std::string(input.begin()+open_brace+1, input.begin()+colon);
     string right_str = std::string(input.begin()+colon+1, input.begin()+close_brace);
-    int left = std::stoi(left_str);
-    int right = std::stoi(right_str);
+    cout << "Left: " << left_str << "; right: " << right_str << endl;
+    unsigned int left = std::stoul(left_str);
+    unsigned int right = std::stoul(right_str);
 
     string prefix = std::string(input.begin(), input.begin()+open_brace);
     string suffix = std::string(input.begin()+close_brace+1, input.end());
 
-    for(int chr=left; chr<=right; chr++) {
+    for(unsigned int chr=left; chr<=right; chr++) {
       filenames.push_back(prefix + std::to_string(chr) + suffix);
     }
 
@@ -503,7 +506,7 @@ void Arguments::parse_wildcard_str(string input, string state) {
   }
 
   // cout << "Parsed input: " << endl;
-  for(int i=0; i<filenames.size(); i++) {
+  for(unsigned int i=0; i<filenames.size(); i++) {
     if(state=="bgen") data_files.push_back(filenames[i]);
     if(state=="hap") data_files.push_back(filenames[i]);
     if(state=="extract") extract_files.push_back(filenames[i]);
@@ -524,8 +527,8 @@ void Arguments::parse_file_str(string file_name, string state) {
   //int found = 0;
   string type;
   string temp = file_name;
-  int ext_start =0;
-  int length_of_name = file_name.length();
+  unsigned int ext_start = 0;
+  unsigned int length_of_name = file_name.length();
   //cout << "parsing " << file_name << endl;
   if((ext_start=file_name.rfind(".gz"))!=string::npos) {
     if(length_of_name-ext_start==3)
@@ -557,11 +560,11 @@ string Arguments::get_filename(string filetype) const {
   return("");
 }
 
-int Arguments::get_resolution() const {
+unsigned int Arguments::get_resolution() const {
   return(resolution);
 }
 
-DataFiles Arguments::get_filenames(int chr) const {
+DataFiles Arguments::get_filenames(unsigned int chr) const {
   DataFiles df;
   df.format = data_format;
   df.data = data_files.at(chr);
@@ -575,13 +578,13 @@ DataFiles Arguments::get_filenames(int chr) const {
 
 vector<DataFiles> Arguments::get_filenames() const {
   vector<DataFiles> df;
-  for(int chr=0; chr<num_chrs_; chr++) {
+  for(unsigned int chr=0; chr<num_chrs_; chr++) {
     df.push_back(get_filenames(chr));
   }
   return(df);
 }
 
-string Arguments::get_hmm_file(int chr) const {
+string Arguments::get_hmm_file(unsigned int chr) const {
   return(hmm_files[chr]);
 }
 
@@ -589,7 +592,7 @@ vector<string> Arguments::get_hmm_files() const {
   return(hmm_files);
 }
 
-string Arguments::get_ibd_file(int chr) const {
+string Arguments::get_ibd_file(unsigned int chr) const {
   return(ibd_files[chr]);
 }
 
@@ -597,7 +600,7 @@ vector<string> Arguments::get_ibd_files() const {
   return(ibd_files);
 }
 
-string Arguments::get_ref_file(int chr) const {
+string Arguments::get_ref_file(unsigned int chr) const {
   return(ref_files[chr]);
 }
 
@@ -605,7 +608,7 @@ vector<string> Arguments::get_ref_files() const {
   return(ref_files);
 }
 
-string Arguments::get_lref_file(int chr) const {
+string Arguments::get_lref_file(unsigned int chr) const {
   if(lref_files.size() == ref_files.size()) {
     return(lref_files[chr]);
   } else {
@@ -621,7 +624,7 @@ vector<string> Arguments::get_lref_files() const {
   }
 }
 
-string Arguments::get_output_file(int chr) const {
+string Arguments::get_output_file(unsigned int chr) const {
   return(out_files[chr]);
 }
 
@@ -629,7 +632,7 @@ vector<string> Arguments::get_output_files() const {
   return(out_files);
 }
 
-string Arguments::get_log_file(int chr) const {
+string Arguments::get_log_file(unsigned int chr) const {
   if(log_files.size()!=out_files.size()) return("tmp/hapknock_log");
   else return(log_files[chr]);
 }
@@ -642,27 +645,27 @@ vector<string> Arguments::get_log_files() const {
   else return(log_files);
 }
 
-int Arguments::get_cluster_size_min() const {
+unsigned int Arguments::get_cluster_size_min() const {
   return(cluster_size_min);
 }
 
-int Arguments::get_cluster_size_max() const {
+unsigned int Arguments::get_cluster_size_max() const {
   return(cluster_size_max);
 }
 
-int Arguments::num_threads() const {
+unsigned int Arguments::num_threads() const {
   return(n_threads);
 }
 
-int Arguments::get_debug() const {
+unsigned int Arguments::get_debug() const {
   return(debug);
 }
 
-int Arguments::get_K() const {
+unsigned int Arguments::get_K() const {
   return(K);
 }
 
-int Arguments::get_seed() const {
+unsigned int Arguments::get_seed() const {
   return(seed);
 }
 

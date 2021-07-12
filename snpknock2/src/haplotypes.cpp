@@ -42,7 +42,7 @@ void Haplotypes::writeHaplotypes(string _filename) const {
   filename.append(".haps");
   ofstream outfile(filename.c_str());
   if (!outfile.is_open()){
-    cout << "Problem creating the output file. ";
+    cout << "Problem creating the output file. " << endl;
     cout <<"Either the directory does not exist or you do not have write permissions." << endl;
   }
   for(unsigned int j=0; j<num_snps; j++) {
