@@ -325,9 +325,25 @@ cd ..</code></pre>
 <li><p><strong>Statistics.</strong> Compute knockoff test statistics for all groups of SNPs, separately for each specified genome partition. This operation is carried out by the script <code>knockoffgwas/module_3_statistics.sh</code>, which first merges the knockoff-augmented genotype files for all chromosomes and then converts them into a large <a href="https://privefl.github.io/bigsnpr/">file-backed matrix</a>. Finally, this script fits a sparse generalized linear regression model to predict the phenotype of interest given the knockoff-augmented data using a very <a href="https://privefl.github.io/bigstatsr/">efficient implementation of the lasso</a>, and utilizes that to compute the final knockoff test statistics, separately for each specified genome partition.</p></li>
 <li><p><strong>Filter.</strong> The last module applies the knockoff filter to the statistics computed above, producing a separate list of discoveries for each specified genome partition. This operation is carried out by the script <code>knockoffgwas/module_4_discover.sh</code>. The default FDR level is 10%, but it can be modified within this script. The final lists of discoveries will be written in the directory <code>results/</code>.</p></li>
 </ol>
+<p style="text-align:center;">
+<img src="images/analyze.png" alt="Screenshot of KnockoffGWAS analysis on tutorial data"
+    title="KnockoffGWAS analysis on tutorial data" width="65%" height="65%" />
+</p>
 <p>The final results can be visualized interactively with the script <code>visualize.sh</code>, which will launch a <a href="https://shiny.rstudio.com/">Shiny</a> app in your browser. Some additional R packages are required by the visualization tool, and will be automatically installed if not found.</p>
 <pre><code>./visualize.sh</code></pre>
+<p style="text-align:center;">
+<img src="images/visualize.png" alt="Screenshot of KnockoffGWASView  on tutorial data"
+    title="Script to visualize results of KnockoffGWAS analysis on tutorial data" width="65%" height="65%" />
+</p>
 <p>The expected results for the analysis of this toy dataset are provided in the directory <code>results/</code> and can be visualized through interactive Chicago plots by running the script <code>visualize.sh</code> before running <code>analyze.sh</code>. Note that the script <code>analyze.sh</code> will overwrite the default results.</p>
+<p style="text-align:center;">
+<img src="images/view_1.png" alt="Screenshot of full-genome visualization of KnockoffGWAS discoveries on tutorial data"
+    title="Full-genome visualization of KnockoffGWAS discoveries on tutorial data" width="100%" height="100%" />
+</p>
+<p style="text-align:center;">
+<img src="images/view_2.png" alt="Screenshot of single-chromosome visualization of KnockoffGWAS discoveries on tutorial data"
+    title="single-chromosome visualization of KnockoffGWAS discoveries on tutorial data" width="100%" height="100%" />
+</p>
 
 
 

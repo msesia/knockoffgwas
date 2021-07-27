@@ -44,10 +44,31 @@ These modules organize the analysis as follows:
 
  4. **Filter.** The last module applies the knockoff filter to the statistics computed above, producing a separate list of discoveries for each specified genome partition. This operation is carried out by the script `knockoffgwas/module_4_discover.sh`. The default FDR level is 10%, but it can be modified within this script. The final lists of discoveries will be written in the directory `results/`.
 
+
+<p style="text-align:center;">
+<img src="images/analyze.png" alt="Screenshot of KnockoffGWAS analysis on tutorial data"
+	title="KnockoffGWAS analysis on tutorial data" width="65%" height="65%" />
+</p>
+
 The final results can be visualized interactively with the script `visualize.sh`, which will launch a [Shiny](https://shiny.rstudio.com/) app in your browser. Some additional R packages are required by the visualization tool, and will be automatically installed if not found.
 
 ```
 ./visualize.sh
 ```
 
+<p style="text-align:center;">
+<img src="images/visualize.png" alt="Screenshot of KnockoffGWASView  on tutorial data"
+	title="Script to visualize results of KnockoffGWAS analysis on tutorial data" width="65%" height="65%" />
+</p>
+
 The expected results for the analysis of this toy dataset are provided in the directory `results/` and can be visualized through interactive Chicago plots by running the script `visualize.sh` before running `analyze.sh`. Note that the script `analyze.sh` will overwrite the default results. 
+
+<p style="text-align:center;">
+<img src="images/view_1.png" alt="Screenshot of full-genome visualization of KnockoffGWAS discoveries on tutorial data"
+	title="Full-genome visualization of KnockoffGWAS discoveries on tutorial data" width="100%" height="100%" />
+</p>
+
+<p style="text-align:center;">
+<img src="images/view_2.png" alt="Screenshot of single-chromosome visualization of KnockoffGWAS discoveries on tutorial data"
+	title="single-chromosome visualization of KnockoffGWAS discoveries on tutorial data" width="100%" height="100%" />
+</p>
