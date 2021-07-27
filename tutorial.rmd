@@ -17,6 +17,11 @@ title: "KnockoffGWAS tutorial"
 A toy genetic dataset containing 1000 artificial samples typed at 2000 loci (divided between chromosome 21 and 22) is available from the [software repository](https://github.com/msesia/knockoffgwas) as a tutorial for *KnockoffGWAS*. This data set contains both genotypes and phased haplotypes for all individuals, stored in the standard BED and BGEN formats accepted as input by *KnockoffGWAS*, along with the phenotype information and all necessary auxiliary files.
 Note that this tutorial is intended to be run on a Linux system.
 
+<p style="text-align:center;">
+<img src="images/data.png" alt="Directory tree structure of tutorial data set"
+	title="Directory tree structure of tutorial data set" width="50%" height="50%" />
+</p>
+
 To run the tutorial, download the software repository and enter the corresponding main directory. Then, compile the *snpknock2* C++ program (to generate the knockoffs) by typing the following commands in your terminal:
 
 ```
