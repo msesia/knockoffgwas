@@ -12,7 +12,7 @@
 # Print header
 printf "KnockoffGWASView v0.1 (24 Apr 2019) \n"
 printf "https://bitbucket.org/msesia/knockoffgwas \n"
-printf "(C) 2019 Matteo Sesia, Eugene Katsevich (Stanford University)   GNU General Public License v3 \n\n"
+printf "(C) 2019 Matteo Sesia, Eugene Katsevich    GNU General Public License v3 \n\n"
 
 # Setup spinner for long jobs
 source "misc/spinner.sh"

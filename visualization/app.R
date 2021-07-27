@@ -20,7 +20,7 @@ genes <- unique(annotations$Exons.canonical$name2)
 ui <- fluidPage(theme = "theme.css",
 
   # title
-  headerPanel('KnockoffZoom discovery view'),
+  headerPanel('KnockoffGWAS discovery view'),
   
   # side panel with inputs, error messages, and information box
   fluidRow(
@@ -59,8 +59,8 @@ ui <- fluidPage(theme = "theme.css",
         fixed = TRUE,        
         div(
           style="padding: 8px; border: 5px solid #CCC; background: #FFFFFF;", 
-          HTML("<font size=\"3\">This website presents the results of the KnockoffZoom methodology
-            applied to a toy dataset. See [bioRxiv link] for the manuscript, and <a href=\"https://msesia.github.io/knockoffzoom-v2\" target=\"_blank\"/>this webpage</a> 
+          HTML("<font size=\"3\">This website presents the results of the KnockoffGWAS methodology
+            applied to a toy dataset. See [bioRxiv link] for the manuscript, and <a href=\"https://msesia.github.io/knockoffgwas\" target=\"_blank\"/>this webpage</a> 
             for more information.</font>")
         )
       )
@@ -105,12 +105,12 @@ server <- function(input, output, session) {
     if(input$Tabset == "manhattan"){
       box.title <- "Information on low-resolution results"
       box.message.1 <- "Top: Manhattan plot with BOLT-LMM p-values."
-      box.message.2 <- "Bottom: Manhattan plot with KnockoffZoom test statistics at low-resolution."
+      box.message.2 <- "Bottom: Manhattan plot with KnockoffGWAS test statistics at low-resolution."
       box.message <- sprintf("%s<br>%s", box.message.1, box.message.2)
     } else{
       box.title <- "Information on high-resolution results"
       box.message.1 <- "Top: Manhattan plot with BOLT-LMM p-values."
-      box.message.2 <- "Middle: Chicago plot with KnockoffZoom test statistics at multiple resolutions."
+      box.message.2 <- "Middle: Chicago plot with KnockoffGWAS test statistics at multiple resolutions."
       box.message.3 <- "Bottom: Functional annotations and gene positions."
       box.message <- sprintf("%s<br>%s<br>%s", box.message.1, box.message.2, box.message.3)
     }

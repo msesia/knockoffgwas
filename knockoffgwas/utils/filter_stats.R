@@ -12,7 +12,8 @@ out.basename    <- "../../results/example_res2"
 args <- commandArgs(trailingOnly=TRUE)
 stats.basename  <- as.character(args[1])
 data.basename <- as.character(args[2])
-out.basename    <- as.character(args[3])
+fdr <- as.numeric(args[3])
+out.basename    <- as.character(args[4])
 
 ##############################
 ## Load the test statistics ##
@@ -63,7 +64,7 @@ knockoff.filter <- function(Stats, fdr=0.1, offset=1) {
     Selected <- Stats %>% filter(W >= W.thres)
     return(Selected)
 }
-Selections <- Stats %>% knockoff.filter(fdr=0.1, offset=1)
+Selections <- Stats %>% knockoff.filter(fdr=fdr, offset=1)
 
 # Give preview
 cat(sprintf("Selections:\n"))

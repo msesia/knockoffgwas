@@ -23,6 +23,9 @@ CHR_LIST=($(seq 21 22))
 # List of resolutions
 RESOLUTION_LIST=("6" "5" "4" "3" "2" "1" "0")
 
+# Nominal FDR level (use 0.1 for 10%)
+FDR=0.1
+
 # Utility scripts
 FILTER_STATS="Rscript --vanilla utils/filter_stats.R"
 
@@ -54,7 +57,7 @@ if [[ $FLAG_FILTER == 1 ]]; then
     OUT_BASENAME=$OUT_DIR"/example_res"$RESOLUTION
 
     # Threshold the test statistics and report discoveries
-    $FILTER_STATS $STATS_BASENAME $DATA_BASENAME $OUT_BASENAME
+    $FILTER_STATS $STATS_BASENAME $DATA_BASENAME $FDR $OUT_BASENAME
 
   done
 
