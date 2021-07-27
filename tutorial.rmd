@@ -20,6 +20,7 @@ Note that this tutorial is intended to be run on a Linux system.
 <p style="text-align:center;">
 <img src="images/data.png" alt="Directory tree structure of tutorial data set"
 	title="Directory tree structure of tutorial data set" width="60%" height="60%" />
+        <figcaption style="text-align: center"><small>Directory tree structure of tutorial data set.</small></figcaption>
 </p>
 
 To run the tutorial, download the software repository and enter the corresponding main directory. Then, compile the *snpknock2* C++ program (to generate the knockoffs) by typing the following commands in your terminal:
@@ -43,7 +44,7 @@ These modules organize the analysis as follows:
 
  1. **Partitions.** Partition the available SNPs into contiguous groups at different levels of resolution, based on the genetic distance information provided with the data and the desired resolution values (measured in cM) specified by the user (a default option is specified in `knockoffgwas/module_1_partition.sh`). The genome partitions computed by the module will be stored in the intermediate result directory `tmp/partitions`.
 
- 2. **Knockoffs.** Generate knockoff genotypes for all specified genome partitions. This operation is carried out by the script `knockoffgwas/module_2_knockoffs.sh`, which executes the *snpknock2* program compiled above. The output knockoffs will be stored in standard BED format within the intermediate result directory `tmp/knockoffs`, merged with a copy of the original genotypes for subsequent convenience. A separate set of BED and auxiliary files will be produced for each available chromosome.
+ 2. **Knockoffs.** Generate knockoff genotypes for all specified genome partitions. This operation is carried out by the script `knockoffgwas/module_2_knockoffs.sh`, which executes the *snpknock2* program compiled above. The output knockoffs will be stored in standard BED format within the intermediate result directory `tmp/knockoffs`, merged with a copy of the original genotypes for subsequent convenience. A separate set of BED and auxiliary files will be produced for each available chromosome. The second part of this module, `knockoffgwas/module_2b_knockoffs_god.sh`, computes goodness-of-fit-diagnostics for the knockoffs corresponding to all chromosomes and resolutions. Plots summarizing the goodness-of-fit-diagnostics are stored in the directory `tmp/knockoffs_gof_plots/`. Thse goodness-of-fit-diagnostics should reflect the correct exchangeability of the knockoffs with the original genotypes; see the screenshot below for an example on the tutorial data, and the accompanying paper for more details.
 
  3. **Statistics.** Compute knockoff test statistics for all groups of SNPs, separately for each specified genome partition. This operation is carried out by the script `knockoffgwas/module_3_statistics.sh`, which first merges the knockoff-augmented genotype files for all chromosomes and then converts them into a large [file-backed matrix](https://privefl.github.io/bigsnpr/). Finally, this script fits a sparse generalized linear regression model to predict the phenotype of interest given the knockoff-augmented data using a very [efficient implementation of the lasso](https://privefl.github.io/bigstatsr/), and utilizes that to compute the final knockoff test statistics, separately for each specified genome partition.
 
@@ -53,7 +54,15 @@ These modules organize the analysis as follows:
 <p style="text-align:center;">
 <img src="images/analyze.png" alt="Screenshot of KnockoffGWAS analysis on tutorial data"
 	title="KnockoffGWAS analysis on tutorial data" width="65%" height="65%" />
+        <figcaption style="text-align: center"><small>Screenshot of KnockoffGWAS analysis on tutorial data.</small></figcaption>
 </p>
+
+<p style="text-align:center;">
+<img src="images/knockoffs_chr21_res5.png" alt="Screenshot of some goodness-of-fit diagnostics for knockoffs on tutorial data"
+	title="Goodness-of-fit diagnostics for knockoffs on tutorial data." width="65%" height="65%" />
+        <figcaption style="text-align: center"><small>Goodness-of-fit diagnostics for knockoffs on tutorial data.</small></figcaption>
+</p>
+
 
 The final results can be visualized interactively with the script `visualize.sh`, which will launch a [Shiny](https://shiny.rstudio.com/) app in your browser. Some additional R packages are required by the visualization tool, and will be automatically installed if not found.
 
@@ -71,9 +80,11 @@ The expected results for the analysis of this toy dataset are provided in the di
 <p style="text-align:center;">
 <img src="images/view_1.png" alt="Screenshot of full-genome visualization of KnockoffGWAS discoveries on tutorial data"
 	title="Full-genome visualization of KnockoffGWAS discoveries on tutorial data" width="100%" height="100%" />
+        <figcaption style="text-align: center"><small>Full-genome visualization of KnockoffGWAS discoveries on tutorial data.</small></figcaption>
 </p>
 
 <p style="text-align:center;">
 <img src="images/view_2.png" alt="Screenshot of single-chromosome visualization of KnockoffGWAS discoveries on tutorial data"
-	title="single-chromosome visualization of KnockoffGWAS discoveries on tutorial data" width="100%" height="100%" />
+	title="Single-chromosome visualization of KnockoffGWAS discoveries on tutorial data" width="100%" height="100%" />
+        <figcaption style="text-align: center"><small>Single-chromosome visualization of KnockoffGWAS discoveries on tutorial data.</small></figcaption>
 </p>
