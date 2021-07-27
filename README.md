@@ -51,7 +51,7 @@ The above version numbers correspond to the configuration on which this software
 Clone this repository on your system and install any missing dependencies. Estimated installation time (dependencies): 5-15 minutes.
 Compile the C++ program for knockoff generation by entering the directory `snpknock2` and running `make`.
 
-## Toy dataset
+## Toy dataset and tutorial
 
 A toy dataset containing 1000 artificial samples typed at 2000 loci (divided between chromosome 21 and 22) is offered as an example to test *KnockoffGWAS*. To run the example, simply execute the script `analyze.sh`.
 
@@ -69,7 +69,7 @@ The analysis should take less than 5 minutes on a personal computer. The results
 
 The expected results for the analysis of this toy dataset are provided in the directory `results/` and can be visualized by running the script `visualize.sh` before running `analyze.sh`. Note that the script `analyze.sh` will overwrite the default results. 
 
-See https://msesia.github.io/knockoffgwas/tutorial.html for more details about this tutorial.
+See https://msesia.github.io/knockoffgwas/tutorial.html for a more detailed tutorial.
 
 ## Large-scale applications
 
@@ -86,6 +86,7 @@ The modular nature of our method allows the code contained in each of the 4 main
 ## Contributors
 
    - [Stephen Bates](https://stephenbates19.github.io/)
+   
 ## License
 
 This software is distributed under the [GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html).
