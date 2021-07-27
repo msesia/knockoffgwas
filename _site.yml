@@ -7,12 +7,12 @@ navbar:
     - text: "Home"
       icon: fa-home
       href: index.html
-    - text: "UK Biobank"
-      icon: fa-dna
-      href: ukbiobank.html
     - text: "Tutorial"
       icon: fa-chalkboard-teacher
       href: tutorial.html
+    - text: "UK Biobank"
+      icon: fa-dna
+      href: ukbiobank.html
     - text: "Software"
       icon: fa-github
       href: https://github.com/msesia/knockoffgwas

@@ -22,7 +22,6 @@ border: 1px solid black;
 margin-left: 25px;
 border-radius: 5px;
 }
-
 </style>
 
 KnockoffGWAS is a powerful and versatile statistical method for the analysis of genome-wide association data with population structure.
@@ -35,7 +34,7 @@ This method is equally valid for quantitative and binary phenotypes, making no a
 For more information, read the accompanying <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">paper</a>:
 
 <p class="comment">
-<i>Controlling the false discovery rate in GWAS with population structure</i><br>
+<i>FDR control in GWAS with population structure</i><br>
 M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br>
 preprint at bioRxiv; <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">doi:10.1101/2020.08.04.236703</a>
 </p>

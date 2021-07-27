@@ -250,17 +250,17 @@ $(document).ready(function () {
   </a>
 </li>
 <li>
-  <a href="ukbiobank.html">
-    <span class="fa fa-dna"></span>
-     
-    UK Biobank
-  </a>
-</li>
-<li>
   <a href="tutorial.html">
     <span class="fa fa-chalkboard-teacher"></span>
      
     Tutorial
+  </a>
+</li>
+<li>
+  <a href="ukbiobank.html">
+    <span class="fa fa-dna"></span>
+     
+    UK Biobank
   </a>
 </li>
 <li>
@@ -311,15 +311,30 @@ $(document).ready(function () {
   gtag('config', 'UA-110810441-3');
 </script>
 </head>
-<p>We apply KnockoffGWAS to several phenotypes in the <a target="_blank" href="https://www.ukbiobank.ac.uk/">UK Biobank</a> data and obtain many new findings.<br> To learn more about this analysis and the method behind it, read the accompanying <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">paper</a>.</p>
+<style>
+p.comment {
+background-color: #DBDBDB;
+padding: 10px;
+border: 1px solid black;
+margin-left: 25px;
+border-radius: 5px;
+}
+</style>
+<div id="pooled-analysis-of-all-populations" class="section level2">
+<h2>Pooled analysis of all populations</h2>
+<p>We apply KnockoffGWAS to several phenotypes in the <a target="_blank" href="https://www.ukbiobank.ac.uk/">UK Biobank</a> data and obtain many new findings.<br> To learn more about this analysis and the method behind it, read the following accompanying paper.</p>
+<p class="comment">
+<i>FDR control in GWAS with population structure</i><br> M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br> preprint at bioRxiv; <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">doi:10.1101/2020.08.04.236703</a>
+</p>
 <p>To produce more plots like the one below and explore our results interactively, visit: <a target="_blank" href="https://sesia.shinyapps.io/knockoffgwas/">https://sesia.shinyapps.io/knockoffgwas/</a>.</p>
 <p style="text-align:center;">
 <img src="images/knockoffzoom.png" alt="Annotated KnockoffGWAS discoveries"
     title="Annotated KnockoffGWAS discoveries" width="80%" height="80%" />
 </p>
 <p><a target="_blank" href="data/ukb_discoveries.zip">Download</a> the complete list of multi-resolution <em>KnockoffGWAS</em> discoveries for each trait.<br> <a target="_blank" href="data/ukb_stats.tar.xz">Download</a> the complete list of <em>KnockoffGWAS</em> test statistics at each resolution.</p>
-<div id="discoveries-that-are-invariant-across-populations" class="section level2">
-<h2>Discoveries that are invariant across populations</h2>
+</div>
+<div id="multi-population-analysis-searching-for-robust-associations" class="section level2">
+<h2>Multi-population analysis searching for robust associations</h2>
 <p>The following paper applies KnockoffGWAS to the UK Biobank data to discover genetic associations that are invariant across populations with different ancestries.</p>
 <p class="comment">
 <i>Searching for consistent associations with a multi-environment knockoff filter</i><br> S. Li, M. Sesia, Y. Romano, E. Candès, C Sabatti<br> preprint at arXiv; <a target="_blank" href="https://arxiv.org/abs/2106.04118">https://arxiv.org/abs/2106.04118</a>

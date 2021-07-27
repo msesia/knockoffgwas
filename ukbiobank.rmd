@@ -14,8 +14,27 @@ title: "Analysis of the UK Biobank data"
 </script>
 </head> 
 
+<style>
+p.comment {
+background-color: #DBDBDB;
+padding: 10px;
+border: 1px solid black;
+margin-left: 25px;
+border-radius: 5px;
+}
+</style>
+
+## Pooled analysis of all populations
+
 We apply KnockoffGWAS to several phenotypes in the <a target="_blank" href="https://www.ukbiobank.ac.uk/">UK Biobank</a> data and obtain many new findings.<br>
-To learn more about this analysis and the method behind it, read the accompanying <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">paper</a>.
+To learn more about this analysis and the method behind it, read the following accompanying paper.
+
+<p class="comment">
+<i>FDR control in GWAS with population structure</i><br>
+M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br>
+preprint at bioRxiv; <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">doi:10.1101/2020.08.04.236703</a>
+</p>
+
 
 To produce more plots like the one below and explore our results interactively, visit: <a target="_blank" href="https://sesia.shinyapps.io/knockoffgwas/">https://sesia.shinyapps.io/knockoffgwas/</a>.
 
@@ -28,7 +47,7 @@ To produce more plots like the one below and explore our results interactively, 
 <a target="_blank" href="data/ukb_stats.tar.xz">Download</a> the complete list of *KnockoffGWAS* test statistics at each resolution.
 
 
-## Discoveries that are invariant across populations
+## Multi-population analysis searching for robust associations
 
 
 The following paper applies KnockoffGWAS to the UK Biobank data to discover genetic associations that are invariant across populations with different ancestries.
