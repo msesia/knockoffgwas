@@ -11,7 +11,7 @@ check.packages.cran <- function(pkg){
         install.packages(new.pkg, dependencies = TRUE, repos = "http://cran.us.r-project.org")
     sapply(pkg, require, character.only = TRUE)
 }
-packages.cran <- c("tidyverse", "fastcluster")
+packages.cran <- c("tidyverse", "fastcluster", "latex2exp", "grid", "gridExtra")
 check.packages.cran(packages.cran)
 
 ################################
