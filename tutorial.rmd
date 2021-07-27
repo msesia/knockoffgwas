@@ -19,7 +19,7 @@ Note that this tutorial is intended to be run on a Linux system.
 
 <p style="text-align:center;">
 <img src="images/data.png" alt="Directory tree structure of tutorial data set"
-	title="Directory tree structure of tutorial data set" width="50%" height="50%" />
+	title="Directory tree structure of tutorial data set" width="60%" height="60%" />
 </p>
 
 To run the tutorial, download the software repository and enter the corresponding main directory. Then, compile the *snpknock2* C++ program (to generate the knockoffs) by typing the following commands in your terminal:
@@ -41,7 +41,7 @@ Then, it will carry out an entire association analysis which should take approxi
 This analysis consists of 4 main modules, each encoded by a distinct script located within the sub-directory `knockoffgwas/`, and all automatically coordinated by `analyze.sh`.
 These modules organize the analysis as follows:
 
- 1. **Genome partitions.** Partition the available SNPs into contiguous groups at different levels of resolution, based on the genetic distance information provided with the data and the desired resolution values (measured in cM) specified by the user (a default option is specified in `knockoffgwas/module_1_partition.sh`). The genome partitions computed by the module will be stored in the intermediate result directory `tmp/partitions`.
+ 1. **Partitions.** Partition the available SNPs into contiguous groups at different levels of resolution, based on the genetic distance information provided with the data and the desired resolution values (measured in cM) specified by the user (a default option is specified in `knockoffgwas/module_1_partition.sh`). The genome partitions computed by the module will be stored in the intermediate result directory `tmp/partitions`.
 
  2. **Knockoffs.** Generate knockoff genotypes for all specified genome partitions. This operation is carried out by the script `knockoffgwas/module_2_knockoffs.sh`, which executes the *snpknock2* program compiled above. The output knockoffs will be stored in standard BED format within the intermediate result directory `tmp/knockoffs`, merged with a copy of the original genotypes for subsequent convenience. A separate set of BED and auxiliary files will be produced for each available chromosome.
 
