@@ -10,9 +10,12 @@ navbar:
     - text: "UK Biobank"
       icon: fa-dna
       href: ukbiobank.html
+    - text: "Tutorial"
+      icon: fa-chalkboard-teacher
+      href: tutorial.html
     - text: "Software"
       icon: fa-github
-      href: https://github.com/msesia/knockoffzoom-v2
+      href: https://github.com/msesia/knockoffgwas
   right:
     - text: "Contact"
       icon: fa-envelope-o
