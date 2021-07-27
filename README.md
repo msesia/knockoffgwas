@@ -41,6 +41,8 @@ The following [R](https://www.r-project.org/) (version 4.0.2) packages are requi
    - [bigsnpr](https://privefl.github.io/bigsnpr/) 1.4.4
    - [bigstatsr](https://privefl.github.io/bigstatsr/) 1.2.3
    - [tidyverse](https://www.tidyverse.org/) 1.3.0
+   - [latex2exp](https://cran.r-project.org/package=latex2exp) 0.5.0
+   - [gridExtra](https://cran.r-project.org/package=gridExtra) 2.3
    
 The above version numbers correspond to the configuration on which this software was tested. Newer version are likely to be compatible, but have not been tested.
 
