@@ -59,3 +59,16 @@ preprint at arXiv; <a target="_blank" href="https://arxiv.org/abs/2106.04118">ht
 </p>
 
 <a target="_blank" href="data/ukb_discoveries_invariant.zip">Download</a> the complete list of multi-resolution *KnockoffGWAS* invariant discoveries for each trait.<br>
+
+## Transfer learning analysis across populations
+
+
+The following paper applies KnockoffGWAS to the UK Biobank data to discover genetic associations leveraging prior information in external data
+sets collected from different populations or measuring related outcomes.
+
+<p class="comment">
+<i>Transfer learning in genome-wide association studies with knockoffs</i><br>
+S. Li, Z. Ren, C. Sabatti, M. Sesia<br>
+</p>
+
+<a target="_blank" href="data/ukb_discoveries_transfer_learning.zip">Download</a> the complete list of multi-resolution *KnockoffGWAS* transfer learning discoveries.<br>
