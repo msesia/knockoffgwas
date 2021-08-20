@@ -69,6 +69,7 @@ sets collected from different populations or measuring related outcomes.
 <p class="comment">
 <i>Transfer learning in genome-wide association studies with knockoffs</i><br>
 S. Li, Z. Ren, C. Sabatti, M. Sesia<br>
+preprint at arXiv; <a target="_blank" href="https://arxiv.org/abs/2108.08813">https://arxiv.org/abs/2108.08813</a>
 </p>
 
 <a target="_blank" href="data/ukb_discoveries_transfer_learning.zip">Download</a> the complete list of multi-resolution *KnockoffGWAS* transfer learning discoveries.<br>
