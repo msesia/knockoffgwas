@@ -8,7 +8,7 @@ This method localizes causal variants while controlling the false discovery rate
 Accompanying paper:
 > *FDR control in GWAS with population structure* <br />
 > M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti <br />
-> Proceedings of the National Academy of Sciences (2021) https://doi.org/10.1073/pnas.2105841118
+> Proceedings of the National Academy of Sciences (2021) https://www.pnas.org/content/118/40/e2105841118
 
 For more information, visit: [https://msesia.github.io/knockoffgwas](https://msesia.github.io/knockoffgwas).
 
