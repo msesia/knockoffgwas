@@ -36,7 +36,7 @@ For more information, read the accompanying <a target="_blank" href="https://doi
 <p class="comment">
 <i>FDR control in GWAS with population structure</i><br>
 M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti<br>
-preprint at bioRxiv; <a target="_blank" href="https://doi.org/10.1101/2020.08.04.236703">doi:10.1101/2020.08.04.236703</a>
+Proceedings of the National Academy of Sciences, 2021; <a target="_blank" href="https://doi.org/10.1073/pnas.2105841118">doi:10.1073/pnas.2105841118</a>
 </p>
 
 For an earlier version of KnockoffGWAS restricted to homogeneous populations, see also [KnockoffZoom](https://msesia.github.io/knockoffzoom/).
