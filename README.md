@@ -6,7 +6,7 @@ A powerful and versatile statistical method for the analysis of genome-wide asso
 This method localizes causal variants while controlling the false discovery rate, and is valid even if the samples have diverse ancestries and familial relatedness.
 
 Accompanying paper:
-> *FDR control in GWAS with population structure* <br />
+> *False discovery rate control in genome-wide association studies with population structure* <br />
 > M. Sesia, S. Bates, E. Candès, J. Marchini, C. Sabatti <br />
 > Proceedings of the National Academy of Sciences (2021) https://www.pnas.org/content/118/40/e2105841118
 
