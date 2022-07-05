@@ -12,9 +12,7 @@ navbar:
       href: tutorial.html
     - text: "Talks"
       icon: fa-chalkboard-teacher
-      menu:
-          - text: CGSI 2022
-            href: talks/cgsi-2022/cgsi-2022.slides.html
+      href: talks.html
     - text: "UK Biobank"
       icon: fa-dna
       href: ukbiobank.html

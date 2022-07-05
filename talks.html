@@ -11,7 +11,7 @@
 
 
 
-<title>KnockoffGWAS tutorial</title>
+<title>KnockoffGWAS Talks</title>
 
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -302,7 +302,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">KnockoffGWAS tutorial</h1>
+<h1 class="title toc-ignore">KnockoffGWAS Talks</h1>
 
 </div>
 
@@ -318,62 +318,9 @@ $(document).ready(function () {
   gtag('config', 'UA-110810441-3');
 </script>
 </head>
-<p>A toy genetic dataset containing 1000 artificial samples typed at 2000 loci (divided between chromosome 21 and 22) is available from the <a href="https://github.com/msesia/knockoffgwas">software repository</a> as a tutorial for <em>KnockoffGWAS</em>. This data set contains both genotypes and phased haplotypes for all individuals, stored in the standard BED and BGEN formats accepted as input by <em>KnockoffGWAS</em>, along with the phenotype information and all necessary auxiliary files. Note that this tutorial is intended to be run on a Linux system.</p>
-<p style="text-align:center;">
-<img src="images/data.png" alt="Directory tree structure of tutorial data set"
-    title="Directory tree structure of tutorial data set" width="60%" height="60%" />
-<figcaption style="text-align: center">
-<small>Directory tree structure of tutorial data set.</small>
-</figcaption>
-</p>
-<p>To run the tutorial, download the software repository and enter the corresponding main directory. Then, compile the <em>snpknock2</em> C++ program (to generate the knockoffs) by typing the following commands in your terminal:</p>
-<pre><code>cd snpknock2
-make
-cd ..</code></pre>
-<p>After a successful compilation, you can execute the script <code>analyze.sh</code> contained therein.</p>
-<pre><code>./analyze.sh</code></pre>
-<p>This will first verify whether the system dependencies (plink, R, and the snpknock2 executable compiled above), and then install any missing required R packages. Then, it will carry out an entire association analysis which should take approximately 5 minutes on a personal computer from start to finish. This analysis consists of 4 main modules, each encoded by a distinct script located within the sub-directory <code>knockoffgwas/</code>, and all automatically coordinated by <code>analyze.sh</code>. These modules organize the analysis as follows:</p>
-<ol style="list-style-type: decimal">
-<li><p><strong>Partitions.</strong> Partition the available SNPs into contiguous groups at different levels of resolution, based on the genetic distance information provided with the data and the desired resolution values (measured in cM) specified by the user (a default option is specified in <code>knockoffgwas/module_1_partition.sh</code>). The genome partitions computed by the module will be stored in the intermediate result directory <code>tmp/partitions</code>.</p></li>
-<li><p><strong>Knockoffs.</strong> Generate knockoff genotypes for all specified genome partitions. This operation is carried out by the script <code>knockoffgwas/module_2_knockoffs.sh</code>, which executes the <em>snpknock2</em> program compiled above. The output knockoffs will be stored in standard BED format within the intermediate result directory <code>tmp/knockoffs</code>, merged with a copy of the original genotypes for subsequent convenience. A separate set of BED and auxiliary files will be produced for each available chromosome. The second part of this module, <code>knockoffgwas/module_2b_knockoffs_god.sh</code>, computes goodness-of-fit-diagnostics for the knockoffs corresponding to all chromosomes and resolutions. Plots summarizing the goodness-of-fit-diagnostics are stored in the directory <code>tmp/knockoffs_gof_plots/</code>. Thse goodness-of-fit-diagnostics should reflect the correct exchangeability of the knockoffs with the original genotypes; see the screenshot below for an example on the tutorial data, and the accompanying paper for more details.</p></li>
-<li><p><strong>Statistics.</strong> Compute knockoff test statistics for all groups of SNPs, separately for each specified genome partition. This operation is carried out by the script <code>knockoffgwas/module_3_statistics.sh</code>, which first merges the knockoff-augmented genotype files for all chromosomes and then converts them into a large <a href="https://privefl.github.io/bigsnpr/">file-backed matrix</a>. Finally, this script fits a sparse generalized linear regression model to predict the phenotype of interest given the knockoff-augmented data using a very <a href="https://privefl.github.io/bigstatsr/">efficient implementation of the lasso</a>, and utilizes that to compute the final knockoff test statistics, separately for each specified genome partition.</p></li>
-<li><p><strong>Filter.</strong> The last module applies the knockoff filter to the statistics computed above, producing a separate list of discoveries for each specified genome partition. This operation is carried out by the script <code>knockoffgwas/module_4_discover.sh</code>. The default FDR level is 10%, but it can be modified within this script. The final lists of discoveries will be written in the directory <code>results/</code>.</p></li>
-</ol>
-<p style="text-align:center;">
-<img src="images/analyze.png" alt="Screenshot of KnockoffGWAS analysis on tutorial data"
-    title="KnockoffGWAS analysis on tutorial data" width="65%" height="65%" />
-<figcaption style="text-align: center">
-<small>Screenshot of KnockoffGWAS analysis on tutorial data.</small>
-</figcaption>
-</p>
-<p style="text-align:center;">
-<img src="images/knockoffs_chr21_res5.png" alt="Screenshot of some goodness-of-fit diagnostics for knockoffs on tutorial data"
-    title="Goodness-of-fit diagnostics for knockoffs on tutorial data." width="65%" height="65%" />
-<figcaption style="text-align: center">
-<small>Goodness-of-fit diagnostics for knockoffs on tutorial data.</small>
-</figcaption>
-</p>
-<p>The final results can be visualized interactively with the script <code>visualize.sh</code>, which will launch a <a href="https://shiny.rstudio.com/">Shiny</a> app in your browser. Some additional R packages are required by the visualization tool, and will be automatically installed if not found.</p>
-<pre><code>./visualize.sh</code></pre>
-<p style="text-align:center;">
-<img src="images/visualize.png" alt="Screenshot of KnockoffGWASView  on tutorial data"
-    title="Script to visualize results of KnockoffGWAS analysis on tutorial data" width="65%" height="65%" />
-</p>
-<p>The expected results for the analysis of this toy dataset are provided in the directory <code>results/</code> and can be visualized through interactive Chicago plots by running the script <code>visualize.sh</code> before running <code>analyze.sh</code>. Note that the script <code>analyze.sh</code> will overwrite the default results.</p>
-<p style="text-align:center;">
-<img src="images/view_1.png" alt="Screenshot of full-genome visualization of KnockoffGWAS discoveries on tutorial data"
-    title="Full-genome visualization of KnockoffGWAS discoveries on tutorial data" width="100%" height="100%" />
-<figcaption style="text-align: center">
-<small>Full-genome visualization of KnockoffGWAS discoveries on tutorial data.</small>
-</figcaption>
-</p>
-<p style="text-align:center;">
-<img src="images/view_2.png" alt="Screenshot of single-chromosome visualization of KnockoffGWAS discoveries on tutorial data"
-    title="Single-chromosome visualization of KnockoffGWAS discoveries on tutorial data" width="100%" height="100%" />
-<figcaption style="text-align: center">
-<small>Single-chromosome visualization of KnockoffGWAS discoveries on tutorial data.</small>
-</figcaption>
-</p>
+<ul>
+<li><a href="talks/cgsi-2022/cgsi-2022.slides.html">CGSI 2022</a></li>
+</ul>
 
 
 
