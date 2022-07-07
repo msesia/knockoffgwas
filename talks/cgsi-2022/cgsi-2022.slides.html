@@ -14716,7 +14716,7 @@ div.jp-OutputPrompt {
 <li>Larger groups: easier to reject the null</li>
 <li>Smaller groups: more informative discoveries</li>
 </ul>
-<p>Possibly many discoveries. Control the <strong><em>false discovery rate</em></strong>: the expected proportion of spurious discoveries.</p>
+<p>Control the <strong><em>false discovery rate</em></strong>: the expected proportion of spurious discoveries.</p>
 <p>Model-X framework:
   \begin{align*}
     (X^i,Y^i) \overset{}{\sim} P_{XY} = P_X \cdot P_{Y \mid X},
@@ -14776,8 +14776,7 @@ Model $P_X$, make inferences about $P_{Y \mid X}$.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Tutorial">Tutorial<a class="anchor-link" href="#Tutorial">&#182;</a></h2><p>A toy genetic dataset containing 1000 artificial samples typed at 2000 loci (divided between chromosome 21 and 22) is available from the <a href="https://github.com/msesia/knockoffgwas">software repository</a>.
-Note that this tutorial is intended to be run on a Linux system.</p>
+<h2 id="Tutorial">Tutorial<a class="anchor-link" href="#Tutorial">&#182;</a></h2><p>A toy genetic dataset containing 1000 artificial samples typed at 2000 loci (divided between chromosome 21 and 22) is available from the <a href="https://github.com/msesia/knockoffgwas">software repository</a>.</p>
 <div>
 <img src="figures/repository.png" width="800"/>
 </div><p>Download the repository, enter the main directory, and compile the <em>snpknock2</em> C++ program by typing in your terminal:</p>
@@ -14799,10 +14798,8 @@ cd ..</code></pre>
 <p>After a successful compilation, you can execute the script <code>analyze.sh</code>.</p>
 
 <pre><code>./analyze.sh</code></pre>
-<p>This will first verify whether the system dependencies (plink, R, and the snpknock2 executable compiled above), and then install any missing required R packages.
-Then, it will carry out an entire association analysis which should take approximately 5 minutes on a personal computer from start to finish.</p>
-<p>This analysis consists of 4 main modules, each encoded by a distinct script located within the sub-directory <code>knockoffgwas/</code>, and all automatically coordinated by <code>analyze.sh</code>.
-These modules organize the analysis as follows.</p>
+<p>This will first verify whether the system dependencies and then carry out an entire association analysis.</p>
+<p>This analysis consists of 4 main modules.</p>
 
 </div>
 </div>
@@ -14814,7 +14811,7 @@ These modules organize the analysis as follows.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Module-1:-partition-the-genome">Module 1: partition the genome<a class="anchor-link" href="#Module-1:-partition-the-genome">&#182;</a></h3><p>Partition the available SNPs into contiguous groups at different levels of resolution, based on the genetic distance information provided with the data and the desired resolution values (measured in cM) specified by the user (a default option is specified in <code>knockoffgwas/module_1_partition.sh</code>). The genome partitions computed by the module will be stored in the intermediate result directory <code>tmp/partitions</code>.</p>
+<h3 id="Module-1:-partition-the-genome">Module 1: partition the genome<a class="anchor-link" href="#Module-1:-partition-the-genome">&#182;</a></h3><p>Partition the available SNPs into contiguous groups at different levels of resolution, based on the genetic distance information.</p>
 <div>
 <img src="figures/dendro.png" width="800"/>
 </div>
@@ -14828,8 +14825,7 @@ These modules organize the analysis as follows.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Module-2:-generate-knockoffs">Module 2: generate knockoffs<a class="anchor-link" href="#Module-2:-generate-knockoffs">&#182;</a></h3><p>Generate knockoff genotypes for all specified genome partitions. This operation is carried out by the script <code>knockoffgwas/module_2_knockoffs.sh</code>.
-The output knockoffs will be stored in standard BED format within the intermediate result directory <code>tmp/knockoffs</code>, merged with a copy of the original genotypes for subsequent convenience. A separate set of BED and auxiliary files will be produced for each available chromosome. The second part of this module, <code>knockoffgwas/module_2b_knockoffs_god.sh</code>, computes goodness-of-fit-diagnostics for the knockoffs corresponding to all chromosomes and resolutions.</p>
+<h3 id="Module-2:-generate-knockoffs">Module 2: generate knockoffs<a class="anchor-link" href="#Module-2:-generate-knockoffs">&#182;</a></h3><p>Generate knockoff genotypes for all specified genome partitions.</p>
 <div>
 <img src="figures/shapeit.png" width="800"/>
 </div>
@@ -14843,7 +14839,7 @@ The output knockoffs will be stored in standard BED format within the intermedia
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Module-2:-inspect-the-knockoffs">Module 2: inspect the knockoffs<a class="anchor-link" href="#Module-2:-inspect-the-knockoffs">&#182;</a></h3><p>The second part of this module, <code>knockoffgwas/module_2b_knockoffs_god.sh</code>, computes goodness-of-fit-diagnostics for the knockoffs corresponding to all chromosomes and resolutions. Plots summarizing the goodness-of-fit-diagnostics are stored in the directory <code>tmp/knockoffs_gof_plots/</code>. These goodness-of-fit-diagnostics should reflect the correct exchangeability of the knockoffs with the original genotypes.</p>
+<h3 id="Module-2:-inspect-the-knockoffs">Module 2: inspect the knockoffs<a class="anchor-link" href="#Module-2:-inspect-the-knockoffs">&#182;</a></h3><p>Compute goodness-of-fit-diagnostics for the knockoffs.</p>
 <div>
 <img src="figures/knockoffs_chr21_res5.png" width="400"/>
 </div>
@@ -14857,8 +14853,7 @@ The output knockoffs will be stored in standard BED format within the intermedia
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Module-3:-test-statistics">Module 3: test statistics<a class="anchor-link" href="#Module-3:-test-statistics">&#182;</a></h3><p>Compute knockoff test statistics for all groups of SNPs, separately for each specified genome partition. This operation is carried out by the script <code>knockoffgwas/module_3_statistics.sh</code>, which first merges the knockoff-augmented genotype files for all chromosomes and then converts them into a large <a href="https://privefl.github.io/bigsnpr/">file-backed matrix</a>.
-Finally, this script fits a sparse generalized linear regression model to predict the phenotype of interest given the knockoff-augmented data using a very <a href="https://privefl.github.io/bigstatsr/">efficient implementation of the lasso</a>, and utilizes that to compute the final knockoff test statistics, separately for each specified genome partition.</p>
+<h3 id="Module-3:-test-statistics">Module 3: test statistics<a class="anchor-link" href="#Module-3:-test-statistics">&#182;</a></h3><p>Compute knockoff test statistics for all groups of SNPs, separately for each specified genome partition.</p>
 <div>
 <img src="figures/importance_2.png" width="800"/>
 </div>
@@ -14872,7 +14867,7 @@ Finally, this script fits a sparse generalized linear regression model to predic
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Module-4:-knockoff-filter">Module 4: knockoff filter<a class="anchor-link" href="#Module-4:-knockoff-filter">&#182;</a></h3><p>The last module applies the knockoff filter to the statistics computed above, producing a separate list of discoveries for each specified genome partition. This operation is carried out by the script <code>knockoffgwas/module_4_discover.sh</code>. The default FDR level is 10%, but it can be modified within this script. The final lists of discoveries will be written in the directory <code>results/</code>.</p>
+<h3 id="Module-4:-knockoff-filter">Module 4: knockoff filter<a class="anchor-link" href="#Module-4:-knockoff-filter">&#182;</a></h3><p>The last module applies the knockoff filter and reports any discoveries.</p>
 <div>
 <img src="figures/experiment_everyone_chicago_10_small.png" width="800"/>
 </div>
@@ -14886,10 +14881,9 @@ Finally, this script fits a sparse generalized linear regression model to predic
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Visualize-the-results">Visualize the results<a class="anchor-link" href="#Visualize-the-results">&#182;</a></h3><p>The final results can be visualized interactively with the script <code>visualize.sh</code>, which will launch a <a href="https://shiny.rstudio.com/">Shiny</a> app in your browser. Some additional R packages are required by the visualization tool, and will be automatically installed if not found.</p>
+<h3 id="Visualize-the-results">Visualize the results<a class="anchor-link" href="#Visualize-the-results">&#182;</a></h3><p>The final results can be visualized interactively with the script <code>visualize.sh</code>, which will launch a <a href="https://shiny.rstudio.com/">Shiny</a> app in your browser.</p>
 
 <pre><code>./visualize.sh</code></pre>
-<p>The expected results for the analysis of this toy dataset are provided in the directory <code>results/</code> and can be visualized through interactive Chicago plots by running the script <code>visualize.sh</code> before running <code>analyze.sh</code>. Note that the script <code>analyze.sh</code> will overwrite the default results.</p>
 <div>
 <img src="figures/view_1.png" width="800"/>
 </div>
