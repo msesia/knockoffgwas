@@ -14689,10 +14689,10 @@ div.jp-OutputPrompt {
 <h3 id="Traditional-approach:-testing-marginal-associations">Traditional approach: testing marginal associations<a class="anchor-link" href="#Traditional-approach:-testing-marginal-associations">&#182;</a></h3><p>Methods: univariate regression, permutations, linear mixed models.</p>
 \begin{align*}
     \text{marginal association} \quad &amp; \neq \quad \text{causation} \\
-    Y \perp X_j \quad &amp; \qquad X_j \rightarrow Y
+    Y {\; \not\!\perp\!\!\!\perp \;} X_j \quad &amp; \qquad X_j \rightarrow Y
 \end{align*}<div>
 <img src="figures/manhattan.png" width="500"/>
-</div><p>Variants on same chromosome are not independent of each other (linkage disequilibrium).</p>
+</div><p>Variants on same chromosome are not independent of each other (linkage disequilibrium, population structure, familial relatedness).</p>
 
 </div>
 </div>
@@ -14710,16 +14710,14 @@ div.jp-OutputPrompt {
   \end{align*}</p>
 <p>Conditional hypotheses:
   \begin{align*}
-    \mathcal{H}_{0,g} : Y \perp X_g \mid X_{-g}.
+    \mathcal{H}_{0,g} : Y {\; \perp\!\!\!\perp \;}  X_g \mid X_{-g}.
   \end{align*}</p>
 <ul>
 <li>Larger groups: easier to reject the null</li>
 <li>Smaller groups: more informative discoveries</li>
 </ul>
-<p>Possibly many discoveries. Control the false discovery rate:</p>
-\begin{align*}
-    \text{FDR} = \mathbb{E} \left[ \frac{|\hat{S} \cap \mathcal{H}_0|}{\max(1,| \hat{S}|)} \right] \leq \alpha
-\end{align*}<p>Model-X framework:
+<p>Possibly many discoveries. Control the <strong><em>false discovery rate</em></strong>: the expected proportion of spurious discoveries.</p>
+<p>Model-X framework:
   \begin{align*}
     (X^i,Y^i) \overset{}{\sim} P_{XY} = P_X \cdot P_{Y \mid X},
     \qquad X^i \in \mathbb{R}^p, Y^i \in \mathbb{R}.
@@ -14778,19 +14776,6 @@ Model $P_X$, make inferences about $P_{Y \mid X}$.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<div>
-<img src="figures/slide_6.png" width="800"/>
-</div>
-</div>
-</div>
-</div>
-</div></section></section><section><section>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Tutorial">Tutorial<a class="anchor-link" href="#Tutorial">&#182;</a></h2><p>A toy genetic dataset containing 1000 artificial samples typed at 2000 loci (divided between chromosome 21 and 22) is available from the <a href="https://github.com/msesia/knockoffgwas">software repository</a>.
 Note that this tutorial is intended to be run on a Linux system.</p>
 <div>
@@ -14811,7 +14796,7 @@ cd ..</code></pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>After a successful compilation, you can execute the script <code>analyze.sh</code> contained therein.</p>
+<p>After a successful compilation, you can execute the script <code>analyze.sh</code>.</p>
 
 <pre><code>./analyze.sh</code></pre>
 <p>This will first verify whether the system dependencies (plink, R, and the snpknock2 executable compiled above), and then install any missing required R packages.
